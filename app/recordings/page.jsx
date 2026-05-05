@@ -19,7 +19,7 @@ async function Page() {
         data = [];
     }
   return (
-    <div className="w-full h-full flex items-center px-5 justify-center">
+    <div className="w-full h-full flex items-center justify-center">
         <Link href="/students" className="absolute top-5 left-5 bg-amber-900 text-white px-4 py-1 rounded-md flex items-center gap-2 "><FaArrowLeftLong /> students</Link>
       <div className="rounded-md h-3/4 w-full bg-(--layer) p-5">
         <h1 className="text-2xl font-bold text-amber-900 text-center">

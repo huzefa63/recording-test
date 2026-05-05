@@ -7,7 +7,7 @@ async function Page() {
     let data;
     
     try{
-        const res = await fetch(`${process.env.URL}/recording/get`,{method:'GET'});
+        const res = await fetch(`${process.env.URL}/recording/get`,{method:'GET',cache:'no-store'});
         const resJson = await res.json();
         data = resJson.recordings;
         console.log(data);

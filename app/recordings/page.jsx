@@ -13,6 +13,7 @@ async function Page() {
         console.log(data);
     }catch(err){
         console.log(err);
+        data = [];
     }
   return (
     <div className="w-full h-full flex items-center px-5 justify-center">

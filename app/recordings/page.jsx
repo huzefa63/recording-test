@@ -7,11 +7,14 @@ async function Page() {
     let data;
     
     try{
-        const res = await fetch(`${process.env.URL}/recording/get`,{method:'GET',cache:'no-store'});
+        console.log('fetchng');
+        console.log(process.env.NEXT_PUBLIC_URL);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/recording/get`,{method:'GET',cache:'no-store'});
         const resJson = await res.json();
         data = resJson.recordings;
         console.log(data);
     }catch(err){
+        console.log('failed');
         console.log(err);
         data = [];
     }

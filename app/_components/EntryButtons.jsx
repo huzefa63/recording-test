@@ -76,7 +76,7 @@ function EntryButtons() {
     async function submitRecording(){
         const formData = new FormData();
         formData.append('audio',audio,"recording.webm");
-        formData.append('student',"aziz naya");
+        formData.append('student',"aliasgar kagzi");
         formData.append('muhaffiz',"huzefa ratlam");
         try{
           setIsSubmitting(true)

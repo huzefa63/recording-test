@@ -31,10 +31,19 @@ function EntryButtons() {
             setTotalSeconds(seconds => seconds + 1);
         }, 1000);
 
-        stream.current = await navigator.mediaDevices.getUserMedia({audio:true,video:false});
+        stream.current = await navigator.mediaDevices.getUserMedia({audio: {
+    echoCancellation: false,
+    noiseSuppression: false,
+    autoGainControl: false,
+    channelCount: 2,
+    sampleRate: 48000
+  },video:false});
        
             console.log('recording');
-            recorder.current = new MediaRecorder(stream.current);
+            recorder.current = new MediaRecorder(stream.current, {
+  mimeType: "audio/webm;codecs=opus",
+  audioBitsPerSecond: 256000
+});
             recorder.current.ondataavailable = (e) => {
                 // console.log('data avialable')
                 audioChunks.push(e.data);

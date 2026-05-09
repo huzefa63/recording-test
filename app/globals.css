@@ -13,3 +13,8 @@
     --text-normal: #5c4520;
   }
 }
+
+  .rdrDefinedRangesWrapper {
+  display: none !important;
+  width: 0px;
+}

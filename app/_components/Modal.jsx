@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { RxCross2 } from "react-icons/rx";
 
-export default function Modal({ children, onClose,heading }) {
+export default function Modal({ children, onClose,className,heading }) {
     const [isMounted,setIsMounted] = useState(false);
     useEffect(() => {
         setIsMounted(true);
@@ -13,12 +13,16 @@ export default function Modal({ children, onClose,heading }) {
   return createPortal(
     <div
       onClick={onClose}
-      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+      className="z-1000 fixed inset-0 bg-black/40 flex items-center justify-center"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-[#FFF1D3] p-8 rounded-xl w-3/4 h-1/2"
+        className={`relative bg-[#FFF1D3] p-8 rounded-xl w-3/4 h-1/2 ${className}`}
       >
+        <h1 className="text-center mb-3 text-lg tracking-wider font-semibold">
+          {/* {filterType === "student" ? "select student" : "select teacher"} */}
+          Select {heading}
+        </h1>
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -28,9 +32,7 @@ export default function Modal({ children, onClose,heading }) {
         >
           <RxCross2 />
         </button>
-        <h1 className="text-center mb-3 text-lg tracking-wider font-semibold">
-          {heading}
-        </h1>
+
         {children}
       </div>
     </div>,

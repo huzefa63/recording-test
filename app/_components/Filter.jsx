@@ -117,15 +117,12 @@ function Filter() {
       <Suspense>
         {isShowModal && (
           <Modal
-            heading={filterType}
+            heading={filterType === 'student' && 'select student' || filterType === 'teacher'&&'select teacher' || filterType==='date'&&'select date'}
             onClose={() => setIsShowModal(false)}
             className={filterType === "date" && "h-fit w-fit"}
           >
             {filterType === "date" && (
               <CustomDateRangePicker
-              // setIsShowModal={setIsShowModal}
-              // range={range}
-              // setRange={setRange}
               />
             )}
 

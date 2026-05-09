@@ -21,7 +21,7 @@ export default function Modal({ children, onClose,className,heading }) {
       >
         <h1 className="text-center mb-3 text-lg tracking-wider font-semibold">
           {/* {filterType === "student" ? "select student" : "select teacher"} */}
-          Select {heading}
+          {heading}
         </h1>
         <button
           onClick={(e) => {

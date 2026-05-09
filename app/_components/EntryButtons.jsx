@@ -3,6 +3,7 @@ import { FaMicrophoneAlt, FaMicrophoneAltSlash } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
 import userAudioRecorder from "../_hooks/useAudioRecorder";
 import ConfirmSubmit from "./ConfirmSubmit";
+import ConfirmationMenu from "./ConfirmSubmit";
 
 function EntryButtons() {
   const {
@@ -13,6 +14,7 @@ function EntryButtons() {
       isSubmitting,
       confirmSubmit,
       clientAudioUrl,
+      confirmFinishRecording,
       hours,
       minutes,
       seconds,
@@ -26,10 +28,19 @@ function EntryButtons() {
       submitRecording,
       setConfirmSubmit,
       setIsRedirect,
+      handleConfirmFinishRecording,
+      setConfirmFinishRecording
     },
   } = userAudioRecorder();
   
-
+  async function confirmSubmitHandler(){
+    setConfirmSubmit(false);
+    try{
+      await submitRecording();
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   if (!isRecording && !isRecorded)
     return (
@@ -51,6 +62,8 @@ function EntryButtons() {
         </div>
       </div>
     );
+    
+    
 
   if (isRecording)
     return (
@@ -59,7 +72,7 @@ function EntryButtons() {
           {isPause ? "paused..." : "recording..."}
         </p>
         {!isPause && <FaMicrophoneAlt className="text-2xl" />}
-        {isPause && <FaMicrophoneAltSlash className="text-2xl"/>}
+        {isPause && <FaMicrophoneAltSlash className="text-2xl" />}
         <p>
           {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}:
           {String(seconds).padStart(2, "0")}
@@ -82,14 +95,26 @@ function EntryButtons() {
             </button>
           )}
           <button
-            onClick={finishRecording}
+            onClick={handleConfirmFinishRecording}
             className="px-4 py-1 rounded-md bg-amber-900 text-white "
           >
             stop
           </button>
         </div>
+        {confirmFinishRecording && (
+          <ConfirmationMenu
+          confirmButtonTitle="Ok"
+            title={"you are about to stop recording"}
+            confirmHandler={finishRecording}
+            onClose={()=>{
+              setConfirmFinishRecording(false);
+              handleResume();
+            }}
+          />
+        )}
       </div>
     );
+
 
   if (isRecorded)
     return (
@@ -109,7 +134,7 @@ function EntryButtons() {
         </button>
 
         {confirmSubmit && (
-         <ConfirmSubmit setConfirmSubmit={setConfirmSubmit} submitRecording={submitRecording} isSubmitting={isSubmitting}/>
+         <ConfirmSubmit onClose={()=>setConfirmSubmit(false)} confirmHandler={confirmSubmitHandler} title={'you are about to submit this recording'}/>
         )}
       </div>
     );

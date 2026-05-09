@@ -23,8 +23,11 @@ function Page() {
           <p className="text-xs text-amber-900 font-semibold tracking-wide">
             4) keep the recording device as close as possible with the student
           </p>
+          <p className="text-xs text-amber-950 font-bold tracking-wide">
+            5) turning phone screen off or leaving browser in background for more than  60 sec will cause the recording to stop
+          </p>
           <p className="text-xs text-amber-900 font-semibold tracking-wide">
-            5) after recording if you want to redirect to elearningquran website to complete entry please check the checkbox below
+            6) after recording if you want to redirect to elearningquran website to complete entry please check the checkbox below
           </p>
         </div>
         <div className="mt-10 flex justify-center">

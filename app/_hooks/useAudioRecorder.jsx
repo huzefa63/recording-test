@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 function useAudioRecorder() {
     const [isRecording, setIsRecording] = useState(false);
     const [isRecorded, setIsRecorded] = useState(false);
+    const [confirmFinishRecording, setConfirmFinishRecording] = useState(false);
     const [totalSeconds, setTotalSeconds] = useState(0);
     const [isPause, setIsPause] = useState(false);
     const [audio, setAudio] = useState(null);
@@ -27,7 +28,12 @@ function useAudioRecorder() {
     
      async function startRecording() {
        setIsRecording(true);
-
+       let wakeLock;
+       try{
+          wakeLock = await navigator.wakeLock.request('screen');
+       }catch(err){
+        console.log(err);
+       }
        stream.current = await navigator.mediaDevices.getUserMedia({
          audio: {
            echoCancellation: false,
@@ -57,6 +63,7 @@ function useAudioRecorder() {
          const url = URL.createObjectURL(blob);
          setClientAudioUrl(url);
          setAudio(blob);
+         wakeLock?.release();
        };
 
        recorder.current.start();
@@ -76,7 +83,13 @@ function useAudioRecorder() {
        setIsPause(false);
      }
 
+     function handleConfirmFinishRecording(){
+      handlePause();
+        setConfirmFinishRecording(true);
+     }
+
      function finishRecording() {
+      setConfirmFinishRecording(false);
        setIsRecording(false);
        setTotalSeconds(0);
        if (interval.current) clearInterval(interval.current);
@@ -120,6 +133,7 @@ function useAudioRecorder() {
         confirmSubmit,
         clientAudioUrl,
         totalSeconds,
+        confirmFinishRecording,
         hours,
         minutes,
         seconds
@@ -133,6 +147,8 @@ function useAudioRecorder() {
         submitRecording,
         setConfirmSubmit,
         setIsRedirect,
+        handleConfirmFinishRecording,
+        setConfirmFinishRecording
       },
     };
 }

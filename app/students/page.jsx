@@ -7,7 +7,7 @@ import { auth } from "@/auth";
 
 async function Page() {
   const session = await auth();
-  console.log('jwt ',session.jwt);
+  console.log('jwt ',session?.jwt);
     return (
       <ProtectRoutes>
         <div className=" h-full">

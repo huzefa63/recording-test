@@ -18,7 +18,7 @@ function UploadImage() {
 
         <label className="px-5 py-2.5 bg-[#5c4320] text-white rounded-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition font-medium shadow-md">
           Upload Image
-          <input onChange={handleImageChange} type="file" className="hidden" />
+          <input name="image" onChange={handleImageChange} type="file" className="hidden" />
         </label>
       </div>
     );

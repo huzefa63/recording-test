@@ -11,10 +11,27 @@
     /* Added for consistency */
     --text-muted: #8a6b2f;
     --text-normal: #5c4520;
+    --contexify-menu-bgColor: #ffd5ad;
+--contexify-separator-color: #ffd7b3;
+--contexify-item-color: #503930;
+--contexify-activeItem-color: #fff;
+--contexify-activeItem-bgColor: #b46f0e;
+--contexify-rightSlot-color: #6f6e77;
+--contexify-activeRightSlot-color: #ffffff;
+--contexify-arrow-color: #6f6e77;
+--contexify-activeArrow-color: #fff;
   }
 }
 
   .rdrDefinedRangesWrapper {
   display: none !important;
   width: 0px;
+}
+
+.react-contexify {
+  background-color: #1c1917 !important;
+  border: 1px solid #44403c;
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 180px;
 }

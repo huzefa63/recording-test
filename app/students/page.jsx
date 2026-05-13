@@ -5,21 +5,11 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import ProtectRoutes from "../_components/auth/ProtectRoutes";
 import { auth } from "@/auth";
 import StudentCard from "../_components/students/StudentCard";
+import StudentsContainer from "../_components/students/StudentsContainer";
 
 async function Page() {
-  let resJson;
-  let teachers;
-  try{
+ 
     const session = await auth();
-    const res = await fetch(`${process.env.URL}/student/getStudents`,{headers:{Authorization:`Bearer ${session?.jwt}`}});
-    resJson = await res.json();
-    const teachersRes = await fetch(`${process.env.URL}/teacher/getAllTeachers`,{next:{revalidate:21600},headers:{authorization:`Bearer ${session?.jwt}`}})
-    const teachersJson = await teachersRes.json();
-    teachers = teachersJson.teachers;
-    console.log(teachers);
-  }catch(err){
-    console.log(err);
-  }
 
     return (
       <ProtectRoutes>
@@ -31,20 +21,8 @@ async function Page() {
           </div>
           {/* <hr className="mt-5 text-amber-400"/> */}
           <div className="px-5 mt-10">
-            <div className="grid grid-cols-2 gap-y-6">
-              {resJson?.students?.length > 0 &&
-                resJson.students.map((el) => (
-                  <StudentCard
-                    key={el._id}
-                    image={el?.profileImage}
-                    name={el.name}
-                    studentId={el._id}
-                    teachers={teachers}
-                  />
-                ))}
-            </div>
+            <StudentsContainer session={session}/>
           </div>
-            {resJson.students?.length < 1 && <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">you don&apos;t have any students tagged yet!</h1>}
         </div>
       </ProtectRoutes>
     );

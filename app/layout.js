@@ -3,7 +3,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./_components/Navbar";
 import { Suspense } from "react";
-// import GlobalQueryProvider from "./_components/providers/GlobalQueryProvider";
+import GlobalQueryProvider from "./_components/providers/GlobalQueryProvider";
 import AppProvider from "./_components/providers/AppProvider";
 import { SessionProvider } from "next-auth/react";
 
@@ -23,18 +23,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${poppins.className} h-full`}>
       <body className="h-screen flex flex-col bg-(--background)">
-        {/* <GlobalQueryProvider> */}
-          {/* <SessionProvider> */}
-            {/* <AppProvider> */}
+        <GlobalQueryProvider>
+          <SessionProvider>
+            <AppProvider>
               <Toaster />
               <div id="root"></div>
               <Suspense>
                 <Navbar />
               </Suspense>
               {children}
-            {/* </AppProvider> */}
-          {/* </SessionProvider> */}
-        {/* </GlobalQueryProvider> */}
+            </AppProvider>
+          </SessionProvider>
+        </GlobalQueryProvider>
       </body>
     </html>
   );

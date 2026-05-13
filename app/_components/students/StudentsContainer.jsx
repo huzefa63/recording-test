@@ -18,14 +18,14 @@ function StudentsContainer({ session }) {
       const { show } = useContextMenu({
         id: "student",
       });
-      const [showModal,setShowModal] = useState(false);
-      const [selectedStudent,setSelectedStudent] = useState({name:'',id:''});
+      const [modal,setModal] = useState({show:false,type:''});
+      const [selectedStudent,setSelectedStudent] = useState({name:'',id:'',teacher:'',proxyTeacher:''});
       
       function showContextMenu(e) {
         const target = e.target.closest('.menu-btn')
         if(!target) return;
-        const {studentid,studentname} = target.dataset
-        setSelectedStudent({name:studentname,id:studentid});
+        const {studentid,studentname,teachername,proxyteachername} = target.dataset
+        setSelectedStudent({name:studentname,id:studentid,teacher:teachername,proxyTeacher:proxyteachername});
         show({ event: e});
       }
     
@@ -34,12 +34,26 @@ function StudentsContainer({ session }) {
             const res = await axios.patch(`${process.env.NEXT_PUBLIC_URL}/student/changeDiary?studentId=${selectedStudent.id}&teacherId=${teacherId}`,{},{headers:{Authorization:`Bearer ${session.jwt}`}});
             if(res.data.ok) {
                 queryClient.invalidateQueries(['myStudents'])
-                setShowModal(false);
+                setModal({show:false,type:''});
                 return toast.success("student diary updated");
             }
         }catch(err){
             console.log(err);
             toast.error('failed to change student diary')
+        }
+      }
+      async function handleAssignProxy(teacherId){
+        try{
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_URL}/student/assignProxy?studentId=${selectedStudent.id}&teacherId=${teacherId}`,{},{headers:{Authorization:`Bearer ${session.jwt}`}});
+            if(res.data.ok) {
+                queryClient.invalidateQueries(['myStudents'])
+                setModal({show:false,type:''});
+                return toast.success("proxy assigned");
+            }
+        }catch(err){
+            console.log(err);
+            if(!err.response.data.ok) return toast.error(err.response.data.message);
+            toast.error('failed to assign proxy')
         }
       }
       const { data:students } = useQuery({
@@ -71,6 +85,10 @@ const customizedTeachers = teachers?.map(el => ({label:el.name,value:el._id}))
             image={el?.profileImage}
             name={el.name}
             studentId={el._id}
+            proxyTeacherId={el.proxyTeacher?._id}
+            teacherId={session.currentUser._id}
+            teacherName={el.teacher.name}
+            proxyTeacherName={el?.proxyTeacher?.name}
           />
         ))}
       {students?.length < 1 && (
@@ -78,33 +96,54 @@ const customizedTeachers = teachers?.map(el => ({label:el.name,value:el._id}))
           you don&apos;t have any students tagged yet!
         </h1>
       )}
-      {showModal && (
+      {modal.show && (
         <Modal
-          onClose={() => setShowModal(false)}
+          onClose={() => setModal({ show: false, type: "" })}
           className="h-fit"
-          heading="select teacher"
+          headingStyles="text-sm decoration-0"
+          heading={
+            modal.type === "diary"
+              ? "select teacher to change diary"
+              : "select teacher to assign proxy"
+          }
         >
-          <h1 className="ml-1 mt-10 mb-2 tracking-wider font-bold text-amber-800 text-sm">
-            Student: {selectedStudent.name}
-          </h1>
+          <div className="mt-8 mb-4 space-y-2">
+            <h1 className="ml-1 tracking-wider font-semibold text-xs text-amber-800">
+              Student: {selectedStudent.name}
+            </h1>
+            <h1 className="ml-1 tracking-wider font-semibold text-xs text-amber-800">
+              Teacher: {selectedStudent.teacher}
+            </h1>
+            {selectedStudent.proxyTeacher && <h1 className="ml-1 tracking-wider font-semibold text-xs text-amber-800">
+              proxy assigned to: {selectedStudent.proxyTeacher}
+            </h1>}
+          </div>
           <CustomSelect
             options={customizedTeachers}
             isButton={true}
-            handler={handleChangeDiary}
+            handler={
+              modal.type === "diary" ? handleChangeDiary : handleAssignProxy
+            }
           />
         </Modal>
       )}
       <ContextMenu>
-        {session.currentUser.role === 'admin' && <Item onClick={() => setShowModal(true)}>
-          <FaEdit className="mr-2" /> change diary
-        </Item>}
-        {session.currentUser.role === 'teacher' && <Item onClick={() => setShowModal(true)}>
+        {session.currentUser.role === "admin" && (
+          <Item onClick={() => setModal({ show: true, type: "diary" })}>
+            <FaEdit className="mr-2" /> change diary
+          </Item>
+        )}
+        {session.currentUser.role === "admin" && <Separator />}
+
+        <Item onClick={() => setModal({ show: true, type: "proxy" })}>
           <FaEdit className="mr-2" /> assign proxy
-        </Item>}
-        {session.currentUser.role === 'admin' && <Separator />}
-        {session.currentUser.role === 'admin' && <Item onClick={() => console.log("Delete")}>
-          <MdDelete className="mr-2" /> delete student
-        </Item>}
+        </Item>
+        {session.currentUser.role === "admin" && <Separator />}
+        {session.currentUser.role === "admin" && (
+          <Item onClick={() => console.log("Delete")}>
+            <MdDelete className="mr-2" /> delete student
+          </Item>
+        )}
       </ContextMenu>
     </div>
   );

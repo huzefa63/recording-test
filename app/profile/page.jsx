@@ -2,8 +2,11 @@ import { updateProfile } from "@/actions/profile";
 import LogoutButton from "../_components/auth/LogoutButton";
 import ProtectRoutes from "../_components/auth/ProtectRoutes";
 import UploadImage from "../_components/profile/UploadImage";
+import { auth } from "@/auth";
 
-function Page() {
+async function Page() {
+  const session = await auth();
+
   return (
     <ProtectRoutes>
       <div className="h-full bg-(--background) flex items-center justify-center p-5">
@@ -23,6 +26,7 @@ function Page() {
 
                 <input
                   type="email"
+                  defaultValue={session.user.email}
                   readOnly
                   disabled
                   placeholder="Enter your email"
@@ -35,24 +39,27 @@ function Page() {
                 <label className="text-[#6f542d] font-medium">Name</label>
 
                 <input
-                name="name"
+                  name="name"
                   type="text"
+                  defaultValue={session.user.name}
+                  readOnly
+                  disabled
                   placeholder="Enter your name"
                   className="bg-white/70 border border-[#d8c08e] text-[#4d3718] rounded-xl px-4 py-3 outline-none focus:border-[#8b6a36] focus:bg-white transition placeholder:text-[#9a8259]"
                 />
               </div>
 
               {/* Save Button */}
-              <button className="bg-[#5c4320] text-white py-3 rounded-xl font-semibold hover:opacity-90 hover:scale-[1.01] active:scale-[0.99] transition shadow-md mt-2">
+              {/* <button className="bg-[#5c4320] text-white py-3 rounded-xl font-semibold hover:opacity-90 hover:scale-[1.01] active:scale-[0.99] transition shadow-md mt-2">
                 Save Changes
-              </button>
+              </button> */}
 
               {/* Logout */}
             </div>
           </form>
-        <div className="mt-2">
-          <LogoutButton />
-        </div>
+          <div className="mt-4 w-full">
+            <LogoutButton />
+          </div>
         </div>
       </div>
     </ProtectRoutes>

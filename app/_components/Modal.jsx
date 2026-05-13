@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { RxCross2 } from "react-icons/rx";
 
-export default function Modal({ children, onClose,className,heading }) {
+export default function Modal({ children, onClose,className,heading, headingStyles }) {
     // const [isMounted,setIsMounted] = useState(false);
     // useEffect(() => {
     //     setIsMounted(true);
@@ -19,7 +19,7 @@ export default function Modal({ children, onClose,className,heading }) {
         onClick={(e) => e.stopPropagation()}
         className={`relative bg-[#FFF1D3] p-8 rounded-xl w-3/4 h-1/2 ${className}`}
       >
-        <h1 className="underline underline-offset-8 text-center mb-3 text-lg tracking-wider font-semibold">
+        <h1 className={`underline underline-offset-8 text-center mb-3 text-lg tracking-wider font-semibold ${headingStyles}`}>
           {/* {filterType === "student" ? "select student" : "select teacher"} */}
           {heading}
         </h1>

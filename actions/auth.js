@@ -12,5 +12,5 @@ export async function handleSignIn(data){
     await signIn('google',{redirectTo:redirectUrl});
 }
 export async function handleLogout(){
-    await signOut();
+    await signOut({redirectTo:'/auth'});
 }

@@ -17,7 +17,7 @@ function StudentCard({ image, name, studentId }) {
   
   return (
     <div className="flex justify-center">
-      <div className="relative rounded-md w-3/4 border-t-4 border-amber-900 bg-(--layer) shadow border border-x-(--border) border-b-(--border)">
+      <div className="relative rounded-md w-[80%] border-t-4 border-amber-900 bg-(--layer) shadow border border-x-(--border) border-b-(--border)">
         <button
           data-studentid={studentId}
           data-studentname={name}

@@ -7,10 +7,20 @@ import { auth } from "@/auth";
 import StudentCard from "../_components/students/StudentCard";
 
 async function Page() {
-  const session = await auth();
-  const res = await fetch(`${process.env.URL}/student/getStudents`,{headers:{Authorization:`Bearer ${session?.jwt}`}});
-  const resJson = await res.json();
-  console.log(resJson?.students);
+  let resJson;
+  let teachers;
+  try{
+    const session = await auth();
+    const res = await fetch(`${process.env.URL}/student/getStudents`,{headers:{Authorization:`Bearer ${session?.jwt}`}});
+    resJson = await res.json();
+    const teachersRes = await fetch(`${process.env.URL}/teacher/getAllTeachers`,{next:{revalidate:21600},headers:{authorization:`Bearer ${session?.jwt}`}})
+    const teachersJson = await teachersRes.json();
+    teachers = teachersJson.teachers;
+    console.log(teachers);
+  }catch(err){
+    console.log(err);
+  }
+
     return (
       <ProtectRoutes>
         <div className=" h-full">
@@ -29,6 +39,7 @@ async function Page() {
                     image={el?.profileImage}
                     name={el.name}
                     studentId={el._id}
+                    teachers={teachers}
                   />
                 ))}
             </div>

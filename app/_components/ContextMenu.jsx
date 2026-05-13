@@ -1,13 +1,13 @@
-import { Menu, Item } from "react-contexify";
+import { Menu, Item, Separator } from "react-contexify";
 
 import "react-contexify/ReactContexify.css";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
-function ContextMenu() {
+function ContextMenu({children}) {
   return (
     <Menu id="student" className="">
-      <Item onClick={(e) => console.log(e.props)}>change diary</Item>
-
-      <Item onClick={() => console.log("Delete")}>delete student</Item>
+      {children}
     </Menu>
   );
 }

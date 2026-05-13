@@ -5,11 +5,11 @@ import { createPortal } from "react-dom";
 import { RxCross2 } from "react-icons/rx";
 
 export default function Modal({ children, onClose,className,heading }) {
-    const [isMounted,setIsMounted] = useState(false);
-    useEffect(() => {
-        setIsMounted(true);
-    },[])
-    if(!isMounted) return;
+    // const [isMounted,setIsMounted] = useState(false);
+    // useEffect(() => {
+    //     setIsMounted(true);
+    // },[])
+    // if(!isMounted) return;
   return createPortal(
     <div
       onClick={onClose}
@@ -19,7 +19,7 @@ export default function Modal({ children, onClose,className,heading }) {
         onClick={(e) => e.stopPropagation()}
         className={`relative bg-[#FFF1D3] p-8 rounded-xl w-3/4 h-1/2 ${className}`}
       >
-        <h1 className="text-center mb-3 text-lg tracking-wider font-semibold">
+        <h1 className="underline underline-offset-8 text-center mb-3 text-lg tracking-wider font-semibold">
           {/* {filterType === "student" ? "select student" : "select teacher"} */}
           {heading}
         </h1>

@@ -16,7 +16,7 @@ async function Page() {
         <div className=" h-full">
           <div className="mt-10 flex items-center justify-center w-full ">
             <h1 className="w-fit bg-amber-800 px-10 py-2 rounded-tl-full rounded-br-full shadow border border-(--border) font-semibold text-xl text-white tracking-wide">
-              Huzefa ratlam&apos;s diary
+              {session.user.name}&apos;s diary
             </h1>
           </div>
           {/* <hr className="mt-5 text-amber-400"/> */}

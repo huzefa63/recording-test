@@ -4,7 +4,6 @@ import { createContext, useContext, useEffect, useRef } from "react";
 import { useSocketContext } from "@/app/_components/providers/SocketProvider";
 import { useVideoCallContext } from "../providers/VideoCallProvider";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 const Context = createContext(null);
 
@@ -16,7 +15,6 @@ export function CallingFnProvider({ children }) {
   const candidates = useRef([]);
   const recorderRef = useRef(null);
   const chunksRef = useRef([]);
-  const router = useRouter();
 
   function endCall(){
     setIsCalling(false);

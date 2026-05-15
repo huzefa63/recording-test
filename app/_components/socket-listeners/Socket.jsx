@@ -13,6 +13,10 @@ export function CallingFnProvider({ children }) {
   const {peerConnection} = useVideoCallContext();
   const candidates = useRef([]);
 
+  // function endCall(){
+    
+  // }
+
   /* eslint-disable */
   useEffect(() => {
     if (!socket) return;

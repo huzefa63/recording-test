@@ -11,6 +11,7 @@ function VideoCallProvider({children}) {
     const [callingTo,setCallingTo] = useState(null);
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
+    const localMedia = useRef(null);
     const [remoteOffer,setRemoteOffer] = useState(null);
     const peerConnection = useRef(null);
     return (
@@ -25,6 +26,7 @@ function VideoCallProvider({children}) {
             callerId,
             remoteOffer,
             callingTo,
+            localMedia,
             // setter functions
 
             setIsCalling,

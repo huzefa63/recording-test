@@ -45,9 +45,10 @@ function VideoCallUI() {
          {isCalling && !isIncoming && <video
             ref={localVideoRef}
             autoPlay
+                                        muted
             className="h-full w-full object-cover z-99999"
           />}
-          {!isCalling && isIncoming && <video ref={videoRef} autoPlay className="w-full h-full object-cover"></video>}
+          {!isCalling && isIncoming && <video muted ref={videoRef} autoPlay className="w-full h-full object-cover"></video>}
           {isIncoming && <button
             onClick={() => acceptCall(session.data.currentUser._id,callerId)}
             className="bg-red-500 absolute bottom-5 left-1/2 -translate-x-1/2"
@@ -71,11 +72,13 @@ function VideoCallUI() {
             <div className="absolute top-0 right-0 w-30 h-40 ">
               {isIncoming && !isCalling && <video
                 ref={localVideoRef}
+                                             muted
                 autoPlay
                 className="h-full w-full object-cover z-99999"
               ></video>}
               {!isIncoming && isCalling && <video
                 ref={localVideoRef}
+                                             muted
                 autoPlay
                 className="h-full w-full object-cover z-99999"
               ></video>}

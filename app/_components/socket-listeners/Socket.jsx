@@ -82,6 +82,15 @@ export function CallingFnProvider({ children }) {
         },
       ],
     });
+    
+    peerConnection.current.ontrack = (event) => {
+      const stream = event.streams[0];
+      setRemoteMedia(stream);
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = stream;
+        remoteVideoRef.current.play().catch((err) => console.log(err));
+      }
+    };
 }, [socket]);
     async function startCall(receiverId,callerId) {
         setIsCalling(true);
@@ -139,20 +148,20 @@ export function CallingFnProvider({ children }) {
   }
 
 
-    useEffect(() => {
-      // console.log(peerConnection.current);
-      if(!peerConnection.current) return;
+    // useEffect(() => {
+    //   // console.log(peerConnection.current);
+    //   if(!peerConnection.current) return;
       
 
-      peerConnection.current.ontrack = (event) => {
-        const stream = event.streams[0];
-        setRemoteMedia(stream)
-          if(remoteVideoRef.current){
-            remoteVideoRef.current.srcObject = stream;
-            remoteVideoRef.current.play().catch(err => console.log(err));
-          }
-      };
-    },[peerConnection,socket])
+    //   peerConnection.current.ontrack = (event) => {
+    //     const stream = event.streams[0];
+    //     setRemoteMedia(stream)
+    //       if(remoteVideoRef.current){
+    //         remoteVideoRef.current.srcObject = stream;
+    //         remoteVideoRef.current.play().catch(err => console.log(err));
+    //       }
+    //   };
+    // },[peerConnection,socket])
 
     useEffect(() => {
       if (!peerConnection.current) return;

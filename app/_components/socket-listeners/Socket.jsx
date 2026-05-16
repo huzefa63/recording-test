@@ -75,14 +75,36 @@ export function CallingFnProvider({ children }) {
       console.log("connected");
     });
 
-    peerConnection.current = new RTCPeerConnection({
+    const peer = new RTCPeerConnection({
       iceServers: [
         {
           urls: "stun:stun.l.google.com:19302",
         },
       ],
     });
-}, [socket]);
+
+    peerConnection.current = peer;
+
+    peer.ontrack = (event) => {
+      console.log("TRACK");
+
+      const stream = event.streams[0];
+
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = stream;
+        remoteVideoRef.current.play().catch(console.log);
+      }
+    };
+
+    peer.onicecandidate = ({ candidate }) => {
+      if (candidate) {
+        socket.emit("ice-candidate", {
+          to: isIncoming ? callerId : callingTo,
+          candidate,
+        });
+      }
+    };
+  }, [socket]);
     async function startCall(receiverId,callerId) {
         setIsCalling(true);
         setCallingTo(receiverId);
@@ -131,32 +153,32 @@ export function CallingFnProvider({ children }) {
   }
 
 
-    useEffect(() => {
-      // console.log(peerConnection.current);
-      if(!peerConnection.current) return;
+    // useEffect(() => {
+    //   // console.log(peerConnection.current);
+    //   if(!peerConnection.current) return;
       
 
-      peerConnection.current.ontrack = (event) => {
-        const stream = event.streams[0];
-        setRemoteMedia(stream)
-          if(remoteVideoRef.current){
-            remoteVideoRef.current.srcObject = stream;
-            remoteVideoRef.current.play().catch(err => console.log(err));
-          }
-      };
-    },[peerConnection,socket])
+    //   peerConnection.current.ontrack = (event) => {
+    //     const stream = event.streams[0];
+    //     setRemoteMedia(stream)
+    //       if(remoteVideoRef.current){
+    //         remoteVideoRef.current.srcObject = stream;
+    //         remoteVideoRef.current.play().catch(err => console.log(err));
+    //       }
+    //   };
+    // },[peerConnection,socket])
 
-    useEffect(() => {
-      if (!peerConnection.current) return;
-      peerConnection.current.onicecandidate = ({ candidate }) => {
-        if (candidate) {
-          socket.emit("ice-candidate", {
-            to: isIncoming ? callerId : callingTo,
-            candidate,
-          });
-        }
-      };
-    },[callingTo])
+    // useEffect(() => {
+    //   if (!peerConnection.current) return;
+    //   peerConnection.current.onicecandidate = ({ candidate }) => {
+    //     if (candidate) {
+    //       socket.emit("ice-candidate", {
+    //         to: isIncoming ? callerId : callingTo,
+    //         candidate,
+    //       });
+    //     }
+    //   };
+    // },[callingTo])
 
     useEffect(() => {
       if(!localVideoRef.current) return;

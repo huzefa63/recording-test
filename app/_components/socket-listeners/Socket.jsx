@@ -15,7 +15,7 @@ export function CallingFnProvider({ children }) {
   const candidates = useRef([]);
   const recorderRef = useRef(null);
   const chunksRef = useRef([]);
-
+  const targetUserRef = useRef(null);
   function endCall(){
     setIsCalling(false);
     setIsIncoming(false);
@@ -29,7 +29,7 @@ export function CallingFnProvider({ children }) {
     if(localMedia.current){
       localMedia.current.getTracks().forEach((track) => track.stop());
     }
-    socket.emit('end-call',{to:isIncoming ? callerId : callingTo});
+    socket.emit('end-call',{to:targetUserRef.current});
   }
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export function CallingFnProvider({ children }) {
     peerConnection.current.onicecandidate = ({ candidate }) => {
       if (candidate) {
         socket.emit("ice-candidate", {
-          to: isIncoming ? callerId : callingTo,
+          to: targetUserRef.current,
           candidate,
         });
       }
@@ -103,7 +103,7 @@ export function CallingFnProvider({ children }) {
 }, [socket]);
     async function startCall(receiverId,callerId) {
         setIsCalling(true);
-        setCallingTo(receiverId);
+        targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
         video: {
         width: { ideal: 1920 },
@@ -126,7 +126,7 @@ export function CallingFnProvider({ children }) {
     await new Promise((res) =>
       setTimeout(() => {
         res();
-      },4000),
+      },600),
     );
     socket.emit('incoming-call',{to:receiverId,from:callerId,offer});
     }
@@ -145,7 +145,7 @@ export function CallingFnProvider({ children }) {
       }
       await new Promise((res) => setTimeout(() => {
         res();
-      },4000))
+      },600))
       socket.emit("call-accepted", { to: callerId, from: receiverId, answer });
     }
   
@@ -194,6 +194,8 @@ export function CallingFnProvider({ children }) {
         socket.on('incoming-call',async ({caller,offer}) => {
           setIsIncoming(true);
           setCallerId(caller);
+                  targetUserRef.current = caller;
+
           setRemoteOffer(offer);
           localMedia.current = await navigator.mediaDevices.getUserMedia({
             video: {

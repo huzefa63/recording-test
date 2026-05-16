@@ -216,10 +216,10 @@ export function CallingFnProvider({ children }) {
             // localVideoRef.current.srcObject = localMedia.current;
             // localVideoRef.current.play();
             peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
-            console.log(candidates.current)
-            for(const candidate of candidates.current){
-              peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
-            }
+            // console.log(candidates.current)
+            // for(const candidate of candidates.current){
+            //   peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
+            // }
         })
         socket.on('ice-candidate',async ({candidate}) => {
           if(!peerConnection.current) return;

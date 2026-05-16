@@ -143,7 +143,6 @@ export function CallingFnProvider({ children }) {
       if(candidates.current.length !== 0)for(const candidate of candidates.current){
         peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
       }
-      candidates.current = [];
       await new Promise((res) => setTimeout(() => {
         res();
       },600))
@@ -209,7 +208,6 @@ export function CallingFnProvider({ children }) {
             peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate))
            }else{
             candidates.current.push(candidate);
-            candidates.current = [];
            }
         })
 

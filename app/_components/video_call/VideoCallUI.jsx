@@ -165,6 +165,7 @@ function VideoCallUI() {
             <div className="h-full w-full">
               <div className="absolute h-full w-full">
                 <video
+                playsInline
                   className="h-full  w-full object-cover z-99999"
                   ref={remoteVideoRef}
                 ></video>

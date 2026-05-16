@@ -82,9 +82,6 @@ export function CallingFnProvider({ children }) {
         },
       ],
     });
-
-    
-    
 }, [socket]);
     async function startCall(receiverId,callerId) {
         setIsCalling(true);
@@ -114,23 +111,6 @@ export function CallingFnProvider({ children }) {
 
     async function acceptCall(receiverId,callerId) {
       setIsInCall(true);
-      // localMedia.current = await navigator.mediaDevices.getUserMedia({
-      //   video: {
-      //     width: { ideal: 1920 },
-      //     height: { ideal: 1080 },
-      //     frameRate: { ideal: 60 },
-      //   },
-      //   audio: {
-      //     sampleRate: 48000,
-      //     channelCount: 2,
-      //     echoCancellation: false,
-      //     noiseSuppression: false,
-      //     autoGainControl: false,
-      //   },
-      // });
-      // localVideoRef.current.srcObject = localMedia.current;
-
-      
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(remoteOffer),
       );
@@ -215,7 +195,7 @@ export function CallingFnProvider({ children }) {
             setIsInCall(true);
             // localVideoRef.current.srcObject = localMedia.current;
             // localVideoRef.current.play();
-            peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
+            await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
             // console.log(candidates.current)
             // for(const candidate of candidates.current){
             //   peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));

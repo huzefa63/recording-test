@@ -143,6 +143,7 @@ export function CallingFnProvider({ children }) {
       if(candidates.current.length !== 0)for(const candidate of candidates.current){
         peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
       }
+      candidates.current = [];
       await new Promise((res) => setTimeout(() => {
         res();
       },600))
@@ -155,34 +156,6 @@ export function CallingFnProvider({ children }) {
   async function dummyAnsCall(callerId) {
   socket.emit('call-accepted',{to:callerId,from:callerId});
   }
-
-
-    // useEffect(() => {
-    //   // console.log(peerConnection.current);
-    //   if(!peerConnection.current) return;
-      
-
-    //   peerConnection.current.ontrack = (event) => {
-    //     const stream = event.streams[0];
-    //     setRemoteMedia(stream)
-    //       if(remoteVideoRef.current){
-    //         remoteVideoRef.current.srcObject = stream;
-    //         remoteVideoRef.current.play().catch(err => console.log(err));
-    //       }
-    //   };
-    // },[peerConnection,socket])
-
-    // useEffect(() => {
-    //   if (!peerConnection.current) return;
-    //   peerConnection.current.onicecandidate = ({ candidate }) => {
-    //     if (candidate) {
-    //       socket.emit("ice-candidate", {
-    //         to: isIncoming ? callerId : callingTo,
-    //         candidate,
-    //       });
-    //     }
-    //   };
-    // },[callingTo])
 
     useEffect(() => {
       if(!localVideoRef.current) return;
@@ -224,10 +197,11 @@ export function CallingFnProvider({ children }) {
             // localVideoRef.current.srcObject = localMedia.current;
             // localVideoRef.current.play();
             await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
-            // console.log(candidates.current)
-            // for(const candidate of candidates.current){
-            //   peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
-            // }
+            console.log(candidates.current)
+            for(const candidate of candidates.current){
+              peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
+            }
+            candidates.current = [];
         })
         socket.on('ice-candidate',async ({candidate}) => {
           if(!peerConnection.current) return;
@@ -235,6 +209,7 @@ export function CallingFnProvider({ children }) {
             peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate))
            }else{
             candidates.current.push(candidate);
+            candidates.current = [];
            }
         })
 

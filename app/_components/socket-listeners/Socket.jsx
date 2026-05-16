@@ -114,25 +114,23 @@ export function CallingFnProvider({ children }) {
 
     async function acceptCall(receiverId,callerId) {
       setIsInCall(true);
-      localMedia.current = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: 1920 },
-          height: { ideal: 1080 },
-          frameRate: { ideal: 60 },
-        },
-        audio: {
-          sampleRate: 48000,
-          channelCount: 2,
-          echoCancellation: false,
-          noiseSuppression: false,
-          autoGainControl: false,
-        },
-      });
-      localVideoRef.current.srcObject = localMedia.current;
+      // localMedia.current = await navigator.mediaDevices.getUserMedia({
+      //   video: {
+      //     width: { ideal: 1920 },
+      //     height: { ideal: 1080 },
+      //     frameRate: { ideal: 60 },
+      //   },
+      //   audio: {
+      //     sampleRate: 48000,
+      //     channelCount: 2,
+      //     echoCancellation: false,
+      //     noiseSuppression: false,
+      //     autoGainControl: false,
+      //   },
+      // });
+      // localVideoRef.current.srcObject = localMedia.current;
 
-      localMedia.current
-        .getTracks()
-        .forEach((track) => peerConnection.current.addTrack(track, localMedia.current));
+      
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(remoteOffer),
       );
@@ -182,7 +180,6 @@ export function CallingFnProvider({ children }) {
 
     useEffect(() => {
       if(!localVideoRef.current) return;
-      if(isIncoming) return;
       localVideoRef.current.srcObject = localMedia.current;
     },[isInCall])
 
@@ -206,6 +203,11 @@ export function CallingFnProvider({ children }) {
               autoGainControl: false,
             },
           });
+          localMedia.current
+            .getTracks()
+            .forEach((track) =>
+              peerConnection.current.addTrack(track, localMedia.current),
+            );
           localVideoRef.current.srcObject = localMedia.current; 
 
         })

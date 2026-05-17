@@ -11,6 +11,7 @@ import Modal from "../Modal";
 import { useAppProvider } from "../providers/AppProvider";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import StudentsFilter from "./StudentsFilter";
 
 function StudentsContainer({ session }) {
     const {teachers} = useAppProvider();
@@ -20,7 +21,7 @@ function StudentsContainer({ session }) {
       });
       const [modal,setModal] = useState({show:false,type:''});
       const [selectedStudent,setSelectedStudent] = useState({name:'',id:'',teacher:'',proxyTeacher:''});
-      
+      const [filteredStudents,setFilteredStudents] = useState([]);
       function showContextMenu(e) {
         const target = e.target.closest('.menu-btn')
         if(!target) return;
@@ -67,84 +68,97 @@ async function handleGetMyStudents() {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/student/getStudents`, {
         headers: { Authorization: `Bearer ${session?.jwt}` },
       });
-      console.log(res.data.students)
+      setFilteredStudents(res.data.students);
       return res.data.students;
     } catch (err) {
         console.log(err);
         return [];
     }
 }
+
+function handleFilterStudents(value){
+  if(value.length < 3) return setFilteredStudents(students);
+  setFilteredStudents(students)
+  setFilteredStudents((student) =>
+    student.filter((el) => el.name.includes(value))
+  );
+}
 if(!session?.currentUser?.role) return null;
 const customizedTeachers = teachers?.map(el => ({label:el.name,value:el._id}))
   return (
-    <div onClick={showContextMenu} className="grid grid-cols-2 gap-y-6">
-      {students?.length > 0 &&
-        students.map((el) => (
-          <StudentCard
-            key={el._id}
-            image={el?.profileImage}
-            name={el.name}
-            studentId={el._id}
-            proxyTeacherId={el.proxyTeacher?._id}
-            teacherId={session.currentUser._id}
-            teacherName={el.teacher.name}
-            proxyTeacherName={el?.proxyTeacher?.name}
-          />
-        ))}
-      {students?.length < 1 && (
-        <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
-          you don&apos;t have any students tagged yet!
-        </h1>
-      )}
-      {modal.show && (
-        <Modal
-          onClose={() => setModal({ show: false, type: "" })}
-          className="h-fit"
-          headingStyles="text-sm decoration-0"
-          heading={
-            modal.type === "diary"
-              ? "select teacher to change diary"
-              : "select teacher to assign proxy"
-          }
-        >
-          <div className="mt-8 mb-4 space-y-2">
-            <h1 className="ml-1 tracking-wider font-semibold text-xs text-amber-800">
-              Student: {selectedStudent.name}
-            </h1>
-            <h1 className="ml-1 tracking-wider font-semibold text-xs text-amber-800">
-              Teacher: {selectedStudent.teacher}
-            </h1>
-            {selectedStudent.proxyTeacher && <h1 className="ml-1 tracking-wider font-semibold text-xs text-amber-800">
-              proxy assigned to: {selectedStudent.proxyTeacher}
-            </h1>}
-          </div>
-          <CustomSelect
-            options={customizedTeachers}
-            isButton={true}
-            handler={
-              modal.type === "diary" ? handleChangeDiary : handleAssignProxy
+    <div className="">
+      <StudentsFilter handleFilterStudents={handleFilterStudents}/>
+      <div onClick={showContextMenu} className=" grid grid-cols-2 gap-y-6 gap-x-5 mt-5">
+        {filteredStudents?.length > 0 &&
+          filteredStudents.map((el) => (
+            <StudentCard
+              key={el._id}
+              image={el?.profileImage}
+              name={el.name}
+              studentId={el._id}
+              proxyTeacherId={el.proxyTeacher?._id}
+              teacherId={session.currentUser._id}
+              teacherName={el.teacher.name}
+              proxyTeacherName={el?.proxyTeacher?.name}
+            />
+          ))}
+        {filteredStudents?.length < 1 && (
+          <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
+            you don&apos;t have any students tagged yet!
+          </h1>
+        )}
+        {modal.show && (
+          <Modal
+            onClose={() => setModal({ show: false, type: "" })}
+            className="h-fit"
+            headingStyles="text-sm decoration-0"
+            heading={
+              modal.type === "diary"
+                ? "select teacher to change diary"
+                : "select teacher to assign proxy"
             }
-          />
-        </Modal>
-      )}
-      <ContextMenu>
-        {session.currentUser.role === "admin" && (
-          <Item onClick={() => setModal({ show: true, type: "diary" })}>
-            <FaEdit className="mr-2" /> change diary
-          </Item>
+          >
+            <div className="mt-8 mb-4 space-y-2">
+              <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
+                Student: {selectedStudent.name}
+              </h1>
+              <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
+                Teacher: {selectedStudent.teacher}
+              </h1>
+              {selectedStudent.proxyTeacher && (
+                <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
+                  proxy assigned to: {selectedStudent.proxyTeacher}
+                </h1>
+              )}
+            </div>
+            <CustomSelect
+              options={customizedTeachers}
+              isButton={true}
+              handler={
+                modal.type === "diary" ? handleChangeDiary : handleAssignProxy
+              }
+            />
+          </Modal>
         )}
-        {session.currentUser.role === "admin" && <Separator />}
+        <ContextMenu>
+          {session.currentUser.role === "admin" && (
+            <Item onClick={() => setModal({ show: true, type: "diary" })}>
+              <FaEdit className="mr-2" /> change diary
+            </Item>
+          )}
+          {session.currentUser.role === "admin" && <Separator />}
 
-        <Item onClick={() => setModal({ show: true, type: "proxy" })}>
-          <FaEdit className="mr-2" /> assign proxy
-        </Item>
-        {session.currentUser.role === "admin" && <Separator />}
-        {session.currentUser.role === "admin" && (
-          <Item onClick={() => console.log("Delete")}>
-            <MdDelete className="mr-2" /> delete student
+          <Item onClick={() => setModal({ show: true, type: "proxy" })}>
+            <FaEdit className="mr-2" /> assign proxy
           </Item>
-        )}
-      </ContextMenu>
+          {session.currentUser.role === "admin" && <Separator />}
+          {session.currentUser.role === "admin" && (
+            <Item onClick={() => console.log("Delete")}>
+              <MdDelete className="mr-2" /> delete student
+            </Item>
+          )}
+        </ContextMenu>
+      </div>
     </div>
   );
 }

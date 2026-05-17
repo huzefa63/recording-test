@@ -20,7 +20,7 @@ export default function CustomSelect({options,filterType,isButton=false,handler}
     <>
       {!handler && <Select options={options} onChange={handleChangeDateSelection} />}
       {handler && <Select options={options} onChange={e => setValue(e.value)}/>}
-      {isButton && <button onClick={() => handler(value)} className="w-full mt-5 bg-(--background) rounded-md py-2 shadow-lg">
+      {isButton && <button onClick={() => handler(value)} className="w-full text-white/90 mt-5 bg-(image:--gradient-primary) rounded-md py-2 shadow-lg">
         Update
       </button>}
     </>

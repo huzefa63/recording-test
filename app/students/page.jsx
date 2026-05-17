@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link"
-import { FaUser, FaUserCircle } from "react-icons/fa"
+import { FaBook, FaUser, FaUserCircle } from "react-icons/fa"
 import { FaArrowLeftLong } from "react-icons/fa6";
 import ProtectRoutes from "../_components/auth/ProtectRoutes";
 import { auth } from "@/auth";
@@ -13,15 +13,19 @@ async function Page() {
     
     return (
       <ProtectRoutes>
-        <div className=" h-full">
-          <div className="mt-10 flex items-center justify-center w-full ">
-            <h1 className="w-fit bg-amber-800 px-10 py-2 rounded-tl-full rounded-br-full shadow border border-(--border) font-semibold text-xl text-white tracking-wide">
-              {session?.user?.name}&apos;s diary
-            </h1>
+        <div className="h-full px-5">
+          <div className="bg-(image:--gradient-primary) mt-2 rounded-xl p-5 flex items-center gap-5 w-full">
+            <div className="p-3 text-white bg-(--primary-light) rounded-lg">
+              <FaBook className="text-4xl " />
+            </div>
+            <div>
+              <p className="text-white">{session?.user?.name}&apos;s diary</p>
+              <p className="text-white/80 text-xs">record and manage students</p>
+            </div>
           </div>
           {/* <hr className="mt-5 text-amber-400"/> */}
-          <div className="px-5 mt-10">
-            <StudentsContainer session={session}/>
+          <div className=" mt-10">
+            <StudentsContainer session={session} />
           </div>
         </div>
       </ProtectRoutes>

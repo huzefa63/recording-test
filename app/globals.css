@@ -2,24 +2,93 @@
 
 @layer base {
   :root {
-    --background:#f0d8a1ab;
-    --layer: #FFF1D3;
-    --highlight: #f0d8a1ab;
-    --highlightBorder: #ffd67d;
-    --border: #ffe5ac;
+    /* =========================
+     BACKGROUNDS
+  ========================= */
 
-    /* Added for consistency */
-    --text-muted: #8a6b2f;
-    --text-normal: #5c4520;
-    --contexify-menu-bgColor: #ffd5ad;
---contexify-separator-color: #ffd7b3;
---contexify-item-color: #503930;
---contexify-activeItem-color: #fff;
---contexify-activeItem-bgColor: #b46f0e;
---contexify-rightSlot-color: #6f6e77;
---contexify-activeRightSlot-color: #ffffff;
---contexify-arrow-color: #6f6e77;
---contexify-activeArrow-color: #fff;
+  --bg-main:#F7F2E9;
+  --bg-secondary:#EFE4D1;
+  --bg-tertiary:#E8D8C3;
+
+  /* =========================
+     PRIMARY COLORS
+  ========================= */
+
+  --primary:#7A3B00;
+  --primary-light:#A65A00;
+  --primary-dark:#4A2400;
+  --primary-soft:#C27A3A;
+
+  /* =========================
+     CARDS & BORDERS
+  ========================= */
+
+  --card:#FFFDF9;
+  --card-hover:#FAF4EC;
+  --border:#E7D8C4;
+
+  /* =========================
+     TEXT
+  ========================= */
+
+  --text:#2E1A08;
+  --text-secondary:#6F5A45;
+  --text-muted:#A08B75;
+  --text-light:#C5B39E;
+    --border:#E7D8C4;
+  /* =========================
+     STATUS COLORS
+  ========================= */
+
+  --success:#4CAF50;
+  --danger:#E53935;
+  --warning:#F59E0B;
+
+  /* =========================
+     OVERLAYS
+  ========================= */
+
+  --overlay:rgba(44,24,8,0.55);
+
+  /* =========================
+     SHADOWS
+  ========================= */
+
+  --shadow-sm:0 4px 12px rgba(122,59,0,0.06);
+
+  --shadow-md:0 10px 30px rgba(122,59,0,0.08);
+
+  --shadow-lg:0 20px 40px rgba(122,59,0,0.12);
+
+  --shadow-xl:0 30px 60px rgba(122,59,0,0.18);
+
+  /* =========================
+     GRADIENTS
+  ========================= */
+
+  --gradient-primary:linear-gradient(
+    135deg,
+    #A65A00 0%,
+    #7A3B00 100%
+  );
+
+  --gradient-soft:linear-gradient(
+    135deg,
+    #C27A3A 0%,
+    #A65A00 100%
+  );
+
+  --gradient-light:linear-gradient(
+    180deg,
+    #FFFDF9 0%,
+    #F3E6D5 100%
+  );
+
+  --gradient-danger:linear-gradient(
+    135deg,
+    #FF5A5A 0%,
+    #E53935 100%
+  );
   }
 }
 
@@ -34,4 +103,108 @@
   border-radius: 12px;
   padding: 8px;
   min-width: 180px;
+}
+
+.modern-player {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.modern-player .rhap_main {
+  gap: 12px;
+}
+
+.modern-player .rhap_container {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.modern-player .rhap_progress-section {
+  gap: 10px;
+}
+
+.modern-player .rhap_controls-section {
+  margin-top: 10px;
+}
+
+.modern-player .rhap_progress-container {
+  height: 6px;
+}
+
+.modern-player .rhap_progress-bar {
+  height: 6px;
+  background-color: var(--border);
+  border-radius: 999px;
+}
+
+.modern-player .rhap_progress-filled {
+  background: linear-gradient(
+    to right,
+    var(--primary),
+    var(--secondary)
+  );
+  border-radius: 999px;
+}
+
+.modern-player .rhap_progress-indicator {
+  width: 14px;
+  height: 14px;
+  top: -4px;
+  background: white;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.modern-player .rhap_time {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.modern-player .rhap_main-controls-button {
+  color: white;
+  background: var(--primary);
+  border-radius: 999px;
+  padding: 10px;
+  transition: all 0.2s ease;
+}
+
+.modern-player .rhap_main-controls-button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.modern-player .rhap_play-pause-button {
+  font-size: 32px;
+  width: 56px;
+  height: 56px;
+}
+
+.modern-player .rhap_volume-controls {
+  gap: 8px;
+}
+
+.modern-player .rhap_volume-bar {
+  background: var(--border);
+  height: 5px;
+  border-radius: 999px;
+}
+
+.modern-player .rhap_volume-filled {
+  background: var(--primary);
+  border-radius: 999px;
+}
+
+.modern-player .rhap_volume-indicator {
+  width: 12px;
+  height: 12px;
+  top: -4px;
+  background: white;
+  border: 2px solid var(--primary);
+}
+
+.modern-player .rhap_volume-button {
+  color: var(--text-main);
 }

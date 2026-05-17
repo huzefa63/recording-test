@@ -9,7 +9,7 @@ const Context = createContext(null);
 
 export function CallingFnProvider({ children }) {
   const { socket } = useSocketContext();
-  const { isIncoming,setOnlineClassBlob,setOnlineClassBlobUrl,localMedia,remoteMedia,setRemoteMedia,remoteVideoRef,isCalling, callingTo,setCallingTo,localVideoRef,setIsCalling, setIsIncoming, isInCall,setIsInCall,setCallerId,callerId,remoteOffer, setRemoteOffer } = useVideoCallContext();
+  const { isIncoming,setOnlineClassBlobUrlSize,setOnlineClassBlob,setOnlineClassBlobUrl,localMedia,remoteMedia,setRemoteMedia,remoteVideoRef,isCalling, callingTo,setCallingTo,localVideoRef,setIsCalling, setIsIncoming, isInCall,setIsInCall,setCallerId,callerId,remoteOffer, setRemoteOffer } = useVideoCallContext();
   const session = useSession();
   const {peerConnection} = useVideoCallContext();
   const candidates = useRef([]);
@@ -60,6 +60,7 @@ export function CallingFnProvider({ children }) {
         type:'audio/webm'
       })
       setOnlineClassBlob(blob);
+      setOnlineClassBlobUrlSize(Number((blob.size / 1024 /1024).toFixed(1)));
       const url =  URL.createObjectURL(blob);
       setOnlineClassBlobUrl(url);
       console.log(url);

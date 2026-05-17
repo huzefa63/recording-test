@@ -79,7 +79,7 @@ function VideoCallUI() {
   }, [isCalling]);
   return (
     <>
-      <div className="h-[10vh] w-full fixed z-9999 bottom-0 left-0 bg-black/80 backdrop-blur-md border-t border-white/10 flex items-center justify-between px-6">
+      <div className="h-[10%] w-full fixed z-9999 bottom-0 left-0 bg-black/80 backdrop-blur-md border-t border-white/10 flex items-center justify-between px-6">
         {/* Timer */}
         <div
           className={`${!isInCall && "opacity-0"} text-white text-lg font-semibold tracking-wide`}
@@ -139,7 +139,7 @@ function VideoCallUI() {
         {/* Empty div for perfect center alignment */}
         <div className="w-[60px]" />
       </div>
-      <div className="fixed h-[90vh] w-full inset-0 z-10000">
+      <div className="fixed h-[90%] w-full inset-0 z-10000">
         {(isCalling || isIncoming) && !isInCall && (
           <>
             {isCalling && !isIncoming && (

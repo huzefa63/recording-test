@@ -15,6 +15,7 @@ function useAudioRecorder() {
     const [clientAudioUrl, setClientAudioUrl] = useState("");
     const [isRedirect, setIsRedirect] = useState(false);
     const [confirmSubmit, setConfirmSubmit] = useState(false);
+    const [audioSize, setAudioSize] = useState(0);
     const {onlineClassBlob,setOnlineClassBlobUrl,setOnlineClassBlob} = useVideoCallContext();
     const router = useRouter();
 
@@ -61,8 +62,9 @@ function useAudioRecorder() {
        recorder.current.onstop = (e) => {
          const blob = new Blob(audioChunks, { type: "audio/webm" });
          console.log(blob.size / 1024 / 1024);
+         setAudioSize(Number((blob.size / 1024 / 1024).toFixed(1)));
          const url = URL.createObjectURL(blob);
-         setClientAudioUrl(url);
+         setClientAudioUrl(url); 
          setAudio(blob);
          wakeLock?.release();
        };
@@ -114,10 +116,11 @@ function useAudioRecorder() {
         formData,{headers:{Authorization:`Bearer ${jwt}`}}
       );
       toast.success("recording uploaded");
+      if(onlineClassBlob) window.location.reload();
       setOnlineClassBlob(null);
       setOnlineClassBlobUrl('')
          if (isRedirect) return router.push("https://www.elearningquran.com");
-         else return router.push("/recordings");
+         else return router.push("/students");
        } catch (err) {
          toast.error("failed to upload recording");
          console.log(err)
@@ -138,7 +141,8 @@ function useAudioRecorder() {
         confirmFinishRecording,
         hours,
         minutes,
-        seconds
+        seconds,
+        audioSize
       },
 
       actions: {

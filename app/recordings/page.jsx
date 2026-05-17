@@ -53,8 +53,8 @@ async function Page({searchParams}) {
         )}
 
         
-          <div className="relative rounded-md px-2 w-full bg-(--layer)  mt-10">
-            <div className="w-full shadow border border-(--border) rounded overflow-hidden">
+          <div className="relative rounded-2xl px-2 w-full bg-(--card)  mt-10">
+            <div className="w-full shadow border border-(--border) rounded-lg overflow-hidden">
               {(params.startDate || params.student || params.teacher) &&
                 recordings.length < 1 && (
                   <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-lg tracking-wider">

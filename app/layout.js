@@ -26,7 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${poppins.className} h-full`}>
-      <body className="h-screen flex flex-col bg-(--background)">
+      <body className="h-screen flex flex-col bg-(--bg-main)">
         <GlobalQueryProvider>
           <SessionProvider>
             <SocketProvider>

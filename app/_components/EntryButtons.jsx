@@ -62,7 +62,7 @@ function EntryButtons({studentId,jwt,studentName}) {
             <button
               className="px-8 py-2 rounded-md bg-amber-900 flex items-center gap-3 justify-center"
               onClick={startRecording}
-            >
+            > 
               <FaMicrophoneAlt /> record
             </button>
             <button

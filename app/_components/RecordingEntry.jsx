@@ -1,20 +1,37 @@
 'use client';
 import { format } from "date-fns";
 import { useState } from "react";
+import { CiCalendar } from "react-icons/ci";
 import { IoIosArrowDown } from "react-icons/io";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 function RecordingEntry({el,i,isDummy=false}) {
     const [isExpand,setIsExpand] = useState(false);
     if(!isDummy)return (
       <div className="w-full">
-        <div className="w-full grid grid-cols-8 px-3 py-2 border-b border-(--border)">
+        <div className="w-full grid grid-cols-9 px-3 py-3 border-b border-(--border)">
           {/* <p>{(page - 1) * 10 + index + 1}</p> */}
-          <p className="text-[0.60rem] text-xs tracking-wider col-span-2">
-            {format(el.createdAt, "d MMM, yyyy")}
+          <div className="flex gap-2 items-center text-[0.55rem] tracking-wider col-span-3">
+            <span className="p-2 rounded-md bg-orange-100">
+              <CiCalendar className="text-orange-600" />
+            </span>{" "}
+            <div className="flex flex-col">
+              <span className="truncate">
+                {format(el.createdAt, "d MMM, yyyy")}
+              </span>
+              <span>{format(el.createdAt, "hh:mm aa")}</span>
+            </div>
+          </div>
+          <p className=" text-[0.60rem]">
+            {Math.round(el?.duration) || ""} min
           </p>
-          <p className=" text-[0.60rem]">{Math.round(el?.duration) || ''} min</p>
-          <p className=" col-span-2 text-[0.60rem] text-left truncate">{el.studentName}</p>
-          <p className=" col-span-2 text-[0.60rem] text-left truncate">{el.teacherName}</p>
+          <p className=" col-span-2 text-[0.60rem] text-left truncate">
+            {el.studentName}
+          </p>
+          <p className=" col-span-2 text-[0.60rem] text-left truncate">
+            {el.teacherName}
+          </p>
           <button
             onClick={() => setIsExpand(!isExpand)}
             className="text-xs flex justify-center"
@@ -25,12 +42,16 @@ function RecordingEntry({el,i,isDummy=false}) {
           </button>
         </div>
         {isExpand && (
-          <div className=" w-full">
-            <audio
+          <div className=" w-full flex justify-center py-2">
+            <div className="w-3/4 rounded-md overflow-hidden shadow-(--shadow-lg)">
+              <AudioPlayer
+              autoPlay={false}
+              customAdditionalControls={[]}
               src={el.audio}
-              className=" scale-70 w-full rounded-lg p-2 bg-blue-50"
-              controls
-            ></audio>
+              // onPlay={() => console.log("Playing")}
+              className="text-sm"
+            />
+            </div>
           </div>
         )}
       </div>

@@ -2,8 +2,10 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
+  IoIosArrowBack,
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
+  IoIosArrowForward,
 } from "react-icons/io";
 
 function RecordingsTableController({totalRes}) {
@@ -22,26 +24,28 @@ function RecordingsTableController({totalRes}) {
         setPage(page + 1);
         const searchParams = new URLSearchParams(params);
         searchParams.set("page", page + 1);
-        router.replace(`${pathname}?${searchParams}`);
+        router.replace(`${pathname}?${searchParams}`,{scroll:false});
     }
     function previousPage(){
         if(page === 1) return;
         setPage(page - 1);
         const searchParams = new URLSearchParams(params);
         searchParams.set("page", page - 1);
-        router.replace(`${pathname}?${searchParams}`);
+        router.replace(`${pathname}?${searchParams}`,{scroll:false});
     }
   return (
     <div className="text-sm flex justify-between items-center gap-x-3 pl-3 pr-1 bg-(--highlight) shadow-sm">
       <p>{page} out of {Math.ceil(totalRes / 10)} pages</p>
 
-      <div className="space-x-1">
-        <button onClick={previousPage} className=" px-3 py-[0.4rem] rounded-md">
-          <IoIosArrowDropleftCircle className="text-2xl text-amber-800" />
+      <div className="flex items-center gap-2">
+        <button onClick={previousPage} className=" p-1 rounded-md bg-orange-50">
+          <IoIosArrowBack  className="text-2xl text-amber-800" />
         </button>
-
-        <button onClick={nextPage} className=" px-3 py-[0.4rem] rounded-md">
-          <IoIosArrowDroprightCircle className="text-2xl text-amber-800" />
+    <span className="p-1  px-3 rounded-md bg-(--primary)/90 text-white/90">
+      {page}
+    </span>
+        <button onClick={nextPage} className=" p-1 rounded-md bg-orange-50">
+          <IoIosArrowForward className="text-2xl text-amber-800" />
         </button>
       </div>
     </div>

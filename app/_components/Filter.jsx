@@ -7,6 +7,7 @@ import { PiStudentBold } from "react-icons/pi";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { SlCalender } from "react-icons/sl";
 import CustomDateRangePicker from "./CustomDateRangePicker";
+import { CiFilter } from "react-icons/ci";
 
 const teachers = [
   {
@@ -66,18 +67,18 @@ function Filter({role}) {
  
 
   return (
-    <div className="relative px-2 rounded-md bg-(--layer) shadow w-fit">
-      <button onClick={() => setIsShowFilter(!isShowFilter)}>
-        <IoFilter />
+    <div className="relative  px-2 w-fit">
+      <button className="flex font-semibold text-sm items-center gap-3 px-4 py-3 bg-(--card) rounded-md shadow-(--shadow-md)" onClick={() => setIsShowFilter(!isShowFilter)}>
+        <CiFilter className="text-xl"/> Filter
       </button>
 
       <div
         className={`
     absolute right-0 top-full mt-3 w-48 overflow-hidden
-    rounded-2xl border border-yellow-700/40
-    bg-yellow-900/95 backdrop-blur-md
+    rounded-2xl border border-(--border) text-(--text)
+    bg-(--bg-secondary) backdrop-blur-md
     shadow-2xl shadow-black/30
-    transition-all duration-300 ease-out
+    transition-all duration-300 ease-out z-999
     ${
       isShowFilter
         ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
@@ -95,7 +96,7 @@ function Filter({role}) {
           <PiStudentBold /> Students
         </FilterButton>
 
-        <div className="h-px bg-yellow-700/40" />
+        <div className="h-px " />
         {role === 'admin' && <FilterButton
           onClick={() => {
             setFilterType("teacher");
@@ -106,7 +107,7 @@ function Filter({role}) {
           <LiaChalkboardTeacherSolid /> Teacher
         </FilterButton>}
 
-        <div className="h-px bg-yellow-700/40" />
+        <div className="h-px " />
         <FilterButton
           onClick={() => {
             setFilterType("date");
@@ -149,7 +150,7 @@ export default Filter;
 function FilterButton({ onClick, children }) {
   return (
     <button
-      className="flex items-center gap-3 w-full px-5 py-3 text-left text-sm text-yellow-100 hover:bg-yellow-800/70 transition-colors duration-200"
+      className="flex border-b border-b-(--border) items-center gap-3 w-full px-5 py-3 text-left text-sm hover:bg-(--card-hover) transition-colors duration-200"
       onClick={onClick}
     >
       {children}

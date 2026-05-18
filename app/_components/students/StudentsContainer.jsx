@@ -102,11 +102,11 @@ const customizedTeachers = teachers?.map(el => ({label:el.name,value:el._id}))
               proxyTeacherName={el?.proxyTeacher?.name}
             />
           ))}
-        {filteredStudents?.length < 1 && (
+        {/* {students?.length < 1 && (
           <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
             you don&apos;t have any students tagged yet!
           </h1>
-        )}
+        )} */}
         {modal.show && (
           <Modal
             onClose={() => setModal({ show: false, type: "" })}

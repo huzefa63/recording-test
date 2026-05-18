@@ -14,7 +14,7 @@ function SubmitRecording({studentId, jwt ,studentName,audioSize,clientAudioUrl,s
           <h1 className="font-bold text-xl">Submit Class of</h1>
           <p className="font-bold text-amber-800">{studentName}</p>
         </div>
-        <p className="text-xs text-stone-800">
+        <p className="text-xs text-stone-800 w-3/4 text-center">
           Your recording is done. you can review and submit now.
         </p>
       </div>

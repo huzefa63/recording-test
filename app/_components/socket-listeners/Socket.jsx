@@ -116,7 +116,7 @@ export function CallingFnProvider({ children }) {
         channelCount: 2,
         echoCancellation: false,
         noiseSuppression: false,
-        autoGainControl: false,
+        autoGainControl: false, 
         },
     });
     localVideoRef.current.srcObject = localMedia.current;

@@ -4,14 +4,16 @@ import StudentCard from "./StudentCard";
 import axios from "axios";
 import ContextMenu from "../ContextMenu";
 import { Item, Separator, useContextMenu } from "react-contexify";
-import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { FaEdit, FaPlus } from "react-icons/fa";
+import { MdCheckBoxOutlineBlank, MdDelete } from "react-icons/md";
 import CustomSelect from "../Select";
 import Modal from "../Modal";
 import { useAppProvider } from "../providers/AppProvider";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import StudentsFilter from "./StudentsFilter";
+import { IoIosCheckboxOutline } from "react-icons/io";
+import { PiDotsThreeVertical, PiDotsThreeVerticalBold } from "react-icons/pi";
 
 function StudentsContainer({ session }) {
     const {teachers} = useAppProvider();
@@ -22,6 +24,8 @@ function StudentsContainer({ session }) {
       const [modal,setModal] = useState({show:false,type:''});
       const [selectedStudent,setSelectedStudent] = useState({name:'',id:'',teacher:'',proxyTeacher:''});
       const [filteredStudents,setFilteredStudents] = useState([]);
+      const [isSelecting,setIsSelecting] = useState(false);
+      const [selectedStudents,setSelectedStudents] = useState([]);
       function showContextMenu(e) {
         const target = e.target.closest('.menu-btn')
         if(!target) return;
@@ -76,6 +80,17 @@ async function handleGetMyStudents() {
     }
 }
 
+function handleSelectAll(){
+  const allStudents = students.map(el => el._id);
+  setSelectedStudents(allStudents);
+}
+
+function handleCancelSelection(){
+            setIsSelecting(false);
+            setSelectedStudents([]);
+          
+}
+
 function handleFilterStudents(value){
   if(value.length < 3) return setFilteredStudents(students);
   setFilteredStudents(students)
@@ -87,8 +102,24 @@ if(!session?.currentUser?.role) return null;
 const customizedTeachers = teachers?.map(el => ({label:el.name,value:el._id}))
   return (
     <div className="">
-      <StudentsFilter handleFilterStudents={handleFilterStudents}/>
-      <div onClick={showContextMenu} className=" grid grid-cols-2 gap-y-6 gap-x-5 mt-5">
+      <StudentsFilter handleFilterStudents={handleFilterStudents} />
+     {!isSelecting && <button onClick={()=>setIsSelecting(true)} className="mt-5 bg-(image:--gradient-primary) text-white/90 text-sm px-6 py-2 rounded-lg shadow-(--shadow-lg) ml-auto flex items-center gap-2">
+        <IoIosCheckboxOutline className="" /> Select
+      </button>}
+     {isSelecting && <div className="w-full flex items-center justify-between mt-5 bg-(--card) shadow-(--shadow-md) rounded-md py-2 px-4">
+        <p className="text-sm font-bold tracking-wider">2 selected</p>
+        <div className="flex items-center gap-3">
+          <button onClick={handleCancelSelection} className="shadow-(--shadow-lg) border border-(--primary)/50 text-sm rounded-lg bg-(--bg-tertiary)/50 py-2 px-3">cancel</button>
+          <button onClick={handleSelectAll} className=" bg-(image:--gradient-primary) text-white/90 text-sm px-6 py-2 rounded-lg shadow-(--shadow-lg) ml-auto flex items-center gap-2">
+             Select All
+          </button>
+          <button><PiDotsThreeVerticalBold /></button>
+        </div>
+      </div>}
+      <div
+        onClick={showContextMenu}
+        className=" grid grid-cols-2 gap-y-6 gap-x-5 mt-5"
+      >
         {filteredStudents?.length > 0 &&
           filteredStudents.map((el) => (
             <StudentCard
@@ -98,8 +129,11 @@ const customizedTeachers = teachers?.map(el => ({label:el.name,value:el._id}))
               studentId={el._id}
               proxyTeacherId={el.proxyTeacher?._id}
               teacherId={session.currentUser._id}
-              teacherName={el.teacher.name}
+              teacherName={el?.teacher?.name}
               proxyTeacherName={el?.proxyTeacher?.name}
+              isSelecting={isSelecting}
+              selectedStudents={selectedStudents}
+              setSelectedStudents={setSelectedStudents}
             />
           ))}
         {/* {students?.length < 1 && (

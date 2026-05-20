@@ -12,12 +12,24 @@ function StudentCard({
   teacherId,
   teacherName,
   proxyTeacherName,
+  isSelecting,
+  setSelectedStudents,
+  selectedStudents
 }) {
   const isProxy = proxyTeacherId === teacherId;
 
-  
+  function handleSelectedStudent(e){
+    if(!e.target.checked){
+      setSelectedStudents(arr => arr.filter(el => el !== studentId));
+    }else{
+      setSelectedStudents(arr => [...arr,studentId]);
+    }
+  }
   return (
     <div className="py relative rounded-md w-full  border-amber-900 bg-(--card) shadow-(--shadow-xl) ">
+
+      {isSelecting && <input onChange={handleSelectedStudent} checked={selectedStudents.includes(studentId)} type="checkbox" className="absolute top-3 left-3"  />}
+
       {isProxy && (
         <div className="flex justify-center">
           <p className=" px-6 text-xs rounded-full shadow-sm my-1 p-1 bg-(--background)">

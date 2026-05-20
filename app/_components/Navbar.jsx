@@ -1,4 +1,5 @@
 'use client';
+import { Cinzel, Playfair_Display, Sora } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,7 +10,10 @@ import { IoMdSettings } from "react-icons/io"
 import { LuAudioWaveform } from "react-icons/lu"
 import { PiStudentFill } from "react-icons/pi"
 import { RxCross2 } from "react-icons/rx";
-
+const font = Cinzel({
+    subsets:['latin'],
+    weight:['500','600','700']
+})
 function Navbar() {
     const [isMenu,setIsMenu] = useState(false);
     const pathname = usePathname();
@@ -17,11 +21,11 @@ function Navbar() {
         setIsMenu(false);
     },[pathname]);
     return (
-        <div className="z-999 relative min-h-[10%] borde border-(--border)/60 g-(--bg-tertiary)/30 flex justify-between items-center px-5">
+        <div className="z-999 relative min-h-[10%] borde border-(--border)/60 shadow-(--shadow-sm)  flex justify-between items-center px-5">
             {!isMenu && <CiMenuBurger className="text-xl" onClick={() => setIsMenu(true)}/>}
             {isMenu && <RxCross2 className="text-xl" onClick={() => setIsMenu(false)}/>}
 
-            <h1 className="text-lg tracking-wider font-bold text-(--text)">Tahfeez Dohad</h1>
+            <h1 className={`text-lg tracking-wider font-extrabold text-(--text) ${font.className}`}>Tahfeez Dohad</h1>
             <FaUser className="text-xl"/>
             <div className={`${!isMenu ? '-translate-y-5 pointer-events-none opacity-0':'opacity-100 pointer-events-auto translate-0'} duration-300 ease-in-out transition-all bg-(--bg-main) absolute p-5 border-t border-(--border) shadow-lg  w-full left-0 top-full flex flex-col gap-2`}>
             <Link href="/students" className={`${(pathname.includes('students') || pathname.includes('entry')) && 'bg-(--bg-secondary)'} tracking-wider flex items-center gap-3 py-2 px-5 rounded-md`}><PiStudentFill /> Students</Link>

@@ -114,9 +114,9 @@ export function CallingFnProvider({ children }) {
         audio: {
         sampleRate: 48000,
         channelCount: 2,
-        echoCancellation: false,
-        noiseSuppression: false,
-        autoGainControl: false, 
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true, 
         },
     });
     localVideoRef.current.srcObject = localMedia.current;
@@ -179,9 +179,9 @@ export function CallingFnProvider({ children }) {
             audio: {
               sampleRate: 48000,
               channelCount: 2,
-              echoCancellation: false,
-              noiseSuppression: false,
-              autoGainControl: false,
+              echoCancellation: true,
+              noiseSuppression: true,
+              autoGainControl: true,
             },
           });
           localMedia.current

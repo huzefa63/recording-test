@@ -36,9 +36,9 @@ function AuthForm() {
             <button
             type="button"
               onClick={() => setRole("student")}
-              className={`py-5 flex items-center gap-2 pl-3 pr-4 border-r  border border-(--border) ${role === "student" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
+              className={`py-5 flex items-center gap-1 pl-3 pr-4 border-r  border border-(--border) ${role === "student" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
             >
-              <div className="p-3 rounded-full bg-(--primary)/10">
+              <div className="p-2 rounded-full bg-(--primary)/10">
                 <FaUser />
               </div>
               <h1 className="text-xs text-(--text)">Student</h1>
@@ -46,9 +46,9 @@ function AuthForm() {
             <button
             type="button"
               onClick={() => setRole("teacher")}
-              className={`py-5 flex items-center gap-2 pl-3 pr-4 border-r border-(--border) ${role === "teacher" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
+              className={`py-5 flex items-center gap-1 pl-3 pr-4 border-r border-(--border) ${role === "teacher" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
             >
-              <div className="p-3 rounded-full bg-(--primary)/10">
+              <div className="p-2 rounded-full bg-(--primary)/10">
                 <GiGraduateCap />
               </div>
               <h1 className="text-xs text-(--text)">Teacher</h1>
@@ -56,9 +56,9 @@ function AuthForm() {
             <button
             type="button"
               onClick={() => setRole("admin")}
-              className={`py-5 flex items-center gap-2  pl-3 pr-4 ${role === "admin" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
+              className={`py-5 flex items-center gap-1  pl-3 pr-4 ${role === "admin" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
             >
-              <div className="p-3 rounded-full bg-(--primary)/10">
+              <div className="p-2 rounded-full bg-(--primary)/10">
                 <GoShieldCheck />
               </div>
               <h1 className="text-xs text-(--text)">Admin</h1>

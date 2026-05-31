@@ -6,8 +6,8 @@ import { redirect } from "next/navigation";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 async function Page({params}) {
-    const session = await auth();
-    if(session.currentUser.role === 'student') redirect('/auth');
+    // const session = await auth();
+    // if(session.currentUser.role === 'student') redirect('/auth');
     const pageParams = await params;
     return (
       <div className="py-5 px-5 h-full">
@@ -19,7 +19,7 @@ async function Page({params}) {
           </button>
           Back
         </div>
-        <StudentWrapper jwt={session?.jwt} studentId={pageParams.studentId} teacherId={session.currentUser._id}/>
+        <StudentWrapper studentId={pageParams.studentId}/>
       </div>
     );
 }

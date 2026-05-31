@@ -59,7 +59,7 @@ function StudentCard({
       )}
       <div
         // href={`/entry/${studentId}`}
-        className={` flex flex-col items-center justify-center ${!isProxy && "h-full"} w-full px-4 py-7 rounded-md  gap-4`}
+        className={` flex flex-col items-center justify-center ${!isProxy && "h-full"} w-full px-4 py-5 rounded-md  gap-2`}
       >
         {image && (
           <div className="relative h-18 w-18 rounded-full overflow-hidden">
@@ -71,18 +71,24 @@ function StudentCard({
           {name}
         </p>
         <div className="w-full border-t border-(--border) py-2 text-[0.55rem]">
-          <div className=" flex items-center gap-3">
-            <LuGraduationCap className="text-xl text-(--primary)" />
-            <div className="w-full">
+          <div className=" flex items-center gap-3 w-full ">
+            <div>
+              <LuGraduationCap className="text-xl text-(--primary)" />
+            </div>
+            <div className="truncate">
               <p className="text-(--text-muted) text-[0.70rem]">Teacher</p>
-              <p className="text-(--text) truncate">{teacherName}</p>
+              <p className="text-(--text) truncate">
+                {teacherName}
+              </p>
             </div>
           </div>
           <div className=" border-t border-(--border) py-2 mt-2 flex items-center gap-3">
             <FaRegUser className="text-xl text-(--primary)" />
             <div className="w-full">
               <p className="text-(--text-muted) text-[0.70rem]">Proxy</p>
-              <p className="text-(--text) truncate">{proxyTeacherName || 'no current proxy'}</p>
+              <p className="text-(--text) truncate">
+                {proxyTeacherName || "no current proxy"}
+              </p>
             </div>
           </div>
         </div>

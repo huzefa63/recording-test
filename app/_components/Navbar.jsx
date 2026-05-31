@@ -21,7 +21,7 @@ function Navbar() {
         setIsMenu(false);
     },[pathname]);
     return (
-        <div className="z-999 relative min-h-[10%] borde border-(--border)/60 shadow-(--shadow-sm)  flex justify-between items-center px-5">
+        <div className={`z-999 relative min-h-[10%] borde border-(--border)/60 shadow-(--shadow-sm)  flex justify-between items-center px-5 ${pathname.includes('/auth') && 'hidden'}`}>
             {!isMenu && <CiMenuBurger className="text-xl" onClick={() => setIsMenu(true)}/>}
             {isMenu && <RxCross2 className="text-xl" onClick={() => setIsMenu(false)}/>}
 

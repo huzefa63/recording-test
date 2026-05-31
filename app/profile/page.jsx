@@ -1,17 +1,14 @@
-import { updateProfile } from "@/actions/profile";
 import LogoutButton from "../_components/auth/LogoutButton";
 import ProtectRoutes from "../_components/auth/ProtectRoutes";
 import UploadImage from "../_components/profile/UploadImage";
-import { auth } from "@/auth";
+import UpdatePassword from "../_components/profile/UpdatePassword";
 
 async function Page() {
-  const session = await auth();
 
   return (
-    <ProtectRoutes>
       <div className="h-full bg-(--background) flex items-center justify-center p-5">
         <div className="w-full max-w-md bg-(--layer) rounded-4xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.12)] border border-black/5">
-          <form action={updateProfile}>
+          <div>
             <h1 className="text-3xl font-bold text-[#5c4320] mb-8 text-center">
               Profile
             </h1>
@@ -26,7 +23,7 @@ async function Page() {
 
                 <input
                   type="email"
-                  defaultValue={session.user.email}
+                  // defaultValue={session.user.email}
                   readOnly
                   disabled
                   placeholder="Enter your email"
@@ -41,28 +38,21 @@ async function Page() {
                 <input
                   name="name"
                   type="text"
-                  defaultValue={session.user.name}
+                  // defaultValue={session.user.name}
                   readOnly
                   disabled
                   placeholder="Enter your name"
                   className="bg-white/70 border border-[#d8c08e] text-[#4d3718] rounded-xl px-4 py-3 outline-none focus:border-[#8b6a36] focus:bg-white transition placeholder:text-[#9a8259]"
                 />
               </div>
-
-              {/* Save Button */}
-              {/* <button className="bg-[#5c4320] text-white py-3 rounded-xl font-semibold hover:opacity-90 hover:scale-[1.01] active:scale-[0.99] transition shadow-md mt-2">
-                Save Changes
-              </button> */}
-
-              {/* Logout */}
+              <UpdatePassword />
             </div>
-          </form>
+          </div>
           <div className="mt-4 w-full">
             <LogoutButton />
           </div>
         </div>
       </div>
-    </ProtectRoutes>
   );
 }
 

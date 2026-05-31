@@ -14,39 +14,20 @@ import RecordingsTableController from "../_components/recordings/RecordingsTable
 import RecordingsContainer from "../_components/recordings/RecordingsContainer";
 import { Playfair_Display } from "next/font/google";
 import { PiStudent, PiStudentBold } from "react-icons/pi";
+import { redirect } from "next/navigation";
+import Redirect from "../_components/auth/Redirect";
 
 const font = Playfair_Display({
     subsets:['latin'],
     weight:['500','600','700']
 })
 async function Page({searchParams}) {
-  const session = await auth();
   const params = await searchParams;
-    // let recordings;
-    // let totalRes;
-    // // console.log(params);
-    // try{
-    //     console.log(process.env.NEXT_PUBLIC_URL);
-    //     const res = await fetch(
-    //       `${process.env.NEXT_PUBLIC_URL}/recording/getRecordings?page=${params.page || 1}&student=${params.student || ""}&teacher=${params.teacher || ""}&startDate=${params.startDate || ""}&endDate=${params.endDate || ""}`,
-    //       {
-    //         method: "GET",
-    //         cache: "no-store",
-    //         headers: { Authorization: `Bearer ${session.jwt}` },
-    //       },
-    //     );
-    //     const resJson = await res.json();
-    //     recordings = resJson.recordings;
-    //     totalRes = resJson.totalResults;
-    //     // console.log(data);
-    // }catch(err){
-    //     console.log('failed');
-    //     console.log(err);
-    //     recordings = [];
-    // }
+  
   return (
-    <ProtectRoutes>
+    // <ProtectRoutes>
       <div className="w-full h-full flex flex-col px-2 py-2 gap-3">
+        <Redirect unauthorizedRole={['student','teacher']}/>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <div className="p-2 bg-(--card) shadow-(--shadow-md) rounded-md">
@@ -70,7 +51,7 @@ async function Page({searchParams}) {
         )} */}
 
         <div className="self-end">
-          <Filter role={session.currentUser.role} />
+          <Filter />
         </div>
 
         <div className="relative rounded-2xl w-full bg-(--card)">
@@ -94,7 +75,7 @@ async function Page({searchParams}) {
               <div className="text-[0.50rem] flex justify-center">Actions</div>
             </div>
 
-            <RecordingsContainer session={session} params={params} />
+            <RecordingsContainer params={params} />
 
             {/* <div className="space-y-2">
                 {recordings.map((el, i) => (
@@ -108,7 +89,7 @@ async function Page({searchParams}) {
           </div>
         </div>
       </div>
-    </ProtectRoutes>
+    // </ProtectRoutes>
   );
 }
 

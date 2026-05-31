@@ -97,7 +97,7 @@ function Filter({role}) {
         </FilterButton>
 
         <div className="h-px " />
-        {role === 'admin' && <FilterButton
+         <FilterButton
           onClick={() => {
             setFilterType("teacher");
             setIsShowFilter(false);
@@ -105,7 +105,7 @@ function Filter({role}) {
           }}
         >
           <LiaChalkboardTeacherSolid /> Teacher
-        </FilterButton>}
+        </FilterButton>
 
         <div className="h-px " />
         <FilterButton

@@ -2,30 +2,55 @@
 
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StudentsFilter from "../students/StudentsFilter";
 import { FaUser } from "react-icons/fa";
 import { RiArrowDropRightLine } from "react-icons/ri";
 import Link from "next/link";
+import { useUser } from "../providers/UserProvider";
 
-function StudentContainer({session}) {
+function StudentContainer() {
+  const {user} = useUser();
+  useEffect(()=>{
+    console.log(!!user?.role && user?.role !== 'student')
+  },[user])
     const [filteredStudents,setFilteredStudents] = useState([]);
           const { data: students } = useQuery({
-            queryKey: ["myStudents"],
-            queryFn: handleGetMyStudents,
+            queryKey: ["myStudents",user?._id],
+            queryFn: handleGetUser,
             refetchOnWindowFocus: false,
+            // staleTime:10 * 60 * 1000,
+            enabled:!!user?.role && user?.role !== 'student',
+          });
+          const { data: teachers } = useQuery({
+            queryKey: ["myTeachers"],
+            queryFn: handleGetUser,
+            refetchOnWindowFocus: false,
+            staleTime:Infinity,
+            enabled:!!user?.role && user?.role === 'student',
           });
 
-          async function handleGetMyStudents() {
+          async function handleGetUser() {
             try {
-              const res = await axios.get(
-                `${process.env.NEXT_PUBLIC_URL}/student/getStudents`,
-                {
-                  headers: { Authorization: `Bearer ${session?.jwt}` },
-                },
-              );
-              setFilteredStudents(res.data.students);
-              return res.data.students;
+             if(user?.role !== 'student'){
+               const res = await axios.get(
+                 `${process.env.NEXT_PUBLIC_URL}/student/getStudents`,
+                 {
+                   withCredentials: true,
+                 },
+               );
+               setFilteredStudents(res.data.students);
+               return res.data.students;
+             }else{
+               const res = await axios.get(
+                 `${process.env.NEXT_PUBLIC_URL}/teacher/getMyTeachers`,
+                 {
+                   withCredentials: true,
+                 },
+               );
+               console.log(res.data)
+               return res.data.teachers;
+             }
             } catch (err) {
               console.log(err);
               return [];
@@ -41,10 +66,14 @@ function StudentContainer({session}) {
           }
     return (
       <div className="h-full flex flex-col">
-        <StudentsFilter handleFilterStudents={handleFilterStudents} />
+        {user?.role !== 'student' && <StudentsFilter handleFilterStudents={handleFilterStudents} />}
         <div className="bg-(--card) flex-1 mt-5 rounded-lg shadow-(--shadow-lg)">
-          {filteredStudents?.length > 0 &&
+          {user?.role !== 'student' && filteredStudents?.length > 0 &&
             filteredStudents.map((el) => (
+             <StudentCard key={el._id} name={el.name} id={el._id}/>
+            ))}
+          {user?.role === 'student' && teachers?.length > 0 &&
+            teachers.map((el) => (
              <StudentCard key={el._id} name={el.name} id={el._id}/>
             ))}
           {students?.length < 1 && (

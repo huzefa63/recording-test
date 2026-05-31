@@ -24,17 +24,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           );
           // console.log(process.env.URL)
           const res = await axios.post(
-            `${process.env.URL}/auth/signin`,
+            `${process.env.URL}/auth/googleSignin`,
             {},
             {
               headers: {
                 Authorization: `Bearer ${signedJwt}`,
               },
+              // withCredentials:true,
             },
           );
-          console.log(res.data);
-          token.jwt = res.data.jwt;
-          token.user = res.data.user;
+          cookieStore.set('jwt',res.data.jwt,{
+            sameSite:'lax',
+            httpOnly:true,
+            secure:false,
+            maxAge:10 * 24 * 60 * 60,
+          });
         } catch (err) {
           console.log(err);
           throw new Error("failed");
@@ -43,8 +47,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      session.jwt = token.jwt;
-      session.currentUser = token.user;
       return session;
     },
   },

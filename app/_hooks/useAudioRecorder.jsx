@@ -103,7 +103,7 @@ function useAudioRecorder() {
        setIsRecorded(true);
      }
 
-     async function submitRecording(studentId,jwt) {
+     async function submitRecording(studentId) {
        const formData = new FormData();
        if(!onlineClassBlob) formData.append("recording", audio, "recording.webm");
        if(onlineClassBlob) formData.append("recording",onlineClassBlob,"recording.webm")
@@ -113,7 +113,7 @@ function useAudioRecorder() {
       console.log(formData.get("audio"));
       await axios.post(
         `${process.env.NEXT_PUBLIC_URL}/recording/upload/${studentId}`,
-        formData,{headers:{Authorization:`Bearer ${jwt}`}}
+        formData,{withCredentials:true}
       );
       toast.success("recording uploaded");
       if(onlineClassBlob) window.location.reload();

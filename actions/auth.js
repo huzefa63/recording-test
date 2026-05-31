@@ -12,5 +12,7 @@ export async function handleSignIn(data){
     await signIn('google',{redirectTo:redirectUrl});
 }
 export async function handleLogout(){
+    const cookieStore = await cookies();
+    cookieStore.delete('jwt');
     await signOut({redirectTo:'/auth'});
 }

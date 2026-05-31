@@ -3,30 +3,29 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import RecordingEntry from "../RecordingEntry";
 import RecordingsTableController from "./RecordingsTableController";
 import axios from "axios";
+import { useUser } from "../providers/UserProvider";
+import toast from "react-hot-toast";
 
-function RecordingsContainer({session,params}) {
+function RecordingsContainer({params}) {
+  const {user} = useUser();
      const { data: recordingsData } = useQuery({
        queryKey: ["recordings",params],
        queryFn: getRecordings,
        refetchOnWindowFocus: false,
-       placeholderData:keepPreviousData
+       placeholderData:keepPreviousData,
+       enabled:!!user?.name,
      });
      async function getRecordings(){
          try {
-        //    console.log(process.env.NEXT_PUBLIC_URL);
            const res = await axios.get(
              `${process.env.NEXT_PUBLIC_URL}/recording/getRecordings?page=${params.page || 1}&student=${params.student || ""}&teacher=${params.teacher || ""}&startDate=${params.startDate || ""}&endDate=${params.endDate || ""}`,
              {
-               headers: { Authorization: `Bearer ${session.jwt}` },
+               withCredentials:true,
              },
            );
-        //    console.log(res.data)
+           console.log(res.data)
            return res.data;
-        //    totalRes = res.data.totalResults;
-           // console.log(data);
          } catch (err) {
-           console.log("failed");
-           console.log(err);
            return [];
          }
      }

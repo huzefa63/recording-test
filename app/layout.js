@@ -10,6 +10,7 @@ import SocketProvider from "./_components/providers/SocketProvider";
 import VideoCallProvider from "./_components/providers/VideoCallProvider";
 import Socket, { CallingFnProvider } from "./_components/socket-listeners/Socket";
 import VideoCallWrapper from "./_components/video_call/VideoCallWrapper";
+import UserProvider from "./_components/providers/UserProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,25 +29,27 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${poppins.className} h-full`}>
       <body className="h-screen flex flex-col bg-(--bg-main)">
         <GlobalQueryProvider>
-          <SessionProvider>
-            <SocketProvider>
-              <AppProvider>
-                <VideoCallProvider>
-                  <CallingFnProvider>
-                    {/* <Socket /> */}
-                    <Toaster />
-                    <VideoCallWrapper />
-                    <div id="root"></div>
-                    <div id="video"></div>
-                    <Suspense>
-                      <Navbar />
-                    </Suspense>
-                    {children}
-                  </CallingFnProvider>
-                </VideoCallProvider>
-              </AppProvider>
-            </SocketProvider>
-          </SessionProvider>
+          <UserProvider>
+            <SessionProvider>
+              <SocketProvider>
+                <AppProvider>
+                  <VideoCallProvider>
+                    <CallingFnProvider>
+                      {/* <Socket /> */}
+                      <Toaster />
+                      <VideoCallWrapper />
+                      <div id="root"></div>
+                      <div id="video"></div>
+                      <Suspense>
+                        <Navbar />
+                      </Suspense>
+                      {children}
+                    </CallingFnProvider>
+                  </VideoCallProvider>
+                </AppProvider>
+              </SocketProvider>
+            </SessionProvider>
+          </UserProvider>
         </GlobalQueryProvider>
       </body>
     </html>

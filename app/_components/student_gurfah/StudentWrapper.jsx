@@ -6,12 +6,14 @@ import { useCallingFn } from "../socket-listeners/Socket";
 import { useVideoCallContext } from "../providers/VideoCallProvider";
 import SubmitRecording from "../entry/SubmitRecording";
 import useAudioRecorder from "@/app/_hooks/useAudioRecorder";
+import { useUser } from "../providers/UserProvider";
 
 const font = Playfair_Display({
     subsets:['latin'],
     weight:['500','600','700']
 })
-function StudentWrapper({studentId,teacherId,jwt}) {
+function StudentWrapper({studentId}) {
+    const {user} = useUser();
     const {startCall} = useCallingFn();
     const {onlineClassBlob,onlineClassBlobUrl,onlineClassBlobUrlSize} = useVideoCallContext();
     const {actions:{submitRecording},states:{isSubmitting}} = useAudioRecorder();
@@ -25,7 +27,7 @@ function StudentWrapper({studentId,teacherId,jwt}) {
             Huzefa ratlam
           </h1>
         </div>
-        <button onClick={() => startCall(studentId,teacherId)} className="flex gap-3 items-center w-full justify-center bg-purple-500 shadow-(--shadow-lg) py-4 rounded-lg text-white/90">
+        <button onClick={() => startCall(studentId,user?._id)} className="flex gap-3 items-center w-full justify-center bg-purple-500 shadow-(--shadow-lg) py-4 rounded-lg text-white/90">
           <FaVideo /> Start video Call
         </button>
 
@@ -62,7 +64,7 @@ function StudentWrapper({studentId,teacherId,jwt}) {
         </div>
       </div>
     );
-    if(onlineClassBlob) return <SubmitRecording audioSize={onlineClassBlobUrlSize} clientAudioUrl={onlineClassBlobUrl} jwt={jwt} studentId={studentId} submitRecording={submitRecording} isSubmitting={isSubmitting}/>
+    if(onlineClassBlob) return <SubmitRecording audioSize={onlineClassBlobUrlSize} clientAudioUrl={onlineClassBlobUrl} studentId={studentId} submitRecording={submitRecording} isSubmitting={isSubmitting}/>
 }
 
 export default StudentWrapper

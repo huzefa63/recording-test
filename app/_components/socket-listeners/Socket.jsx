@@ -3,14 +3,14 @@
 import { createContext, useContext, useEffect, useRef } from "react";
 import { useSocketContext } from "@/app/_components/providers/SocketProvider";
 import { useVideoCallContext } from "../providers/VideoCallProvider";
-import { useSession } from "next-auth/react";
+import { useUser } from "../providers/UserProvider";
 
 const Context = createContext(null);
 
 export function CallingFnProvider({ children }) {
   const { socket } = useSocketContext();
   const { isIncoming,setOnlineClassBlobUrlSize,setOnlineClassBlob,setOnlineClassBlobUrl,localMedia,remoteMedia,setRemoteMedia,remoteVideoRef,isCalling, callingTo,setCallingTo,localVideoRef,setIsCalling, setIsIncoming, isInCall,setIsInCall,setCallerId,callerId,remoteOffer, setRemoteOffer } = useVideoCallContext();
-  const session = useSession();
+  const {user} = useUser();
   const {peerConnection} = useVideoCallContext();
   const candidates = useRef([]);
   const recorderRef = useRef(null);
@@ -21,7 +21,7 @@ export function CallingFnProvider({ children }) {
     setIsIncoming(false);
     setIsInCall(false);
   
-    if(session?.data?.currentUser?.role !== 'student' && recorderRef.current){
+    if(user?.role !== 'student' && recorderRef.current){
        recorderRef.current.stop();
     }else{
       window.location.reload();
@@ -34,7 +34,7 @@ export function CallingFnProvider({ children }) {
 
   useEffect(() => {
     if(!isInCall) return;
-    if(session?.data?.currentUser?.role === 'student') return;
+    if(user?.role === 'student') return;
     if(recorderRef?.current?.state === 'recording') return;
     if(!localMedia.current || !remoteMedia) return;
     const audioContext = new AudioContext();
@@ -66,7 +66,7 @@ export function CallingFnProvider({ children }) {
       console.log(url);
     }
     recorderRef.current.start();
-  },[isInCall,session?.data?.currentUser.role,localMedia,remoteMedia])
+  },[isInCall,user?.role,localMedia,remoteMedia])
 
   /* eslint-disable */
   useEffect(() => {
@@ -217,7 +217,7 @@ export function CallingFnProvider({ children }) {
           setIsIncoming(false);
           setIsInCall(false);
           candidates.current = [];
-          if(session?.data?.currentUser?.role !== 'student' && recorderRef.current){
+          if(user?.role !== 'student' && recorderRef.current){
              recorderRef.current.stop();
           }else{
                   window.location.reload();

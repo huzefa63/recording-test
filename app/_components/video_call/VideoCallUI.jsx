@@ -15,8 +15,9 @@ import {
 import { IoIosCall } from "react-icons/io";
 import { MdCallEnd } from "react-icons/md";
 import Draggable from "react-draggable";
+import { useUser } from "../providers/UserProvider";
 function VideoCallUI() {
-  const session = useSession();
+  const {user} = useUser();
   const videoRef = useRef(null);
   const {localVideoRef,localMedia,isCalling,isIncoming,isInCall,callerId,remoteVideoRef} = useVideoCallContext();
   const {dummyAnsCall,acceptCall,endCall} = useCallingFn();
@@ -129,7 +130,7 @@ function VideoCallUI() {
             <MdCallEnd />
           </button>
           {!isCalling && !isInCall && <button
-            onClick={() => acceptCall(session.data.currentUser._id, callerId)}
+            onClick={() => acceptCall(user._id, callerId)}
             className="w-10 h-10 rounded-full bg-green-500 hover:bg-green-600 transition-all duration-200 flex items-center justify-center text-white shadow-xl active:scale-95"
           >
             <IoIosCall />

@@ -3,26 +3,26 @@
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { useUser } from "./UserProvider";
 
 const Context = createContext();
 function SocketProvider({children}) {
-    const session = useSession();
+    // const session = useSession();
+    const {user} = useUser();
     const [socket,setSocket] = useState();
      useEffect(() => {
-        const token = session?.data?.jwt;
-       if (!token) return;
 
        const newSocket = io(`${process.env.NEXT_PUBLIC_URL}`, {
-         auth: { jwt: token },
+         withCredentials:true
        });
-
+console.log('socket connected: ',newSocket.connected)
        setSocket(newSocket);
 
        return () => {
          newSocket.disconnect();
          console.log("🔌 Socket disconnected");
        };
-     }, [session?.data?.jwt]);
+     }, []);
     return (
         <Context.Provider value={{socket}}>
             {children}

@@ -36,7 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           cookieStore.set('jwt',res.data.jwt,{
             sameSite:'none',
             httpOnly:true,
-            secure:false,
+            secure:true,
             maxAge:10 * 24 * 60 * 60,
           });
         } catch (err) {

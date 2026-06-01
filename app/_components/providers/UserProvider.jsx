@@ -1,20 +1,37 @@
 'use client';
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
+import toast from "react-hot-toast";
 
 const Context = createContext();
 function UserProvider({ children }) {
 
   const session = useSession();
+  const queryClient = useQueryClient();
    const { data:user,isFetching } = useQuery({
-     queryKey: ["user",session?.data],
+     queryKey: ["user"],
      queryFn: handleGetUser,
      refetchOnWindowFocus: false,
     //  enabled: !!session.data?.jwt,
    });
    // console.log(session.data?.jwt);
+
+   useEffect(() => {
+    async function getCookie(){
+      try{
+        const res = await axios.post(
+            `${process.env.URL}/auth/googleSignin`,
+            {role:session?.data?.role,idToken:session?.data?.idToken},
+              {withCredentials:true},
+          );
+          queryClient.invalidateQueries();
+      }catch(err){
+        toast.error('something went wrong');
+      }
+    }
+   },[session?.data])
 
    async function handleGetUser() {
      try {

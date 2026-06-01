@@ -9,7 +9,7 @@ function UserProvider({ children }) {
 
   const session = useSession();
    const { data:user,isFetching } = useQuery({
-     queryKey: ["user",session.data],
+     queryKey: ["user",session?.data],
      queryFn: handleGetUser,
      refetchOnWindowFocus: false,
     //  enabled: !!session.data?.jwt,

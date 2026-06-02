@@ -18,6 +18,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account) {
         token.idToken = account.id_token;
         token.role = role;
+        await axios.post(`${process.env.URL}/auth/verifyUser`,{email:profile.email,role});
       }
       return token;
     },

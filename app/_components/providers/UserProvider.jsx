@@ -1,33 +1,26 @@
 'use client';
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import toast from "react-hot-toast";
 
 const Context = createContext();
 function UserProvider({ children }) {
 
   const session = useSession();
-  const router = useRouter();
   const [user,setUser] = useState({});
   const [isFetching,setIsFetching] = useState(false);
    const { data:token } = useQuery({
-     queryKey: ["token"],
+     queryKey: ["token",session?.status],
      queryFn:() =>  getCookie(session),
      refetchOnWindowFocus: false,
-
-    //  enabled: !!session.data?.jwt,
    });
-   // console.log(session.data?.jwt);
 
     async function getCookie(session){
-      // toast.success(session?.status);
+      console.log(session);
+      if(session.status === 'loading') return null;
       try{
-        // console.log('run')
-        // toast.success(session?.data?.role);
-        // console.log('getting token');
         let res;
         if(session?.data?.idToken){
           res = await axios.post(
@@ -35,16 +28,13 @@ function UserProvider({ children }) {
             { role: session?.data?.role, idToken: session?.data?.idToken },
             { withCredentials: true },
           );
-          // toast.success('got cookie');
         }
         setIsFetching(true);
-       const ress = await axios.get(
+        const ress = await axios.get(
          `${process.env.NEXT_PUBLIC_URL}/user/getUser`,
          { withCredentials: true },
        );
        setUser(ress.data.user);
-        // if(ress.data.user.role === 'student')router.replace('/profile');
-        // else router.replace('/students');
         return null;
       }catch(err){
         console.log('something went wrong');  
@@ -53,25 +43,6 @@ function UserProvider({ children }) {
         setIsFetching(false);
       }
     }
-    
-  
-
-   async function handleGetUser() {
-    if(session.data?.idToken) return user;
-     try {
-      
-       const res = await axios.get(
-         `${process.env.NEXT_PUBLIC_URL}/user/getUser`,
-         { withCredentials:true },
-       );
-       console.log('got user');
-       return res.data.user;
-     } catch (err) {
-      toast.error('failed to get user');
-       console.log('failed');
-       return {};
-     }
-   }
   return <Context.Provider value={{ user,isFetching }}>{children}</Context.Provider>;
 }
 

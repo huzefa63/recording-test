@@ -14,7 +14,7 @@ function UserProvider({ children }) {
   const [user,setUser] = useState({});
   const [isFetching,setIsFetching] = useState(false);
    const { data:token } = useQuery({
-     queryKey: ["token",session?.data?.idToken],
+     queryKey: ["token"],
      queryFn:() =>  getCookie(session),
      refetchOnWindowFocus: false,
 

@@ -1,4 +1,4 @@
-'use client'
+'use client '
 import { handleLogout } from "@/actions/auth";
 import axios from "axios";
 import { FaSignOutAlt } from "react-icons/fa";
@@ -7,7 +7,7 @@ export default function LogoutButton() {
   async function handleLogoutClient(){
     try{
       await axios.get(`${process.env.NEXT_PUBLIC_URL}/auth/logout`);
-      await handleLogout();
+      // await handleLogout();
     }catch(err){
       console.log(err);
     }

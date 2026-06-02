@@ -6,7 +6,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 export default function LogoutButton() {
   async function handleLogoutClient(){
     try{
-      await axios.get(`${process.env.NEXT_PUBLIC_URL}/auth/logout`);
+      await axios.get(`${process.env.NEXT_PUBLIC_URL}/auth/logout`,{withCredentials:true});
       await handleLogout();
     }catch(err){
       console.log(err);

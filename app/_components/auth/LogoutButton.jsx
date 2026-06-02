@@ -7,7 +7,7 @@ export default function LogoutButton() {
   async function handleLogoutClient(){
     try{
       await axios.get(`${process.env.NEXT_PUBLIC_URL}/auth/logout`);
-      // await handleLogout();
+      await handleLogout();
     }catch(err){
       console.log(err);
     }

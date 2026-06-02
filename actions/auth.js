@@ -6,13 +6,14 @@ import { cookies } from "next/headers";
 export async function handleSignIn(data){
     const cookieStore = await cookies();
     cookieStore.set('role',data.get('role'));
-    let redirectUrl;
-    if(data.get('role') === 'student') redirectUrl = '/recordings';
-    else redirectUrl = '/students';
-    await signIn('google',{redirectTo:redirectUrl});
+    await signIn('google');
 }
 export async function handleLogout(){
     const cookieStore = await cookies();
-    cookieStore.delete('jwt');
+    cookieStore.delete('jwt',{
+        sameSite:'none',
+        httpOnly:true,
+        secure:true,
+    });
     await signOut({redirectTo:'/auth'});
 }

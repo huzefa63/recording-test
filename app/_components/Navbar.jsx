@@ -16,13 +16,14 @@ const font = Cinzel({
     weight:['500','600','700']
 })
 function Navbar() {
-    const {user} = useUser();
+    const {user,isFetching} = useUser();
     const [isMenu,setIsMenu] = useState(false);
     const pathname = usePathname();
     useEffect(() => {
         setIsMenu(false);
     },[pathname]);
-    return (
+    if(isFetching && !user?.role) return null;
+    if(user?.role)return (
         <div className={`z-999 relative min-h-[10%] borde border-(--border)/60 shadow-(--shadow-sm)  flex justify-between items-center px-5 ${pathname.includes('/auth') && 'hidden'}`}>
             {!isMenu && <CiMenuBurger className="text-xl" onClick={() => setIsMenu(true)}/>}
             {isMenu && <RxCross2 className="text-xl" onClick={() => setIsMenu(false)}/>}

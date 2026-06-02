@@ -29,8 +29,8 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${poppins.className} h-full`}>
       <body className="h-screen flex flex-col bg-(--bg-main)">
         <GlobalQueryProvider>
-          <UserProvider>
             <SessionProvider>
+          <UserProvider>
               <SocketProvider>
                 <AppProvider>
                   <VideoCallProvider>
@@ -48,8 +48,8 @@ export default function RootLayout({ children }) {
                   </VideoCallProvider>
                 </AppProvider>
               </SocketProvider>
-            </SessionProvider>
           </UserProvider>
+            </SessionProvider>
         </GlobalQueryProvider>
       </body>
     </html>

@@ -18,34 +18,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account) {
         token.idToken = account.id_token;
         token.role = role;
-        // console.log("session");
-        // try {
-        //   const signedJwt = jwt.sign(
-        //     { email: profile.email, name: profile.name, role },
-        //     process.env.JWT_SECRET,
-        //   );
-        //   // console.log(process.env.URL)
-        //   const res = await axios.post(
-        //     `${process.env.URL}/auth/googleSignin`,
-        //     {},
-        //     {
-        //       headers: {
-        //         Authorization: `Bearer ${signedJwt}`,
-        //       },
-        //       // withCredentials:true,
-        //     },
-        //   );
-        //   cookieStore.set('jwt',res.data.jwt,{
-        //     domain:'recording-test-api.onrender.com',
-        //     sameSite:'none',
-        //     httpOnly:true,
-        //     secure:true,
-        //     maxAge:10 * 24 * 60 * 60,
-        //   });
-        // } catch (err) {
-        //   console.log(err);
-        //   throw new Error("failed");
-        // }
       }
       return token;
     },

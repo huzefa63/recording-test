@@ -140,7 +140,7 @@ function StudentsContainer() {
   }));
   return (
     <div className="">
-      <div className="mb-10 bg-(image:--gradient-primary) mt-2 rounded-xl p-5 flex items-center gap-5 w-full">
+      <div className="mb-10 bg-(image:--gradient-primary) mt-2 rounded-xl p-5 flex items-center gap-5 w-full ">
         <div className="p-3 text-white bg-(--primary-light) rounded-lg">
           <FaBook className="text-4xl " />
         </div>
@@ -185,7 +185,7 @@ function StudentsContainer() {
       )}
       <div
         onClick={showContextMenu}
-        className=" grid grid-cols-2 gap-y-6 gap-x-5 mt-5"
+        className=" grid grid-cols-2 lg:flex lg:flex-wrap lg:justify-center gap-y-6 gap-x-5 mt-5"
       >
         {filteredStudents?.length > 0 &&
           filteredStudents.map((el) => (

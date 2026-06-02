@@ -43,8 +43,8 @@ function UserProvider({ children }) {
          { withCredentials: true },
        );
        setUser(ress.data.user);
-        if(ress.data.user.role === 'student')router.replace('/profile');
-        else router.replace('/students');
+        // if(ress.data.user.role === 'student')router.replace('/profile');
+        // else router.replace('/students');
         return null;
       }catch(err){
         console.log('something went wrong');  

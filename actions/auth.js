@@ -5,8 +5,9 @@ import { cookies } from "next/headers";
 
 export async function handleSignIn(data){
     const cookieStore = await cookies();
-    cookieStore.set('role',data.get('role'));
-    await signIn('google');
+    const role = data.get("role");
+    cookieStore.set('role',role);
+    await signIn('google',{redirectTo:role === 'student'?'/gurfah':'/students'});
 }
 export async function handleLogout(){
     // const cookieStore = await cookies();

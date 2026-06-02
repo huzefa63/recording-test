@@ -3,7 +3,7 @@ import { IoFilterOutline } from "react-icons/io5"
 
 function StudentsFilter({ handleFilterStudents }) {
   return (
-    <div className="w-full flex gap-5">
+    <div className="w-full lg:w-1/2 lg:mx-auto flex gap-5">
       <div className="flex-1 h-full relative">
         <input
         onChange={(e) => handleFilterStudents(e.target.value)}

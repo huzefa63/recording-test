@@ -20,11 +20,6 @@ export default function Page() {
           </p>
         </div>
           <AuthForm />
-        {/* <div className="space-y-4">
-          <GoogleButton role="student" />
-          <GoogleButton role="teacher" />
-          <GoogleButton role="admin" />
-        </div> */}
       </div>
     </div>
   );

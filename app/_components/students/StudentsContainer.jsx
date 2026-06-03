@@ -88,7 +88,7 @@ function StudentsContainer() {
     queryKey: ["myStudents"],
     queryFn: handleGetMyStudents,
     refetchOnWindowFocus: false,
-    enabled:!!user?.name
+    // enabled:!!user?.name
   });
 
   async function handleGetMyStudents() {
@@ -187,8 +187,8 @@ function StudentsContainer() {
         onClick={showContextMenu}
         className=" grid grid-cols-2 lg:flex lg:flex-wrap lg:justify-center gap-y-6 gap-x-5 mt-5"
       >
-        {filteredStudents?.length > 0 &&
-          filteredStudents.map((el) => (
+        {
+          filteredStudents?.map((el) => (
             <StudentCard
               key={el._id}
               image={el?.profileImage}

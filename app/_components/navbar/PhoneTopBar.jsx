@@ -12,7 +12,7 @@ function PhoneTopBar() {
     const pathname = usePathname();
     if(pathname.includes('auth')) return null;
     return (
-      <div className={`flex lg:hidden justify-between items-center p-3 text-lg `}>
+      <div className={`flex lg:hidden justify-between items-center p-3 text-lg border-b border-gray-200`}>
         <div>
           <h1 className={`text-xl ${font.className} font-semibold`}>
             Tahfeez Dohad

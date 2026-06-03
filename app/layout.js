@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
                       <div id="video"></div>
                       <Suspense>
                         <Navbar />
-                      <div className="pb-18 lg:pb-0">
+                      <div className="pb-18 lg:pb-0 h-[140vh]">
                         <PhoneTopBar />
                         {children}
                       </div>

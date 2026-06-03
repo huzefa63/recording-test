@@ -36,7 +36,7 @@ function PhoneNav() {
           <IoCalendarOutline />
           <p className={`text-[0.60rem] ${!pathname.includes('leave_manager') && 'text-gray-500'}`}>leaves</p>
         </Link>
-        <Link href={'/maqaarat'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("maqaarat") && " bg-(--card-hover) shadow-lg rounded-md font-bold text-(--primary)"}`}>
+        <Link href={'/maqarat'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("maqarat") && " bg-(--card-hover) shadow-lg rounded-md font-bold text-(--primary)"}`}>
           <IoBookOutline />
           <p className={`text-[0.60rem] ${!pathname.includes('maqaraat') && 'text-gray-500'}`}>Maqaarat</p>
         </Link>

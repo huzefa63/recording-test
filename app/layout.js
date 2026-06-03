@@ -11,6 +11,8 @@ import VideoCallProvider from "./_components/providers/VideoCallProvider";
 import Socket, { CallingFnProvider } from "./_components/socket-listeners/Socket";
 import VideoCallWrapper from "./_components/video_call/VideoCallWrapper";
 import UserProvider from "./_components/providers/UserProvider";
+import PhoneNav from "./_components/navbar/PhoneNav";
+import PhoneTopBar from "./_components/navbar/PhoneTopBar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,8 +31,8 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${poppins.className} h-full`}>
       <body className="h-screen flex flex-col bg-(--bg-main)">
         <GlobalQueryProvider>
-            <SessionProvider>
-          <UserProvider>
+          <SessionProvider>
+            <UserProvider>
               <SocketProvider>
                 <AppProvider>
                   <VideoCallProvider>
@@ -42,14 +44,18 @@ export default function RootLayout({ children }) {
                       <div id="video"></div>
                       <Suspense>
                         <Navbar />
+                      <div className="pb-18 lg:pb-0">
+                        <PhoneTopBar />
+                        {children}
+                      </div>
+                        <PhoneNav />
                       </Suspense>
-                      {children}
                     </CallingFnProvider>
                   </VideoCallProvider>
                 </AppProvider>
               </SocketProvider>
-          </UserProvider>
-            </SessionProvider>
+            </UserProvider>
+          </SessionProvider>
         </GlobalQueryProvider>
       </body>
     </html>

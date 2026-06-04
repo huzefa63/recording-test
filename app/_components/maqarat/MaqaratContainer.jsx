@@ -56,7 +56,7 @@ function MaqaratSessionCard({juz,batch,teacher,date,students}){
     const isToday = sessionDate.getTime() === today.getTime();
     return (
       <div className="relative flex w-full rounded-md border border-(--border) shadow-(--shadow-sm) p-3 bg-(--card)">
-        <div className={`absolute right-3 top-3 p-1 px-3 ${isToday && 'bg-blue-400'} ${(!isToday && isUpcoming) && 'bg-green-400'} ${(!isToday && !isUpcoming) && 'bg-red-400'} shadow-sm rounded-md`}> 
+        <div className={`absolute right-1 top-1 p-1 px-3 ${isToday && 'bg-blue-400'} ${(!isToday && isUpcoming) && 'bg-green-400'} ${(!isToday && !isUpcoming) && 'bg-red-400'} shadow-sm rounded-md`}> 
             {isToday && <p className="text-[0.60rem] text-white tracking-wider">{isToday && 'today'}</p>}
             {!isToday && <p className="text-[0.60rem] text-white tracking-wider">{isUpcoming ? 'upcoming' :'ended'}</p>}
         </div>

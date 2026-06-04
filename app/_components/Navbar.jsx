@@ -22,7 +22,7 @@ function Navbar() {
     if(isMenu) setIsMenu(false)
     if(isFetching && !user?.role) return null;
     if(user?.role)return (
-        <div className={`hidden md:hidden z-999 relative min-h-[10%] borde border-(--border)/60 shadow-(--shadow-sm)  lg:flex justify-between items-center px-5 ${pathname.includes('/auth') && 'hidden'}`}>
+        <div className={`hidden md:hidden z-999 relative min-h-[10%] borde border-(--border)/60 shadow-(--shadow-sm)   justify-between items-center px-5 ${pathname.includes('/auth') && 'hidden'}`}>
             {!isMenu && <CiMenuBurger className="text-xl" onClick={() => setIsMenu(true)}/>}
             {isMenu && <RxCross2 className="text-xl" onClick={() => setIsMenu(false)}/>}
 

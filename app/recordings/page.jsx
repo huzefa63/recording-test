@@ -26,9 +26,9 @@ async function Page({searchParams}) {
   
   return (
     // <ProtectRoutes>
-      <div className="w-full h-full flex flex-col px-2 py-2 gap-3">
-        <Redirect unauthorizedRole={['student','teacher']}/>
-        <div className="space-y-2">
+    <div className="w-full h-full flex flex-col px-2 py-2 gap-3">
+      <Redirect unauthorizedRole={["student", "teacher"]} />
+      {/* <div className="space-y-2">
           <div className="flex items-center gap-2">
             <div className="p-2 bg-(--card) shadow-(--shadow-md) rounded-md">
               <LuAudioLines className="text-xl text-(--primary)" />
@@ -42,19 +42,20 @@ async function Page({searchParams}) {
           <p className="text-xs text-(--text-secondary)">
             View all of your student recordings
           </p>
-        </div>
+        </div> */}
 
-        {/* {recordings.length < 1 && (
+      {/* {recordings.length < 1 && (
           <h1 className="absolute top-1/2 left-1/2 -translate-1/2 text-center font-bold tracking-wider w-3/4">
             you don&apos;t have any recordings yet!
           </h1>
         )} */}
 
-        <div className="self-end">
-          <Filter />
-        </div>
+      <div className="self-end">
+        <Filter />
+      </div>
 
-        <div className="relative rounded-2xl w-full bg-(--card)">
+      <div>
+        <div className="relative rounded-2xl w-full bg-(--card) mb-20">
           <div className="w-full shadow border border-(--border) rounded-lg overflow-hidden">
             {/* {(params.startDate || params.student || params.teacher) &&
                 recordings.length < 1 && (
@@ -64,18 +65,24 @@ async function Page({searchParams}) {
                 )} */}
             <div className="py-4 px-3 w-full grid grid-cols-9 bg-(--bg-tertiary)/40 font-semibold">
               <div className="flex items-center gap-1 col-span-3 text-xs text-left">
-                  <CiCalendar className="text-sm"/>
+                <CiCalendar className="text-sm" />
                 Date
               </div>
               <div className="text-left">
                 <CiClock2 />
               </div>
-              <div className="flex items-center gap-1 col-span-2 text-[0.50rem] text-left"><CiUser className="text-sm"/> Student</div>
-              <div className="flex items-center gap-1 col-span-2 text-[0.50rem] text-left"><PiStudent className="text-sm"/> Muhaffiz</div>
+              <div className="flex items-center gap-1 col-span-2 text-[0.50rem] text-left">
+                <CiUser className="text-sm" /> Student
+              </div>
+              <div className="flex items-center gap-1 col-span-2 text-[0.50rem] text-left">
+                <PiStudent className="text-sm" /> Muhaffiz
+              </div>
               <div className="text-[0.50rem] flex justify-center">Actions</div>
             </div>
 
-            <RecordingsContainer params={params} />
+            <div className="pb0">
+              <RecordingsContainer params={params} />
+            </div>
 
             {/* <div className="space-y-2">
                 {recordings.map((el, i) => (
@@ -89,6 +96,7 @@ async function Page({searchParams}) {
           </div>
         </div>
       </div>
+    </div>
     // </ProtectRoutes>
   );
 }

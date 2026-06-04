@@ -85,10 +85,10 @@ function StudentsContainer() {
     }
   }
   const { data: students } = useQuery({
-    queryKey: ["myStudents"],
+    queryKey: ["myStudents",user?.role],
     queryFn: handleGetMyStudents,
     refetchOnWindowFocus: false,
-    // enabled:!!user?.name
+    enabled:(user?.role === 'teacher' || user?.role === 'admin')
   });
 
   async function handleGetMyStudents() {
@@ -100,6 +100,7 @@ function StudentsContainer() {
         },
       );
       setFilteredStudents(res.data.students);
+      cl
       return res.data.students;
     } catch (err) {
       console.log(err);
@@ -139,7 +140,7 @@ function StudentsContainer() {
     value: el._id,
   }));
   return (
-    <div className="">
+    <div className="pb-20">
       <div className="mb-10 bg-(image:--gradient-primary) mt-2 rounded-xl p-5 flex items-center gap-5 w-full ">
         <div className="p-3 text-white bg-(--primary-light) rounded-lg">
           <FaBook className="text-4xl " />

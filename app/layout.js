@@ -44,10 +44,10 @@ export default function RootLayout({ children }) {
                       <div id="video"></div>
                       <Suspense>
                         <Navbar />
-                      <div className="pb-18 lg:pb-0 h-[140vh]">
-                        <PhoneTopBar />
-                        {children}
-                      </div>
+                        <div className=" lg:pb-0 h-screen">
+                          <PhoneTopBar />
+                          {children}
+                        </div>
                         <PhoneNav />
                       </Suspense>
                     </CallingFnProvider>

@@ -112,7 +112,7 @@ function Form({onClose}){
 
             <div>
               <label className="block text-sm font-medium mb-2">Batch</label>
-              <Select required isClearable onChange={el => setBatch(el.value)} options={[{label:'Baneen',value:'Baneen'},{label:'Banaat',value:'Banaat'}]}/>
+              <Select required isClearable onChange={el => setBatch(el.value)} options={[{label:'Baneen',value:'baneen'},{label:'Banaat',value:'banaat'}]}/>
             </div>
 
             {/* Juz */}

@@ -9,13 +9,13 @@ function StudentsFilter({ handleFilterStudents }) {
         onChange={(e) => handleFilterStudents(e.target.value)}
           type="text"
           placeholder="search students..."
-          className="bg-(--card) placeholder:text-sm text-sm shadow focus:outline-none px-10 rounded-md py-2 w-full border border-(--border)"
+          className="bg-(--card) placeholder:text-sm text-sm shadow focus:outline-none px-10 rounded-full py-3 w-full border border-(--border)"
         />
-        <div className="absolute left-2 top-1/2 -translate-y-1/2">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2">
           <CiSearch className="" />
         </div>
       </div>
-      <button className="bg-(--card) p-2 px-3 shadow rounded-md">
+      <button className="bg-(--card) p-3 px-4 shadow rounded-full">
         <IoFilterOutline />
       </button>
     </div>

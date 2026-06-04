@@ -11,9 +11,9 @@ import { useUser } from "../providers/UserProvider";
 
 function StudentContainer() {
   const {user} = useUser();
-  useEffect(()=>{
-    console.log(!!user?.role && user?.role !== 'student')
-  },[user])
+  // useEffect(()=>{
+  //   console.log(!!user?.role && user?.role !== 'student')
+  // },[user])
     const [filteredStudents,setFilteredStudents] = useState([]);
           const { data: students } = useQuery({
             queryKey: ["myStudents",user?._id],
@@ -65,9 +65,10 @@ function StudentContainer() {
             );
           }
     return (
-      <div className="h-full flex flex-col">
+      <div className="h-full w-full flex flex-col">
         {user?.role !== 'student' && <StudentsFilter handleFilterStudents={handleFilterStudents} />}
-        <div className="bg-(--card) flex-1 mt-5 rounded-lg shadow-(--shadow-lg)">
+        <div className="mt-5 flex flex-col gap-3 w-full h-full overflow-auto">
+        {/* <div className="bg-(--card) flex-1 mt-5 rounded-lg shadow-(--shadow-lg)"> */}
           {user?.role !== 'student' && filteredStudents?.length > 0 &&
             filteredStudents.map((el) => (
              <StudentCard key={el._id} name={el.name} id={el._id}/>
@@ -89,7 +90,7 @@ export default StudentContainer
 
 function StudentCard({name,id}){
     return (
-      <Link href={`/onlineclass/${id}`} className="flex items-center justify-between p-5 border-b border-(--border) duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)">
+      <Link href={`/onlineclass/${id}`} className="bg-(--card) shadow-(--shadow-sm) flex items-center justify-between p-5 border rounded-xl border-(--border) duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)">
         <div className="flex items-center gap-6">
           <div className="p-3 rounded-full bg-(--bg-tertiary)/50">
             <FaUser className="text-xl" />

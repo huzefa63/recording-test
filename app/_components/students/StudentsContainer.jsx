@@ -9,13 +9,14 @@ import { MdCheckBoxOutlineBlank, MdDelete } from "react-icons/md";
 import CustomSelect from "../Select";
 import Modal from "../Modal";
 import { useAppProvider } from "../providers/AppProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import StudentsFilter from "./StudentsFilter";
 import { IoIosCheckboxOutline } from "react-icons/io";
 import { PiDotsThreeVertical, PiDotsThreeVerticalBold } from "react-icons/pi";
 import { useUser } from "../providers/UserProvider";
 import CustomContextMenu from "../CustomContextMenu";
+import { useRouter } from "next/navigation";
 
 function StudentsContainer() {
   const { user } = useUser();
@@ -24,6 +25,8 @@ function StudentsContainer() {
   const { show } = useContextMenu({
     id: "student",
   });
+  const router = useRouter();
+  
   const [modal, setModal] = useState({ show: false, type: "" });
   const [showCustomeContextMenu,setShowCustomContextMenu] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState({
@@ -135,6 +138,13 @@ function StudentsContainer() {
     }
   }
   if (!user?.role) return null;
+  if(user?.role === 'student') {
+    return(
+      <div className="h-[75vh] flex items-center justify-center">
+        <h1>you are not authorized to access this page</h1>
+      </div>
+    )
+  }
   const customizedTeachers = teachers?.map((el) => ({
     label: el.name,
     value: el._id,

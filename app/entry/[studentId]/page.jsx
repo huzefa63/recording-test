@@ -14,7 +14,7 @@ async function Page({params,searchParams}) {
   const session = await auth();
     return (
       <ProtectRoutes>
-        <div className="h-full w-full p-4 pt-2">
+        <div className="h-full w-full p-4 pt-2  ">
           <RecordingWrapper
             studentName={queryParams.studentName}
             jwt={session.jwt}

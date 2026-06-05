@@ -7,7 +7,7 @@ import { IoIosCloudUpload, IoMdCloudUpload } from "react-icons/io";
 import { ImSpinner2 } from "react-icons/im";
 function SubmitRecording({studentId ,studentName,audioSize,clientAudioUrl,submitRecording, isSubmitting}) {
   return (
-    <div className="flex flex-col items-center gap-6 order py-3 px-5 border-(--border) h-full rounded-2xl hadow-2xl">
+    <div className="flex justify-center flex-col items-center gap-6 order py-3 px-5 border-(--border) h-full rounded-2xl hadow-2xl">
       <div className="flex flex-col items-center gap-3 bg-(--card) w-full py-4 rounded-2xl shadow-(--shadow-md) order border-(--border)">
         <FaCircleCheck className="text-5xl text-emerald-400 drop-shadow-2xl rounded-full" />
         <div className="flex flex-col items-center">

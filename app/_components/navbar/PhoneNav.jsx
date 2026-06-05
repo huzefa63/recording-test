@@ -13,11 +13,11 @@ function PhoneNav() {
     const pathname = usePathname();
     const {user,isFetching} = useUser();
     const role = user?.role;
-    if(pathname.includes('auth')) return null;
+    if(pathname.includes('auth') || pathname.includes('entry')) return null;
     if(isFetching) return null;
     if(!user.role) return null;
     return (
-      <div className=" lg:hidden fixed bottom-0 left-0 flex items-center justify-between w-full px-3 h-15 border-t border-(--border) bg-(--card) shadow-(--shadow-lg)">
+      <div className="overflow-x-auto lg:hidden fixed bottom-0 left-0 flex items-center justify-between w-full px-3 h-15 border-t border-(--border) bg-(--card) shadow-(--shadow-lg)">
         {(role === 'admin'||role ==='teacher') && <Link href={'/students'}
           className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("students") && " bg-(--card-hover) shadow-lg rounded-md font-bold text-(--primary)"}`}
         >
@@ -32,7 +32,7 @@ function PhoneNav() {
           <AiOutlineHome />
           <p className={`text-[0.60rem] ${(!pathname.includes('gurfah') || pathname.includes('onlineclass')) && 'text-gray-500'}`}>Gurfah</p>
         </Link>
-        <Link href={'/leaves'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("leave_manager") && " bg-(--card-hover) shadow-lg rounded-md font-bold text-(--primary)"}`}>
+        <Link href={'/leave'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("leave_manager") && " bg-(--card-hover) shadow-lg rounded-md font-bold text-(--primary)"}`}>
           <IoCalendarOutline />
           <p className={`text-[0.60rem] ${!pathname.includes('leave_manager') && 'text-gray-500'}`}>leaves</p>
         </Link>

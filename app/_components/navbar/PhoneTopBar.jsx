@@ -42,8 +42,7 @@ function PhoneTopBar() {
     if(user?.role !== 'admin')subHeading = "View Your Maqarat Sessions";
   }
   if (pathname.includes("auth")) return null;
-  if (pathname.includes("students"))
-    return (
+  if(pathname.includes('students')) return (
       <div
         className={`flex lg:hidden justify-between items-center p-3 text-lg border-b border-gray-200`}
       >
@@ -64,7 +63,7 @@ function PhoneTopBar() {
       </div>
     );
   return (
-    <div className="flex items-center justify-between py-5 px-2 border-b border-(--border) mb-5">
+    <div className="flex items-center justify-between p-3 border-b border-(--border)">
       <div className="flex items-center gap-4">
         <div className="p-2 rounded-md bg-(--bg-tertiary)/50 w-fit">
           {pathname.includes("recordings") && (

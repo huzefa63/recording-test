@@ -5,7 +5,7 @@ async function Page() {
  
     return (
         <div className="h-full px-5">
-          <Redirect unauthorizedRole={['student']}/>
+          {/* <Redirect unauthorizedRole={['student']}/> */}
             <StudentsContainer />
           </div>
     );

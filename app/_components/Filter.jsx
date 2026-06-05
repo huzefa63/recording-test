@@ -8,6 +8,7 @@ import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { SlCalender } from "react-icons/sl";
 import CustomDateRangePicker from "./CustomDateRangePicker";
 import { CiFilter } from "react-icons/ci";
+import { useUser } from "./providers/UserProvider";
 
 const teachers = [
   {
@@ -63,9 +64,9 @@ function Filter({role}) {
   const [isShowFilter, setIsShowFilter] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
   const [filterType, setFilterType] = useState("");
-
+  const {user} = useUser();
  
-
+  if(user?.role === 'student' || user?.role === 'teacher') return null;
   return (
     <div className="relative  px-2 w-fit">
       <button className="flex font-semibold text-sm items-center gap-3 px-4 py-3 bg-(--card) rounded-md shadow-(--shadow-md)" onClick={() => setIsShowFilter(!isShowFilter)}>

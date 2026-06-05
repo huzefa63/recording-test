@@ -3,7 +3,7 @@ import { Cinzel, Playfair_Display } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaUser, FaUserFriends } from "react-icons/fa";
-import { FaHouse } from "react-icons/fa6";
+import { FaHouse, FaMicrophoneLines } from "react-icons/fa6";
 import { LuAudioLines } from "react-icons/lu";
 import { useUser } from "../providers/UserProvider";
 
@@ -31,6 +31,10 @@ function PhoneTopBar() {
   if (pathname.includes("onlineclass")) {
     heading = "Gurfah";
     subHeading = "a room for online classes";
+  }
+  if (pathname.includes("entry")) {
+    heading = "Record";
+    subHeading = "Record you student's class here";
   }
   if (pathname.includes("maqarat")) {
     heading = "Maqarat Sessions";
@@ -74,6 +78,9 @@ function PhoneTopBar() {
           )}
           {pathname.includes("maqarat") && (
             <FaUserFriends className="text-xl text-(--primary)" />
+          )}
+          {pathname.includes("entry") && (
+            <FaMicrophoneLines className="text-xl text-(--primary)" />
           )}
         </div>
         <div>

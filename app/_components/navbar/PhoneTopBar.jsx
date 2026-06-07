@@ -6,6 +6,7 @@ import { FaUser, FaUserFriends } from "react-icons/fa";
 import { FaHouse, FaMicrophoneLines } from "react-icons/fa6";
 import { LuAudioLines } from "react-icons/lu";
 import { useUser } from "../providers/UserProvider";
+import { IoCalendarOutline } from "react-icons/io5";
 
 const font = Cinzel({
   subsets: ["latin"],
@@ -35,6 +36,10 @@ function PhoneTopBar() {
   if (pathname.includes("entry")) {
     heading = "Record";
     subHeading = "Record you student's class here";
+  }
+  if (pathname.includes("leave")) {
+    heading = "Leaves";
+    subHeading = "Manage your leave applications here";
   }
   if (pathname.includes("maqarat")) {
     heading = "Maqarat Sessions";
@@ -80,6 +85,9 @@ function PhoneTopBar() {
           )}
           {pathname.includes("entry") && (
             <FaMicrophoneLines className="text-xl text-(--primary)" />
+          )}
+          {pathname.includes("leave") && (
+            <IoCalendarOutline className="text-xl text-(--primary)" />
           )}
         </div>
         <div>

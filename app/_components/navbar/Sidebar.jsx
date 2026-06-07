@@ -39,12 +39,12 @@ function Sidebar() {
             <span>Maqarat</span>
           </Link>
 
-          <Link href="/fees" className={linkStyle("/fees")}>
+          {/* <Link href="/fees" className={linkStyle("/fees")}>
             <FaMoneyBillWave size={18} />
             <span>Fees</span>
-          </Link>
+          </Link> */}
 
-          <Link href="/leaves" className={linkStyle("/leaves")}>
+          <Link href="/leave" className={linkStyle("/leave")}>
             <BsCalendar2X size={18} />
             <span>Leave</span>
           </Link>

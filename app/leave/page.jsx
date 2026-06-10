@@ -6,7 +6,7 @@ import { IoCalendarOutline } from "react-icons/io5"
 
 function Page() {
     return (
-        <div className="w-full h-full p-5 flex flex-col gap-5">
+        <div className="h-full p-5 flex flex-col gap-5 border">
             <div className="grid lg:grid-cols-4 grid-cols-2 gap-x-10 gap-y-4">
                 <div className="p-5 bg-(--card) shadow-(--shadow-md) h- rounded-md flex flex-col gap-2">
                     <div className="w-full flex justify-between items-center">

@@ -106,7 +106,10 @@ function useAudioRecorder() {
      async function submitRecording(studentId) {
        const formData = new FormData();
        if(!onlineClassBlob) formData.append("recording", audio, "recording.webm");
-       if(onlineClassBlob) formData.append("recording",onlineClassBlob,"recording.webm")
+       if(onlineClassBlob) {
+        formData.append("recording", onlineClassBlob, "recording.webm");
+        formData.append("isOnline",true);
+       }
        try {
       setIsSubmitting(true);
       setConfirmSubmit(false);

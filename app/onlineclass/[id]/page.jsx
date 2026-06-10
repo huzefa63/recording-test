@@ -5,10 +5,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-async function Page({params}) {
+async function Page() {
     // const session = await auth();
     // if(session.currentUser.role === 'student') redirect('/auth');
-    const pageParams = await params;
     return (
       <div className="py-5 px-5 h-full">
         <div className="flex items-center gap-1 text-sm text-(--text)">
@@ -19,7 +18,7 @@ async function Page({params}) {
           </button>
           Back
         </div>
-        <StudentWrapper id={pageParams.id}/>
+        <StudentWrapper />
       </div>
     );
 }

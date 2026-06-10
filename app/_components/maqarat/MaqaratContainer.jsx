@@ -7,18 +7,23 @@ import { IoBookOutline, IoCalendarOutline } from "react-icons/io5";
 import { LuUsers } from "react-icons/lu";
 import { useUser } from "../providers/UserProvider";
 import { format } from "date-fns";
+import { useSearchParams } from "next/navigation";
 
-function MaqaratContainer({query}) {
+function MaqaratContainer({}) {
     const {user} = useUser();
+    const query = useSearchParams();
     const {data:maqarat,isLoading} = useQuery({
-        queryKey:['maqarat',query],
+        queryKey:['maqarat',query.get('batch'),query.get('status')],
         queryFn:handleGetMaqarat,
         refetchOnWindowFocus:false,
         placeholderData:keepPreviousData
     })
     async function handleGetMaqarat(){
+      console.log('get')
+      console.log(query.get('status'));
+      console.log(query.get('upcoming'));
         try{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/maqarat/get?batch=${query?.batch || ''}&status=${query?.status || ''}`,{withCredentials:true});
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/maqarat/get?batch=${query.get('batch') || ''}&status=${query.get('status') || ''}`,{withCredentials:true});
             console.log('sucess')
             console.log(res.data.maqarat.length)
             return res.data.maqarat; 

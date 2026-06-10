@@ -29,7 +29,7 @@ function Page() {
                         <IoIosCloseCircleOutline className="text-3xl text-red-500"/>
                         <p className="p-2 text-xs rounded-full bg-gray-100 shadow-(--shadow-md) border border-(--border)">10</p>
                     </div>
-                    <p className="text-sm text-(--primary) font-semibold">Upcoming</p>
+                    <p className="text-sm text-(--primary) font-semibold">Rejected</p>
                 </div>
 
                 <div className="p-5 bg-(--card) shadow-(--shadow-md) h- rounded-md flex flex-col gap-2">

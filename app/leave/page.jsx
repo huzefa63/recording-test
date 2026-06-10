@@ -6,7 +6,7 @@ import { IoCalendarOutline } from "react-icons/io5"
 
 function Page() {
     return (
-        <div className="h-full p-5 flex flex-col gap-5 border">
+        <div className="h-full p-5 flex flex-col gap-5">
             <div className="grid lg:grid-cols-4 grid-cols-2 gap-x-10 gap-y-4">
                 <div className="p-5 bg-(--card) shadow-(--shadow-md) h- rounded-md flex flex-col gap-2">
                     <div className="w-full flex justify-between items-center">
@@ -47,13 +47,13 @@ function Page() {
                 <button className="flex items-center gap-2 justify-center bg-(--card) py-3 rounded-md shadow-(--shadow-sm)"><CiUser className="text-2xl"/> <span className="text-xs">Teacher</span></button>
             </div>
 
-            {/* <div className="flex items-center gap-4">
-                <input type="text" className="focus:outline-0 px-5 rounded-md flex-1 bg-(--card) border border-(--border) shadow-(--shadow-sm) h-12"/>
-                <button className=" bg-(--card) h-12 px-4 shadow-(--shadow-sm) rounded-md flex items-center gap-2">
+            <div className="w-full flex items-center justify-between">
+                <input type="text" placeholder="search..." className="focus:outline-0 px-5 rounded-md w-3/4 bg-(--card) border border-(--border) shadow-(--shadow-sm) h-12"/>
+                <button className="w-1/5 bg-(--card) h-12 px-4 shadow-(--shadow-sm) rounded-md flex items-center gap-2">
                     <CiFilter className="text-xl"/>
                     <span className="text-sm">Filter</span>
                 </button>
-            </div> */}
+            </div>
 
             <div>
                 <div className="flex items-center gap-5 relative bg-(--card) p-3 rounded-md shadow-(--shadow-sm)">

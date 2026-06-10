@@ -8,6 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { RiArrowDropRightLine } from "react-icons/ri";
 import Link from "next/link";
 import { useUser } from "../providers/UserProvider";
+import { ImSpinner2 } from "react-icons/im";
 
 function StudentContainer() {
   const {user} = useUser();
@@ -15,18 +16,18 @@ function StudentContainer() {
   //   console.log(!!user?.role && user?.role !== 'student')
   // },[user])
     const [filteredStudents,setFilteredStudents] = useState([]);
-          const { data: students } = useQuery({
+          const { data: students,isFetching:isLoadingStudents } = useQuery({
             queryKey: ["myStudents",user?._id],
             queryFn: handleGetUser,
             refetchOnWindowFocus: false,
             // staleTime:10 * 60 * 1000,
             enabled:!!user?.role && user?.role !== 'student',
           });
-          const { data: teachers } = useQuery({
+          const { data: teachers,isFetching:isLoadingTeacher } = useQuery({
             queryKey: ["myTeachers"],
             queryFn: handleGetUser,
             refetchOnWindowFocus: false,
-            staleTime:Infinity,
+            // staleTime:Infinity,
             enabled:!!user?.role && user?.role === 'student',
           });
 
@@ -64,6 +65,7 @@ function StudentContainer() {
               student.filter((el) => el.name.includes(value)),
             );
           }
+          if(isLoadingTeacher || isLoadingStudents) return <div><ImSpinner2 className="animate-spin absolute top-1/2 left-1/2 -translate-1/2"/></div>;
     return (
       <div className="h-full min-w-full flex flex-col">
         {user?.role !== 'student' && <StudentsFilter handleFilterStudents={handleFilterStudents} />}

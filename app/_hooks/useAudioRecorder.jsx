@@ -113,7 +113,6 @@ function useAudioRecorder() {
        try {
       setIsSubmitting(true);
       setConfirmSubmit(false);
-      console.log(formData.get("audio"));
       await axios.post(
         `${process.env.NEXT_PUBLIC_URL}/recording/upload/${studentId}`,
         formData,{withCredentials:true}

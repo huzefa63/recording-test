@@ -47,13 +47,13 @@ function Page() {
                 <button className="flex items-center gap-2 justify-center bg-(--card) py-3 rounded-md shadow-(--shadow-sm)"><CiUser className="text-2xl"/> <span className="text-xs">Teacher</span></button>
             </div>
 
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
                 <input type="text" className="focus:outline-0 px-5 rounded-md flex-1 bg-(--card) border border-(--border) shadow-(--shadow-sm) h-12"/>
                 <button className=" bg-(--card) h-12 px-4 shadow-(--shadow-sm) rounded-md flex items-center gap-2">
                     <CiFilter className="text-xl"/>
                     <span className="text-sm">Filter</span>
                 </button>
-            </div>
+            </div> */}
 
             <div>
                 <div className="flex items-center gap-5 relative bg-(--card) p-3 rounded-md shadow-(--shadow-sm)">

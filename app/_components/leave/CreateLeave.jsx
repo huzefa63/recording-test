@@ -10,17 +10,17 @@ function CreateLeave() {
     const [showForm,setShowForm] = useState(false);
     return (
         <div className="ml-auto">
-            <button className="bg-(image:--gradient-primary) text-white/90 px-4 h-10 rounded-md">+ New Leave</button>
-            <LeaveForm />
+            <button onClick={()=>setShowForm(!showForm)} className="bg-(image:--gradient-primary) text-white/90 px-4 h-10 rounded-md">+ New Leave</button>
+            {showForm && <LeaveForm onClose={()=>setShowForm(false)}/>}
         </div>
     )
 }
 
 export default CreateLeave
 
-function LeaveForm(){
+function LeaveForm({onClose}){
     return (
-      <Modal className="h-[90%] w-[90%]">
+      <Modal onClose={onClose} className="h-[90%] w-[90%]">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <div className="p-4 rounded-md bg-(--bg-tertiary)/50 shadow-(--shadow-sm)">

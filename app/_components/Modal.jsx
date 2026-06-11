@@ -19,7 +19,7 @@ export default function Modal({ children, onClose,className,heading, headingStyl
         onClick={(e) => e.stopPropagation()}
         className={`relative bg-(--card) p-8 rounded-xl w-3/4 lg:w-[30%] h-1/2 ${className}`}
       >
-        <h1 className={`underline underline-offset-8 text-center mb-3 text-lg tracking-wider font-semibold ${headingStyles}`}>
+        <h1 className={`font-bold text-center mb-3 text-lg tracking-wider text-amber-950 ${headingStyles}`}>
           {/* {filterType === "student" ? "select student" : "select teacher"} */}
           {heading}
         </h1>

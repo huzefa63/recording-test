@@ -1,26 +1,113 @@
-import { CiCalendarDate } from "react-icons/ci";
-import { FaUser } from "react-icons/fa";
+'use client';
+import { format } from "date-fns";
+import { CiCalendarDate, CiCircleQuestion, CiUser } from "react-icons/ci";
+import { FaGraduationCap, FaUser } from "react-icons/fa";
+import { GrStatusInfo } from "react-icons/gr";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { TbNotes } from "react-icons/tb";
+import CustomContextMenu from "../CustomContextMenu";
+import { IoCheckmark } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
+import { useState } from "react";
+import { useUser } from "../providers/UserProvider";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
-function LeaveCard() {
+
+
+function LeaveCard({id,status,name,batch,days,type,reason,from,to}) {
+  const {user} = useUser();
+  const queryClient = useQueryClient();
+  const [showMenu,setShowMenu] = useState(false);
+  const statusStyles = {
+    upcoming: "text-blue-600 bg-blue-100",
+    pending: "text-amber-600 bg-amber-100",
+    accepted: "text-green-600 bg-green-100",
+    rejected: "text-red-600 bg-red-100",
+  };
+  async function handleUpdate(status){
+    try{
+      await axios.post(`${process.env.NEXT_PUBLIC_URL}/leave/update`,{leaveId:id,status},{withCredentials:true});
+      queryClient.invalidateQueries(['leaves']);
+      toast.success('leave status updated');
+    }catch(err){
+      console.log(err);
+      toast.success("failed to update leave status");
+    }
+  }
+  const options = [{icon:<IoCheckmark />,text:'Accept',textColor:'text-green-500',handler:()=>handleUpdate('accepted')},{icon:<RxCross2 />,text:'reject',textColor:'text-red-500',handler:()=>handleUpdate('rejected')}]
     return (
-      <div className="border border-l-4 border-l-amber-800 border-(--border) flex items-center gap-5 relative bg-(--card) p-3 rounded-md shadow-(--shadow-sm)">
-        <div className="text-[0.60rem] absolute right-2 top-2 p-2 bg-orange-500/15 font-bold rounded-full px-3 text-orange-700">
-          Upcoming
-        </div>
-        <div className="h-20 flex justify-center items-center w-20 rounded-full border border-(--border)">
-          <FaUser className="text-5xl" />
-        </div>
+      <div className="relative w-full border-l-4 border-l-amber-800 border-(--border) bg-(--card) p-3 rounded-md shadow-(--shadow-sm)">
+        {user?.role === 'admin' && <div onClick={()=>setShowMenu(!showMenu)} className="absolute right-1 top-2 p-2 rounded-md hover:bg-(--card-hover) hover:border hover:border-(--border) border border-transparent transition-all duration-300 ease-in-out hover:cursor-pointer">
+          <HiOutlineDotsVertical />
+          {showMenu && <CustomContextMenu onClose={()=>setShowMenu(false)} className="w-40 font-semibold" options={options}/>}
+        </div>}
+        <div className="flex  gap-5">
+          <div className="h-20 flex justify-center items-center min-w-20 rounded-full border border-(--border)">
+            <CiUser className="text-5xl" />
+          </div>
 
-        <div className="text-xs text-gray-600 flex flex-col gap-1 w-[58%]">
-          <h1 className="text-lg font-semibold text-black truncate">
-            huzefa ratlam
-          </h1>
-          <h1>batch: yaqoot</h1>
-          <h1>fever</h1>
-          <h1 className="text-amber-800 font-bold flex items-center gap-1 text-[0.60rem]">
-            <CiCalendarDate className="text-xs" />{" "}
-            <span className="">20 may 2025 - 23 may 2025</span>
-          </h1>
+          <div className="text-xs text-gray-900 flex flex-col gap-2 ">
+            <h1 className="text-lg font-semibold text-black  wrap-break-word max-w-full pr-7">
+              {name}
+            </h1>
+            <h1 className="flex items-center gap-1">
+              <span className="p-1 rounded-md bg-(--bg-tertiary)/50">
+                <FaGraduationCap className="text-orange-800" />
+              </span>
+              <span className="text-amber-800 font-bold mr-1">batch:</span>{" "}
+              {batch}
+            </h1>
+            <h1 className="flex items-center gap-1">
+              <span className="p-1 rounded-md bg-(--bg-tertiary)/50">
+                <TbNotes className="text-orange-800" />
+              </span>
+              <span className="text-amber-800 font-bold mr-1">Type:</span>{" "}
+              {type}
+            </h1>
+            <h1 className="flex items-start gap-1">
+              <div className="flex items-center gap-1">
+                <span className="p-1 rounded-md bg-(--bg-tertiary)/50">
+                  <CiCircleQuestion className="text-orange-800" />
+                </span>
+                <span className="text-amber-800 font-bold mr-1">
+                  Reason:
+                </span>{" "}
+              </div>
+              <span className="bg-(--bg-tertiary)/50 p-2 rounded-md w-full border border-(--border)">
+                {reason}
+              </span>
+            </h1>
+            <p className="flex items-center gap-1">
+              <span className="p-1 rounded-md bg-(--bg-tertiary)/50">
+                <GrStatusInfo className="text-orange-800" />
+              </span>
+              <span className="text-amber-800 font-bold mr-1">Status:</span>{" "}
+              <span
+                className={`p-1 px-3 rounded-full font-medium ${
+                  statusStyles[status] || "text-gray-600 bg-gray-100"
+                }`}
+              >
+                {status}
+              </span>
+            </p>
+            <h1 className="text-amber-800 font-bold flex items-center gap-1 text-[0.60rem]">
+              <span className="p-1 bg-(--bg-tertiary)/50 rounded-md">
+                <CiCalendarDate className="text-xs" />{" "}
+              </span>
+              <span className="text-amber-800 font-bold mr-1">Days:</span>{" "}
+              <span className="">{days} days</span>
+            </h1>
+            <h1 className="text-amber-800 font-bold flex items-center gap-1 text-[0.60rem]">
+              <span className="p-1 bg-(--bg-tertiary)/50 rounded-md">
+                <CiCalendarDate className="text-xs" />{" "}
+              </span>
+              <span className="">
+                {format(from, "MMM dd, YYY")} - {format(to, "MMM dd, YYY")}
+              </span>
+            </h1>
+          </div>
         </div>
       </div>
     );

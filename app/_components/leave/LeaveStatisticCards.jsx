@@ -42,7 +42,7 @@ function LeaveStatisticCards() {
             {data?.upcoming}
           </p>
         </div>
-        <p className="text-sm text-(--primary) font-semibold">Upcoming</p>
+        <p className="text-sm text-(--primary) font-semibold">Total</p>
       </button>
 
       <button

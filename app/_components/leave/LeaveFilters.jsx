@@ -11,14 +11,14 @@ function LeaveFilters() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const pathname = usePathname();
-    useEffect(() => {
-        const params = new URLSearchParams(searchParams);
-        // alert(params.get('status'))
-        if(params.get('status') && params.get('user')) return;
-        params.set('status','pending');
-        params.set('user','student');
-        router.replace(`${pathname}?${params}`,{scroll:false});
-    },[])
+    // useEffect(() => {
+    //     const params = new URLSearchParams(searchParams);
+    //     // alert(params.get('status'))
+    //     if(params.get('status') && params.get('user')) return;
+    //     params.set('status','pending');
+    //     params.set('user','student');
+    //     router.replace(`${pathname}?${params}`,{scroll:false});
+    // },[])
     function handleChangeSearchParams(type,value){
         const params = new URLSearchParams(searchParams);
         params.set(type, value);
@@ -27,7 +27,7 @@ function LeaveFilters() {
   return (
     <>
       <div className="space-y-5 ">
-        {user?.role === 'admin' && <div
+        {/* {user?.role === 'admin' && <div
           className={`${user?.role !== "admin" && "space-x-5"} w-full flex items-center justify-between`}
         >
           <div className="flex items-center gap-3">
@@ -50,7 +50,7 @@ function LeaveFilters() {
             <CiFilter className="text-xl" />
             <span className="text-sm">Filter</span>
           </button>
-        </div>}
+        </div>} */}
         <div className="ml-auto w-fit">{user?.role !== "admin" && <CreateLeave />}</div>
       </div>
     </>

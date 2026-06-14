@@ -3,16 +3,13 @@ import LeaveFilters from "../_components/leave/LeaveFilters"
 import LeaveCardsContainer from "../_components/leave/LeaveCardsContainer"
 import CreateLeave from "../_components/leave/CreateLeave"
 import ScrollToTopButton from "../_components/ScrollToTopButton"
+import LeaveWrapper from "../_components/leave/LeaveWrapper"
 
 
 function Page() {
     return (
-        <div className="h-full p-5 flex flex-col gap-5">
-            <LeaveStatisticCards />
-
-            <LeaveFilters />
-            <LeaveCardsContainer />
-            <ScrollToTopButton />
+        <div className=" ">
+            <LeaveWrapper />
         </div>
     )
 }

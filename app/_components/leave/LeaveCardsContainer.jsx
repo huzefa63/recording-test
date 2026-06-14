@@ -328,7 +328,7 @@ function LeaveCardsContainer({setShow,show}) {
                     </p>
                     <p className="ml-8">
                       {showLeaveDetails.details.status === "accepted" &&
-                        "your request is accepted"}
+                        "your request was accepted"}
                     </p>
                   </div>
                   <div>
@@ -348,7 +348,7 @@ function LeaveCardsContainer({setShow,show}) {
 
               {user?.role === "admin" &&
                 showLeaveDetails.details.status === "pending" && (
-                  <div className="mt-5 grid grid-cols-2 w-1/2 gap-5 pb-20">
+                  <div className="mt-5 grid grid-cols-2 lg:w-1/2 gap-5 pb-20">
                     <button
                       onClick={() => handleUpdate("rejected")}
                       className="hover:bg-red-50 duration-300 transition-all ease-in-out hover:cursor-pointer w-full border-red-500 border text-red-500 py-3 rounded-md"

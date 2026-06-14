@@ -6,7 +6,7 @@ import { useVideoCallContext } from "../providers/VideoCallProvider";
 import RecordingInProgress from "./RecordingInProgress";
 import SubmitRecording from "./SubmitRecording";
 
-function RecordingWrapper({studentName,studentId,jwt}) {
+function RecordingWrapper({studentName,studentId}) {
     // const session = useSession();
     const {
       states: {
@@ -41,7 +41,7 @@ function RecordingWrapper({studentName,studentId,jwt}) {
     async function confirmSubmitHandler() {
       setConfirmSubmit(false);
       try {
-        await submitRecording(studentId, jwt);
+        await submitRecording(studentId);
         queryClient.invalidateQueries(["myStudents"]);
       } catch (err) {
         console.log(err);

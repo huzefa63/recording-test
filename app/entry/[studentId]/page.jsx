@@ -11,13 +11,11 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 async function Page({params,searchParams}) {
   const searchParam = await params;
   const queryParams = await searchParams;
-  const session = await auth();
     return (
       <ProtectRoutes>
         <div className="h-full w-full p-4 pt-2  ">
           <RecordingWrapper
             studentName={queryParams.studentName}
-            jwt={session.jwt}
             studentId={searchParam.studentId}
           />
         </div>

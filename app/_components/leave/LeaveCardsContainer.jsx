@@ -63,11 +63,11 @@ function LeaveCardsContainer({setShow,show}) {
     }
     // if(leaves?.length < 1) return <div className="text-center mt-15 font-bold">Apply For Leave</div>
     return (
-      <div className="bg-(--card) p-5 rounded-xl h-full">
+      <div className="bg-(--card) py-5 px-2 rounded-xl h-full">
         {show && (
           <>
             <div className="flex justify-between items-center">
-              <h1 className="font-bold mb-2 text-2xl flex items-center gap-2">
+              <h1 className="font-bold text-2xl flex items-center gap-2 border-b border-gray-200 w-full pb-3">
                 <span className="p-2 rounded-md bg-gray-100">
                   <CiCalendar />
                 </span>{" "}
@@ -83,9 +83,10 @@ function LeaveCardsContainer({setShow,show}) {
                 View All
               </button> */}
             </div>
-            <div className="lg:grid grid-cols-3 flex flex-col gap-3 mt-5">
+            <div className="lg:grid grid-cols-3 flex flex-col gap-3 mt-2">
               {leaves?.slice(0, 3).map((el) => (
                 <PhoneLeaveCard
+                role={user?.role}
                   setShowLeaveDetails={setShowLeaveDetails}
                   key={el._id}
                   id={el._id}
@@ -152,6 +153,7 @@ function LeaveCardsContainer({setShow,show}) {
               {leaves?.map((el) => (
                 <PhoneLeaveCard
                   key={el._id}
+                  role={user?.role}
                   id={el._id}
                   createdAt={el.createdAt}
                   status={el.status}
@@ -210,6 +212,7 @@ function LeaveCardsContainer({setShow,show}) {
                 {leaves?.map((el) => (
                   <PhoneLeaveCard
                     key={el._id}
+                    role={user?.role}
                     id={el._id}
                     createdAt={el.createdAt}
                     status={el.status}
@@ -348,7 +351,7 @@ function LeaveCardsContainer({setShow,show}) {
 
                     <div>
                       <p className="text-xs text-gray-500">From Date</p>
-                      <h3 className="font-semibold text-sm">
+                      <h3 className="font-semibold text-[0.60rem]">
                         {format(showLeaveDetails.details.from, "dd MMM, yyyy")}
                       </h3>
                     </div>
@@ -361,7 +364,7 @@ function LeaveCardsContainer({setShow,show}) {
 
                     <div>
                       <p className="text-xs text-gray-500">To Date</p>
-                      <h3 className="font-semibold text-sm">
+                      <h3 className="font-semibold text-[0.60rem]">
                         {format(showLeaveDetails.details.to, "dd MMM, yyyy")}
                       </h3>
                     </div>
@@ -466,7 +469,7 @@ function LeaveCardsContainer({setShow,show}) {
 export default LeaveCardsContainer
 
 
-function PhoneLeaveCard({id,type,from,createdAt,to,days,status,name,batch,title,reason,setShowLeaveDetails}){
+function PhoneLeaveCard({role,id,type,from,createdAt,to,days,status,name,batch,title,reason,setShowLeaveDetails}){
   return (
     <div
       onClick={() =>
@@ -486,13 +489,13 @@ function PhoneLeaveCard({id,type,from,createdAt,to,days,status,name,batch,title,
           },
         })
       }
-      className="bg-(--card) hover:bg-(--card-hover) duration-300 transition-all ease-in-out hover:cursor-pointer relative p-3 flex items-center gap-5 border  border-gray-200 rounded-md shadow-(--shadow-sm)"
+      className="bg-(--card) hover:bg-(--card-hover) duration-300 transition-all ease-in-out hover:cursor-pointer relative p-3 flex items-center gap-5 border-b  border-gray-200 "
     >
       <div className="rounded-full p-5 border border-gray-200 shadow-(--shadow-sm)">
         <CiUser />
       </div>
       <div className="text-sm space-y-1">
-        <p className="text-sm font-semibold">{type}</p>
+        <p className="text-sm font-bold">{role !== 'admin' ? type : name}</p>
         <p className="text-amber-700 flex items-center gap-1 font-semibold">
           {" "}
           <span className="p-1 rounded-md bg-(--bg-tertiary)/50">

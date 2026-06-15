@@ -35,7 +35,7 @@ function LeaveStatisticCards() {
     router.replace(`${pathname}?${params}`);
   }
   return (
-    <div className="bg-(--card) rounded-xl p-2">
+    <div className="bg-(--card) rounded-xl py-5 px-2">
       <h1 className="font-bold pl-3 mb-2 text-xl flex items-center gap-2 border-b border-gray-200 pb-2">
         <p className="p-2 rounded-md bg-gray-100">
           <IoIosStats />

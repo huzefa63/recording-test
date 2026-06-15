@@ -104,7 +104,6 @@ function StudentsContainer() {
         },
       );
       setFilteredStudents(res.data.students);
-      cl
       return res.data.students;
     } catch (err) {
       console.log(err);

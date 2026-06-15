@@ -69,7 +69,7 @@ function RecordingWrapper({studentName,studentId}) {
         );
     }
     if (isRecorded || onlineClassBlobUrl){
-      return <SubmitRecording studentId={studentId} jwt={jwt} isSubmitting={isSubmitting} submitRecording={submitRecording} studentName={studentName} audioSize={audioSize} clientAudioUrl={clientAudioUrl}/>
+      return <SubmitRecording studentId={studentId} isSubmitting={isSubmitting} submitRecording={submitRecording} studentName={studentName} audioSize={audioSize} clientAudioUrl={clientAudioUrl}/>
     }
 }
 

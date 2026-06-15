@@ -67,7 +67,7 @@ function LeaveCardsContainer({setShow,show}) {
         {show && (
           <>
             <div className="flex justify-between items-center">
-              <h1 className="font-bold text-2xl flex items-center gap-2 border-b border-gray-200 w-full pb-3">
+              <h1 className="pl-3 font-bold text-2xl flex items-center gap-2 border-b border-gray-200 w-full pb-3">
                 <span className="p-2 rounded-md bg-gray-100">
                   <CiCalendar />
                 </span>{" "}

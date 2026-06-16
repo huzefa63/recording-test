@@ -37,31 +37,31 @@ function StudentsFilter({ handleFilterStudents }) {
       {user?.role === 'admin' && <div className="text-xs mt-3 flex gap-3">
         <button
         onClick={()=>handleChangeSearchParams('batch','yaqoot_mardo')}
-          className={`${searchParams.get('batch') === 'yaqoot_mardo' ? 'bg-(--bg-tertiary)/50 -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
+          className={`${searchParams.get('batch') === 'yaqoot_mardo' ? 'bg-(image:--gradient-primary) text-white -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
         >
           Yaqoot (mardo)
         </button>
         <button
         onClick={()=>handleChangeSearchParams('batch','yaqoot_bairo')}
-          className={`${searchParams.get('batch') === 'yaqoot_bairo' ? 'bg-(--bg-tertiary)/50 -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all  shadow-(--shadow-md)  p-2 rounded-md `}
+          className={`${searchParams.get('batch') === 'yaqoot_bairo' ? 'bg-(image:--gradient-primary) text-white -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all  shadow-(--shadow-md)  p-2 rounded-md `}
         >
           Yaqoot (bairo)
         </button>
         <button
         onClick={()=>handleChangeSearchParams('batch','baneen')}
-          className={`${searchParams.get('batch') === 'baneen' ? 'bg-(--bg-tertiary)/50 -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
+          className={`${searchParams.get('batch') === 'baneen' ? 'bg-(image:--gradient-primary) text-white -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
         >
           Baneen
         </button>
         <button
         onClick={()=>handleChangeSearchParams('batch','banaat')}
-          className={`${searchParams.get('batch') === 'banaat' ? 'bg-(--bg-tertiary)/50 -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
+          className={`${searchParams.get('batch') === 'banaat' ? 'bg-(image:--gradient-primary) text-white -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
         >
           Banaat
         </button>
         <button
         onClick={()=>handleChangeSearchParams('batch','kibar')}
-          className={`${searchParams.get('batch') === 'kibar' ? 'bg-(--bg-tertiary)/50 -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all  border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
+          className={`${searchParams.get('batch') === 'kibar' ? 'bg-(image:--gradient-primary) text-white -translate-y-1 border-3 border-(--border)':'bg-(--card) border-transparent'} border-3 hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all  border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
         >
           Kibar
         </button>

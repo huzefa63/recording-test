@@ -93,14 +93,14 @@ export default StudentContainer
 
 function StudentCard({name,id}){
     return (
-      <Link href={`/onlineclass/${id}`} className="bg-(--card) shadow-(--shadow-sm) flex items-center justify-between p-5 border rounded-xl border-(--border) duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)">
+      <Link href={`/onlineclass/${id}`} className="bg-(--card) shadow-(--shadow-sm) border-l-6 border-l-(--primary) flex items-center justify-between p-5 border rounded-tl-lg rounded-bl-lg rounded-tr-xl rounded-br-xl border-(--border) duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)">
         <div className="flex items-center gap-6">
           <div className="p-3 rounded-full bg-(--bg-tertiary)/50">
             <FaUser className="text-xl" />
           </div>
-          <div className="font-bold text-(--text) tracking-wider">{name}</div>
+          <div className="font-bold text-(--text) tracking-wider">{name} <p className="text-[0.60rem] text-red-500/70">offline</p></div>
         </div>
-        <div><RiArrowDropRightLine className="text-2xl" /></div>
+        <div className="p-1 rounded-full bg-(--bg-tertiary)/50"><RiArrowDropRightLine className="text-2xl" /></div>
       </Link>
     );
 }

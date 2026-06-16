@@ -26,7 +26,7 @@ async function Page({searchParams}) {
   
   return (
     // <ProtectRoutes>
-    <div className="w-full h-full flex flex-col px-2 py-2 gap-3">
+    <div className="w-full h-full flex flex-col px-2 py-2 gap-3 ">
       {/* <Redirect unauthorizedRole={["student", "teacher"]} /> */}
       <div className="self-end">
         <Filter />
@@ -34,7 +34,7 @@ async function Page({searchParams}) {
 
       <div>
         <div className="relative rounded-2xl w-full lg:pb-2">
-          <div className="w-full rounded-lg overflow-hidden">
+          <div className="w-full rounded-lg overflow-hidden lg:pb-0">
               <RecordingsContainer params={params} />
           </div>
         </div>

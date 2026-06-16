@@ -9,6 +9,7 @@ import { RiArrowDropRightLine } from "react-icons/ri";
 import Link from "next/link";
 import { useUser } from "../providers/UserProvider";
 import { ImSpinner2 } from "react-icons/im";
+import ScrollToTopButton from "../ScrollToTopButton";
 
 function StudentContainer() {
   const {user} = useUser();
@@ -62,29 +63,41 @@ function StudentContainer() {
             if (value.length < 3) return setFilteredStudents(students);
             setFilteredStudents(students);
             setFilteredStudents((student) =>
-              student.filter((el) => el.name.includes(value)),
+              student.filter((el) => el.name.toLowerCase().includes(value.toLowerCase())),
             );
           }
           if(isLoadingTeacher || isLoadingStudents) return <div><ImSpinner2 className="animate-spin absolute top-1/2 left-1/2 -translate-1/2"/></div>;
     return (
-      <div className="h-full min-w-full flex flex-col">
-        {user?.role !== 'student' && <StudentsFilter handleFilterStudents={handleFilterStudents} />}
-        <div className="mt-5 flex flex-col gap-3 w-full h-full overflow-auto">
-        {/* <div className="bg-(--card) flex-1 mt-5 rounded-lg shadow-(--shadow-lg)"> */}
-          {user?.role !== 'student' && filteredStudents?.length > 0 &&
-            filteredStudents.map((el) => (
-             <StudentCard key={el._id} name={el.name} id={el._id}/>
-            ))}
-          
-          {user?.role === 'student' && teachers?.length > 0 &&
-            teachers.map((el) => (
-             <StudentCard key={el._id} name={el.name} id={el._id}/>
-            ))}
-          {students?.length < 1 && (
-            <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
-              you don&apos;t have any students tagged yet!
-            </h1>
-          )}
+      <div className="flex flex-col min-w-full  max-h-full ">
+        {user?.role !== "student" && (
+          <StudentsFilter handleFilterStudents={handleFilterStudents} />
+        )}
+        <ScrollToTopButton />
+        <div className=" ">
+          <div className="mt-5 flex flex-col gap-3 w-full ">
+            {/* <div className="bg-(--card) flex-1 mt-5 rounded-lg shadow-(--shadow-lg)"> */}
+            {user?.role !== "student" &&
+              filteredStudents?.length > 0 &&
+              filteredStudents.map((el) => (
+                <StudentCard key={el._id} name={el.name} id={el._id} />
+              ))}
+            {user?.role !== "student" &&
+              filteredStudents?.length > 0 &&
+              filteredStudents.map((el) => (
+                <StudentCard key={el._id} name={el.name} id={el._id} />
+              ))}
+
+            {user?.role === "student" &&
+              teachers?.length > 0 &&
+              teachers.map((el) => (
+                <StudentCard key={el._id} name={el.name} id={el._id} />
+              ))}
+            {students?.length < 1 && (
+              <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
+                you don&apos;t have any students tagged yet!
+              </h1>
+            )}
+          </div>
         </div>
       </div>
     );

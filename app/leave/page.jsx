@@ -8,7 +8,7 @@ import LeaveWrapper from "../_components/leave/LeaveWrapper"
 
 function Page() {
     return (
-        <div className=" ">
+        <div className=" lg:pb-0">
             <LeaveWrapper />
         </div>
     )

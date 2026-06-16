@@ -95,78 +95,82 @@ function MaqaratSessionCard({ juz, batch, teacher, date, students }) {
 
   return (
     <div
-      className={`border-l-3 ${border} bg-white p-4 flex gap-4 relative rounded-sm border border-(--border) shadow-(--shadow-sm) overflow-hidden`}
+      className={`border-l-3 ${border} bg-white p-4 flex flex-col gap-2 relative rounded-sm border border-(--border) shadow-(--shadow-sm) overflow-hidden`}
     >
       {/* Header */}
 
-      <div className="flex items-start justify-between">
-        <div className="flex flex-col gap-3">
-          <div
-            className={`h-14 w-14 rounded-2xl bg-(--bg-tertiary)/50 flex items-center justify-center ${highlightColor}`}
-          >
-            <IoCalendarOutline size={24} />
+      <div className="flex gap-5 items-center">
+        <div className="flex  items-start justify-between">
+          <div className="flex flex-col gap-3">
+            <div
+              className={`h-12 w-12 rounded-2xl bg-(--bg-tertiary)/50 flex items-center justify-center ${highlightColor}`}
+            >
+              <IoCalendarOutline size={24} />
+            </div>
+
+            <div className="flex flex-col items-center">
+              {/* <h2 className="font-bold text-lg">{juz}</h2> */}
+              <p className={` font-semibold text-lg`}>
+                {/* {format(date, "dd MMM yyyy")} */}
+                {month.at(new Date(date).getMonth())}
+              </p>
+              <p className={`text-4xl font-bold`}>{new Date(date).getDate()}</p>
+              <p className="text-md text-gray-700">
+                {new Date(date).getFullYear()}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Details */}
+        <div className="px-4 w-full pb-4 flex flex-col gap-3 text-sm text-gray-600">
+          <div className="flex items-center gap-2">
+            <LuUsers className={`${textColor}`} />
+            <p>Batch: {batch}</p>
           </div>
 
-          <div className="flex flex-col items-center">
-            {/* <h2 className="font-bold text-lg">{juz}</h2> */}
-            <p className={` font-semibold text-lg`}>
-              {/* {format(date, "dd MMM yyyy")} */}
-              {month.at(new Date(date).getMonth())}
+          <div className="flex items-center gap-2">
+            <span>
+              <LuUsers className={`${textColor}`} />
+            </span>
+            <p>
+              Teacher:{" "}
+              <span className={`${inter.className} font-extrabold`}>
+                {teacher}
+              </span>
             </p>
-            <p className={`text-4xl font-bold`}>{new Date(date).getDate()}</p>
-            <p className="text-md text-gray-700">
-              {new Date(date).getFullYear()}
-            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <FaBookOpen className={`${textColor}`} />
+            <p className="text-xs">{juz}</p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <IoCalendarOutline className={`${textColor}`} />
+            <span
+              className={`${statusColor} text-white text-xs px-3 py-1 rounded-full`}
+            >
+              {/* {statusText} */}
+              {formatDistanceToNow(date, { addSuffix: true })}
+            </span>
           </div>
         </div>
       </div>
+      <div className="border-t border-(--border) pt-3">
+        <h3 className="font-semibold text-amber-700 mb-3">
+          Students ({students?.length})
+        </h3>
 
-      {/* Details */}
-      <div className="px-4 w-full pb-4 flex flex-col gap-3 text-sm text-gray-600">
-        <div className="flex items-center gap-2">
-          <LuUsers className={`${textColor}`} />
-          <p>Batch: {batch}</p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span>
-            <LuUsers className={`${textColor}`} />
-          </span>
-          <p>
-            Teacher:{" "}
-            <span className={`${inter.className} font-extrabold`}>{teacher}</span>
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <FaBookOpen className={`${textColor}`} />
-          <p className="text-xs">{juz}</p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <IoCalendarOutline className={`${textColor}`} />
-          <span
-            className={`${statusColor} text-white text-xs px-3 py-1 rounded-full`}
-          >
-            {/* {statusText} */}
-            {formatDistanceToNow(date,{addSuffix:true})}
-          </span>
-        </div>
-        <div className="border-t border-(--border) pt-3">
-          <h3 className="font-semibold text-amber-700 mb-3">
-            Students ({students?.length})
-          </h3>
-
-          <div className="flex flex-wrap gap-2">
-            {students?.map((student) => (
-              <div
-                key={student?.name}
-                className="px-3 py-1 rounded-full bg-gray-100 text-xs"
-              >
-                {student?.name}
-              </div>
-            ))}
-          </div>
+        <div className="flex flex-wrap gap-2">
+          {students?.map((student) => (
+            <div
+              key={student?.name}
+              className="px-3 py-1 rounded-full bg-gray-100 text-xs"
+            >
+              {student?.name}
+            </div>
+          ))}
         </div>
       </div>
 

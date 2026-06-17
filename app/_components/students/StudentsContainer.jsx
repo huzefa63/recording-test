@@ -16,12 +16,13 @@ import { IoIosCheckboxOutline } from "react-icons/io";
 import { PiDotsThreeVertical, PiDotsThreeVerticalBold } from "react-icons/pi";
 import { useUser } from "../providers/UserProvider";
 import CustomContextMenu from "../CustomContextMenu";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function StudentsContainer() {
   const { user } = useUser();
   const { teachers } = useAppProvider();
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
   const { show } = useContextMenu({
     id: "student",
   });
@@ -89,7 +90,7 @@ function StudentsContainer() {
     }
   }
   const { data: students } = useQuery({
-    queryKey: ["myStudents",user?.role],
+    queryKey: ["myStudents",user?.role,searchParams.get('batch')],
     queryFn: handleGetMyStudents,
     refetchOnWindowFocus: false,
     enabled:(user?.role === 'teacher' || user?.role === 'admin')
@@ -98,7 +99,7 @@ function StudentsContainer() {
   async function handleGetMyStudents() {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_URL}/student/getStudents`,
+        `${process.env.NEXT_PUBLIC_URL}/student/getStudents?batch=${searchParams.get('batch')}`,
         {
           withCredentials: true,
         },
@@ -125,7 +126,7 @@ function StudentsContainer() {
     if (value.length < 3) return setFilteredStudents(students);
     setFilteredStudents(students);
     setFilteredStudents((student) =>
-      student.filter((el) => el.name.includes(value)),
+      student.filter((el) => el.name.toLowerCase().includes(value.toLowerCase())),
     );
   }
   async function handleChangeMultipleDiaries(teacherId){
@@ -133,6 +134,10 @@ function StudentsContainer() {
       await axios.patch(`${process.env.NEXT_PUBLIC_URL}/student/changeMultipleDiaries`,{teacherId,studentsId:selectedStudents},{withCredentials:true})
       toast.success(`diary updated of ${selectedStudents.length} students`);
       setSelectedStudents([]);
+      queryClient.invalidateQueries(['myStudents']);
+       setModal({ show: false, type: "" });
+       setIsSelecting(false);
+       setShowCustomContextMenu(false);
     }catch(err){
       console.log(err);
     }
@@ -187,10 +192,56 @@ function StudentsContainer() {
             >
               Select All
             </button>
-            <button onClick={()=>setShowCustomContextMenu(!showCustomeContextMenu)} className="">
+            <button
+              onClick={() => setShowCustomContextMenu(!showCustomeContextMenu)}
+              className=""
+            >
               <PiDotsThreeVerticalBold />
             </button>
-             {showCustomeContextMenu && <CustomContextMenu options={[{text:'change diary',icon:<FaBook />,handler:handleChangeMultipleDiaries}]}/>}
+            {showCustomeContextMenu && (
+              <CustomContextMenu
+              onClose={()=>setShowCustomContextMenu(false)}
+                options={[
+                  {
+                    text: "change diary",
+                    icon: <FaBook />,
+                    handler: () =>
+                      setModal({ type: "multiple-diary", show: true }),
+                  },
+                ]}
+              />
+            )}
+            {modal.show && modal.type === "multiple-diary" && (
+              <Modal
+                onClose={() => setModal({ show: false, type: "" })}
+                className="h-fit"
+                headingStyles="text-sm decoration-0"
+                heading={
+                  modal.type === "diary"
+                    ? "select teacher to change diary"
+                    : "select teacher to assign proxy"
+                }
+              >
+                <div className="mt-8 mb-4 space-y-2">
+                  <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
+                    Students: {selectedStudents.length} students
+                  </h1>
+                  {/* <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
+                    Teacher: {selectedStudent.teacher}
+                  </h1> */}
+                  {/* {selectedStudent.proxyTeacher && (
+                    <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
+                      proxy assigned to: {selectedStudent.proxyTeacher}
+                    </h1>
+                  )} */}
+                </div>
+                <CustomSelect
+                  options={customizedTeachers}
+                  isButton={true}
+                  handler={handleChangeMultipleDiaries}
+                />
+              </Modal>
+            )}
           </div>
         </div>
       )}
@@ -198,28 +249,27 @@ function StudentsContainer() {
         onClick={showContextMenu}
         className=" grid grid-cols-2 lg:flex lg:flex-wrap lg:justify-center gap-y-6 gap-x-5 mt-5"
       >
-        {
-          filteredStudents?.map((el) => (
-            <StudentCard
-              key={el._id}
-              image={el?.profileImage}
-              name={el.name}
-              studentId={el._id}
-              proxyTeacherId={el.proxyTeacher?._id}
-              teacherId={user._id}
-              teacherName={el?.teacher?.name}
-              proxyTeacherName={el?.proxyTeacher?.name}
-              isSelecting={isSelecting}
-              selectedStudents={selectedStudents}
-              setSelectedStudents={setSelectedStudents}
-            />
-          ))}
+        {filteredStudents?.map((el) => (
+          <StudentCard
+            key={el._id}
+            image={el?.profileImage}
+            name={el.name}
+            studentId={el._id}
+            proxyTeacherId={el.proxyTeacher?._id}
+            teacherId={user._id}
+            teacherName={el?.teacher?.name}
+            proxyTeacherName={el?.proxyTeacher?.name}
+            isSelecting={isSelecting}
+            selectedStudents={selectedStudents}
+            setSelectedStudents={setSelectedStudents}
+          />
+        ))}
         {/* {students?.length < 1 && (
           <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
             you don&apos;t have any students tagged yet!
           </h1>
         )} */}
-        {modal.show && (
+        {modal.show && (modal.type === 'diary' || modal.type === 'proxy') &&
           <Modal
             onClose={() => setModal({ show: false, type: "" })}
             className="h-fit"
@@ -251,7 +301,7 @@ function StudentsContainer() {
               }
             />
           </Modal>
-        )}
+        }
         <ContextMenu>
           {user.role === "admin" && (
             <Item onClick={() => setModal({ show: true, type: "diary" })}>

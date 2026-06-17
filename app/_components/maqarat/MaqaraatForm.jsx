@@ -97,7 +97,10 @@ function Form({onClose}){
   }
   }
     return (
-      <Modal onClose={onClose} className="h-fit w-[95%] lg:min-w-[40%] overflow-y-auto">
+      <Modal
+        onClose={onClose}
+        className="h-fit w-[95%] lg:min-w-[40%] overflow-y-auto"
+      >
         <div className="">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Create Maqaarat
@@ -107,38 +110,71 @@ function Form({onClose}){
             {/* Student */}
             <div>
               <label className="block text-sm font-medium mb-2">Teacher</label>
-              <Select required isClearable options={teacherOptions} onChange={el => setTeacher(el.value)}/>
+              <Select
+                required
+                isClearable
+                options={teacherOptions}
+                onChange={(el) => setTeacher(el.value)}
+              />
             </div>
 
             <div>
               <label className="block text-sm font-medium mb-2">Batch</label>
-              <Select required isClearable onChange={el => setBatch(el.value)} options={[{label:'Baneen',value:'baneen'},{label:'Banaat',value:'banaat'}]}/>
+              <Select
+                required
+                isClearable
+                onChange={(el) => setBatch(el.value)}
+                options={[
+                  { label: "Baneen", value: "baneen" },
+                  { label: "Banaat", value: "banaat" },
+                ]}
+              />
             </div>
 
             {/* Juz */}
             <div>
               <label className="block text-sm font-medium mb-2">Students</label>
-              <Select required options={studentOptions} onChange={val => setStudents(el => val.map(el => el.value))} isMulti/>
+              <Select
+                required
+                options={studentOptions}
+                onChange={(val) =>
+                  setStudents((el) => val.map((el) => el.value))
+                }
+                isMulti
+              />
             </div>
 
             {/* Surah */}
             <div>
               <label className="block text-sm font-medium mb-2">Juz</label>
-              <Select required options={maqaratJuz} onChange={el => setJuz(el.value)}/>
+              <Select
+                required
+                options={maqaratJuz}
+                onChange={(el) => setJuz(el.value)}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Date</label>
-              <input value={date} onChange={el => setDate(el.target.value)} type="date" className="border border-gray-300 bg-white/90  w-full py-2 px-2"/>
+              <input
+                value={date}
+                onChange={(el) => setDate(el.target.value)}
+                type="date"
+                className="border border-gray-300 bg-white/90  w-full py-2 px-2"
+              />
             </div>
 
             <div className="flex gap-3 pt-3">
-              <button onClick={()=>onClose()} type="button" className="flex-1 border border-(--border) shadow rounded-xl py-2">
+              <button
+                onClick={() => onClose()}
+                type="button"
+                className="hover:bg-(--card-hover)  transition-all hover:cursor-pointer duration-300 ease-in-out flex-1 border border-(--border) shadow rounded-xl py-2"
+              >
                 Cancel
               </button>
 
               <button
                 type="submit"
-                className="flex-1 bg-(image:--gradient-primary) text-white/90 text-sm rounded-xl py-2"
+                className=" flex-1 bg-(--primary) hover:bg-amber-800 transition-all hover:cursor-pointer duration-300 ease-in-out text-white/90 text-sm rounded-xl py-2"
               >
                 Create Session
               </button>

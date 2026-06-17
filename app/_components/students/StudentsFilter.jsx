@@ -60,8 +60,8 @@ function StudentsFilter({ handleFilterStudents }) {
           Banaat
         </button>
         <button
-        onClick={()=>handleChangeSearchParams('batch','kibar')}
-          className={`${searchParams.get('batch') === 'kibar' ? 'bg-(image:--gradient-primary) text-white -translate-y-1 borde border-(--border)':'bg-(--card) border-transparent'} border- hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all  border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
+        onClick={()=>handleChangeSearchParams('batch','kibaar')}
+          className={`${searchParams.get('batch') === 'kibaar' ? 'bg-(image:--gradient-primary) text-white -translate-y-1 borde border-(--border)':'bg-(--card) border-transparent'} border- hover:bg-(--card-highlight) hover:cursor-pointer ease-in-out duration-300 transition-all  border-(--border) shadow-(--shadow-md)  p-2 rounded-md `}
         >
           Kibar
         </button>

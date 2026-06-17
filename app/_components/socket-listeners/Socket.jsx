@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useRef } from "react";
 import { useSocketContext } from "@/app/_components/providers/SocketProvider";
 import { useVideoCallContext } from "../providers/VideoCallProvider";
 import { useUser } from "../providers/UserProvider";
+import toast from "react-hot-toast";
 
 const Context = createContext(null);
 
@@ -210,6 +211,10 @@ export function CallingFnProvider({ children }) {
            }else{
             candidates.current.push(candidate);
            }
+        })
+        socket.on('online',async ({name,role}) => {
+          if(role === 'teacher')toast.success(`your muhaffiz ${name} is online`);
+          if(role === 'student')toast.success(`your student ${name} is online`);
         })
 
         socket.on('end-call',() => {

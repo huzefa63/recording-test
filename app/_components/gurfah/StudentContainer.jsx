@@ -79,18 +79,13 @@ function StudentContainer() {
             {user?.role !== "student" &&
               filteredStudents?.length > 0 &&
               filteredStudents.map((el) => (
-                <StudentCard key={el._id} name={el.name} id={el._id} />
-              ))}
-            {user?.role !== "student" &&
-              filteredStudents?.length > 0 &&
-              filteredStudents.map((el) => (
-                <StudentCard key={el._id} name={el.name} id={el._id} />
+                <StudentCard key={el._id} name={el.name} id={el._id} status={el.status}/>
               ))}
 
             {user?.role === "student" &&
               teachers?.length > 0 &&
               teachers.map((el) => (
-                <StudentCard key={el._id} name={el.name} id={el._id} />
+                <StudentCard key={el._id} name={el.name} id={el._id} status={el.status}/>
               ))}
             {students?.length < 1 && (
               <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
@@ -104,14 +99,14 @@ function StudentContainer() {
 }
 export default StudentContainer
 
-function StudentCard({name,id}){
+function StudentCard({name,id,status}){
     return (
       <Link href={`/onlineclass/${id}`} className="bg-(--card) shadow-(--shadow-sm) border-l-6 border-l-(--primary) flex items-center justify-between p-5 border rounded-tl-lg rounded-bl-lg rounded-tr-xl rounded-br-xl border-(--border) duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)">
         <div className="flex items-center gap-6">
           <div className="p-3 rounded-full bg-(--bg-tertiary)/50">
             <FaUser className="text-xl" />
           </div>
-          <div className="font-bold text-(--text) tracking-wider">{name} <p className="text-[0.60rem] text-red-500/70">offline</p></div>
+          <div className="font-bold text-(--text) tracking-wider">{name} <p className={`text-[0.60rem] ${status==='offline'?'text-red-500/70':'text-green-500/70'}`}>{status}</p></div>
         </div>
         <div className="p-1 rounded-full bg-(--bg-tertiary)/50"><RiArrowDropRightLine className="text-2xl" /></div>
       </Link>

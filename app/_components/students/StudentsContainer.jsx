@@ -134,7 +134,7 @@ function StudentsContainer() {
       await axios.patch(`${process.env.NEXT_PUBLIC_URL}/student/changeMultipleDiaries`,{teacherId,studentsId:selectedStudents},{withCredentials:true})
       toast.success(`diary updated of ${selectedStudents.length} students`);
       setSelectedStudents([]);
-      queryClient.invalidateQueries(['myStudents']);
+      queryClient.invalidateQueries({queryKey:['myStudents']});
        setModal({ show: false, type: "" });
        setIsSelecting(false);
        setShowCustomContextMenu(false);

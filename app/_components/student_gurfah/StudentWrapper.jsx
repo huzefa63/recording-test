@@ -44,17 +44,25 @@ function StudentWrapper() {
     if(isFetching) return <div><ImSpinner2 className="animate-spin absolute top-1/2 left-1/2 -translate-1/2"/></div>
     if(!onlineClassBlob) return (
       <div className="mt-5 w-full flex flex-col gap-5 items-center">
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-">
           <div className="p-4 rounded-full bg-(--bg-tertiary)/50">
             <FaUser className="text-4xl" />
           </div>
-          <h1 className={`${font.className} text-2xl font-bold tracking-wide`}>
+          <h1
+            className={`${font.className} mt-1 text-2xl font-bold tracking-wide`}
+          >
             {data?.user && !isFetching ? (
               data?.user?.name
             ) : (
               <span className="text-2xl opacity-0">n</span>
             )}
           </h1>
+          <div className={` text-xs mt-1 flex items-center gap-1`}>
+            <p
+              className={`h-2 w-2  rounded-full ${data.user.status === "online" ? 'bg-green-500':'bg-red-500'}`}
+            ></p>{" "}
+            {data.user.status === "online" ? 'online':'offline'}
+          </div>
         </div>
         <button
           onClick={() => startCall(id, user?._id)}
@@ -71,8 +79,15 @@ function StudentWrapper() {
             <p>Last Session</p>
             {data?.classes?.length > 0 && (
               <>
-                <p className="text-lg text-(--text)">{formatDistanceToNow(data.classes[0].createdAt,{addSuffix:true})}</p>
-                <p>{format(data.classes[0].createdAt,"MMM dd, yyy")} ~ {data.classes[0].duration} min</p>
+                <p className="text-lg text-(--text)">
+                  {formatDistanceToNow(data.classes[0].createdAt, {
+                    addSuffix: true,
+                  })}
+                </p>
+                <p>
+                  {format(data.classes[0].createdAt, "MMM dd, yyy")} ~{" "}
+                  {data.classes[0].duration} min
+                </p>
               </>
             )}
             {data?.classes?.length < 1 && (
@@ -82,7 +97,7 @@ function StudentWrapper() {
         </div>
         <div className="bg-(--card) rounded-md shadow-(--shadow-sm) p-5 w-full flex flex-col gap-3">
           <p>Recent Sessions</p>
-          {data?.classes?.map(el => {
+          {data?.classes?.map((el) => {
             return (
               <div
                 key={el._id}
@@ -92,15 +107,17 @@ function StudentWrapper() {
                   <SlCalender className="text-lg text-green-500" />
                 </div>
                 <div className="text-(--text-secondary) text-xs font-semibold flex justify-between w-full ">
-                  <p>{format(el.createdAt,"MMM dd, yyy")}</p>
+                  <p>{format(el.createdAt, "MMM dd, yyy")}</p>
                   <p>{el.duration} min</p>
                 </div>
               </div>
             );
           })}
-          {data?.classes?.length < 1 && <div className="text-center font-bold text-(--text-secondary) py-5">
-            No Recent Sessions!
-          </div>}
+          {data?.classes?.length < 1 && (
+            <div className="text-center font-bold text-(--text-secondary) py-5">
+              No Recent Sessions!
+            </div>
+          )}
         </div>
       </div>
     );

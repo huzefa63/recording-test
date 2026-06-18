@@ -5,6 +5,7 @@ import { useSocketContext } from "@/app/_components/providers/SocketProvider";
 import { useVideoCallContext } from "../providers/VideoCallProvider";
 import { useUser } from "../providers/UserProvider";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Context = createContext(null);
 
@@ -12,6 +13,7 @@ export function CallingFnProvider({ children }) {
   const { socket } = useSocketContext();
   const { isIncoming,setOnlineClassBlobUrlSize,setOnlineClassBlob,setOnlineClassBlobUrl,localMedia,remoteMedia,setRemoteMedia,remoteVideoRef,isCalling, callingTo,setCallingTo,localVideoRef,setIsCalling, setIsIncoming, isInCall,setIsInCall,setCallerId,callerId,remoteOffer, setRemoteOffer } = useVideoCallContext();
   const {user} = useUser();
+  const querClient = useQueryClient();
   const {peerConnection} = useVideoCallContext();
   const candidates = useRef([]);
   const recorderRef = useRef(null);
@@ -212,10 +214,23 @@ export function CallingFnProvider({ children }) {
             candidates.current.push(candidate);
            }
         })
-        socket.on('online',async ({name,role}) => {
-          if(role === 'teacher')toast.success(`your muhaffiz ${name} is online`);
-          if(role === 'student')toast.success(`your student ${name} is online`);
-        })
+        socket.on('online',async ({name,role,id}) => {
+          if(role === 'teacher'){
+            querClient.setQueryData(["myTeachers"]), (data) => {
+              return data.map((el) => {
+                if (el._id !== id) return el;
+                else return { ...el, status: "online" };
+              });
+          }
+          if(role === 'student'){
+            querClient.setQueryData(["myStudents"] , (data) => {
+              return data.map(el => {
+                if(el._id !== id) return el;
+                else return {...el,status:'online'};
+              })
+            });
+          }
+        }})
 
         socket.on('end-call',() => {
           setIsCalling(false);

@@ -40,6 +40,10 @@ function PhoneNav() {
           <IoBookOutline />
           <p className={`text-[0.60rem] ${!pathname.includes('maqaraat') && 'text-gray-500'}`}>Maqaarat</p>
         </Link>
+        {user?.role !== 'admin' && <Link href={'/profile'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("profile") && " bg-(--card-hover) shadow-(--shadow-sm) rounded-md font-bold text-(--primary)"}`}>
+          <CiUser />
+          <p className={`text-[0.60rem] ${!pathname.includes('profile') && 'text-gray-500'}`}>Profile</p>
+        </Link>}
         {/* {(role === 'admin'||role === 'students') && <Link href={'/fees'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("fees") && " bg-(--card-hover) shadow-lg rounded-md font-bold text-(--primary)"}`}>
           <FaMoneyCheck />
           <p className={`text-[0.60rem] ${!pathname.includes('fees') && 'text-gray-500'}`}>Fees</p>

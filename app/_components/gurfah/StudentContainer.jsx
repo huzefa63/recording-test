@@ -1,16 +1,17 @@
 'use client';
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import StudentsFilter from "../students/StudentsFilter";
-import { FaUser } from "react-icons/fa";
+import { FaGraduationCap, FaUser } from "react-icons/fa";
 import { RiArrowDropRightLine } from "react-icons/ri";
 import Link from "next/link";
 import { useUser } from "../providers/UserProvider";
 import { ImSpinner2 } from "react-icons/im";
 import ScrollToTopButton from "../ScrollToTopButton";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 function StudentContainer() {
   const {user} = useUser();
@@ -21,12 +22,14 @@ function StudentContainer() {
             queryKey: ["myStudents",searchParams.get('batch')],
             queryFn: handleGetUser,
             refetchOnWindowFocus: false,
+            placeholderData:keepPreviousData,
             enabled:!!user?.role && user?.role !== 'student',
           });
           const { data: teachers } = useQuery({
             queryKey: ["myTeachers"],
             queryFn: handleGetUser,
             refetchOnWindowFocus: false,
+            placeholderData:keepPreviousData,
             enabled:!!user?.role && user?.role === 'student',
           });
           useEffect(() => {
@@ -61,7 +64,7 @@ function StudentContainer() {
           }
 
           function handleFilterStudents(value) {
-            if (value.length < 3) return setFilteredStudents(students);
+            if (value.length < 2) return setFilteredStudents(students);
             setFilteredStudents(students);
             setFilteredStudents((student) =>
               student.filter((el) => el.name.toLowerCase().includes(value.toLowerCase())),
@@ -70,25 +73,58 @@ function StudentContainer() {
           // if(isLoadingTeacher || isLoadingStudents) return <div><ImSpinner2 className="animate-spin absolute top-1/2 left-1/2 -translate-1/2"/></div>;
     return (
       <div className="flex flex-col min-w-full  max-h-full ">
+        {user?.role === "teacher" && (
+          <h1 className="text-white/90 text-center w-3/4 lg:w-1/4 mx-auto borde rounded-tl-full rounded-br-full bg-(image:--gradient-primary) justify-center py-2 mb-5 font-bold text-2xl flex items-center gap-2 justify-cente border-amber-100 shadow-(--shadow-sm)">
+            <p className="">
+              <FaGraduationCap />
+            </p>{" "}
+            Your Students
+          </h1>
+        )}
         {user?.role !== "student" && (
           <StudentsFilter handleFilterStudents={handleFilterStudents} />
         )}
         <ScrollToTopButton />
-        <div className=" ">
-          <div className="mt-5 flex flex-col lg:grid grid-cols-2 gap-3 w-full ">
+
+        <div className="h-full">
+          {/* <div className=" text-sm">
+            <p className="font-bold text-lg">Your Assigned Teacher &</p>
+            <p className="text-xl font-bold"> Proxy Teacher</p>
+          </div> */}
+          {user?.role === "student" && (
+            <h1 className="text-white/90 text-center w-3/4 lg:w-1/4 mx-auto border rounded-tl-full rounded-br-full bg-(image:--gradient-primary) justify-center py-2 mb-5 font-bold text-2xl flex items-center gap-2 justify-cente border-amber-100 shadow-(--shadow-sm)">
+              <p className="">
+                <FaGraduationCap />
+              </p>{" "}
+              Your Muhaffiz
+            </h1>
+          )}
+          <div className=" flex flex-col lg:grid grid-cols-2 gap-3 w-full ">
             {/* <div className="bg-(--card) flex-1 mt-5 rounded-lg shadow-(--shadow-lg)"> */}
-            {(user?.role === "teacher" || user?.role === 'admin') &&
+            {(user?.role === "teacher" || user?.role === "admin") &&
               filteredStudents?.length > 0 &&
               filteredStudents.map((el) => (
-                <StudentCard key={el._id} name={el.name} id={el._id} status={el.status}/>
+                <StudentCard
+                  profileImage={el?.profileImage}
+                  key={el._id}
+                  name={el.name}
+                  id={el._id}
+                  status={el.status}
+                />
               ))}
 
             {user?.role === "student" &&
               teachers?.length > 0 &&
               teachers.map((el) => (
-                <StudentCard key={el._id} name={el.name} id={el._id} status={el.status}/>
+                <StudentCard
+                  profileImage={el?.profileImage}
+                  key={el._id}
+                  name={el.name}
+                  id={el._id}
+                  status={el.status}
+                />
               ))}
-            {students?.length < 1 && (
+            {(students?.length < 1 && user?.role === 'teacher') && (
               <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
                 you don&apos;t have any students tagged yet!
               </h1>
@@ -100,12 +136,13 @@ function StudentContainer() {
 }
 export default StudentContainer
 
-function StudentCard({name,id,status}){
+function StudentCard({name,id,status,profileImage}){
     return (
-      <Link href={`/onlineclass/${id}`} className="bg-(--card) shadow-(--shadow-sm) border-l-6 border-l-(--primary) flex items-center justify-between p-5 border rounded-tl-lg rounded-bl-lg rounded-tr-xl rounded-br-xl border-(--border) duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)">
+      <Link href={`/onlineclass/${id}`} className="bg-(--card) shadow-(--shadow-sm) border-l-6 border-l-(--primary) flex items-center justify-between px-5 py-3 border rounded-tl-lg rounded-bl-lg rounded-tr-xl rounded-br-xl border-(--border) duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)">
         <div className="flex items-center gap-6">
-          <div className="p-3 rounded-full bg-(--bg-tertiary)/50">
-            <FaUser className="text-xl" />
+          <div className="h-15 w-15 overflow-hidden flex justify-center items-center relative rounded-full bg-(--bg-tertiary)/50">
+            {!profileImage && <FaUser className="text-2xl" />}
+            {profileImage && <Image fill src={profileImage} alt="profile photo"/>}
           </div>
           <div className="font-bold text-(--text) tracking-wider">{name} <p className={`text-[0.60rem] ${status==='offline'?'text-red-500/70':'text-green-500/70'}`}>{status}</p></div>
         </div>

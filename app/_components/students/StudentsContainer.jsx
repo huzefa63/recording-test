@@ -17,9 +17,10 @@ import { PiDotsThreeVertical, PiDotsThreeVerticalBold } from "react-icons/pi";
 import { useUser } from "../providers/UserProvider";
 import CustomContextMenu from "../CustomContextMenu";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 function StudentsContainer() {
-  const { user } = useUser();
+  const { user,isFetching } = useUser();
   const { teachers } = useAppProvider();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
@@ -131,6 +132,7 @@ function StudentsContainer() {
   }
   async function handleChangeMultipleDiaries(teacherId){
     try{
+      if(selectedStudents?.length < 1) return toast.error('please select students first');
       await axios.patch(`${process.env.NEXT_PUBLIC_URL}/student/changeMultipleDiaries`,{teacherId,studentsId:selectedStudents},{withCredentials:true})
       toast.success(`diary updated of ${selectedStudents.length} students`);
       setSelectedStudents([]);
@@ -142,14 +144,28 @@ function StudentsContainer() {
       console.log(err);
     }
   }
-  if (!user?.role) return null;
-  if(user?.role === 'student') {
-    return(
-      <div className="h-[75vh] flex items-center justify-center">
-        <h1>you are not authorized to access this page</h1>
-      </div>
-    )
+  async function handleAssignMultipleProxies(teacherId){
+    try{
+      if(selectedStudents?.length < 1) return toast.error('please select students first');
+      await axios.patch(`${process.env.NEXT_PUBLIC_URL}/student/assignMultipleProxies`,{teacherId,studentsId:selectedStudents},{withCredentials:true})
+      toast.success(`diary updated of ${selectedStudents.length} students`);
+      setSelectedStudents([]);
+      queryClient.invalidateQueries({queryKey:['myStudents']});
+       setModal({ show: false, type: "" });
+       setIsSelecting(false);
+       setShowCustomContextMenu(false);
+    }catch(err){
+      console.log(err);
+    }
   }
+  const session = useSession();
+  useEffect(() => {
+    if(session?.status === 'loading') return;
+    if(isFetching) return;
+    if(user?.role === 'student') router.replace('/gurfah');
+  },[user?._id,session?.status])
+  if (!user?.role) return null;
+  if(user?.role === 'student') return null;
   const customizedTeachers = teachers?.map((el) => ({
     label: el.name,
     value: el._id,
@@ -194,7 +210,7 @@ function StudentsContainer() {
             </button>
             <button
               onClick={() => setShowCustomContextMenu(!showCustomeContextMenu)}
-              className=""
+              className="hover:bg-gray-200/60 p-2 hover:cursor-pointer duration-300 transition-all ease-in-out"
             >
               <PiDotsThreeVerticalBold />
             </button>
@@ -208,6 +224,12 @@ function StudentsContainer() {
                     handler: () =>
                       setModal({ type: "multiple-diary", show: true }),
                   },
+                  {
+                    text: "assign proxy",
+                    icon: <FaBook />,
+                    handler: () =>
+                      setModal({ type: "multiple-proxy", show: true }),
+                  },
                 ]}
               />
             )}
@@ -216,24 +238,31 @@ function StudentsContainer() {
                 onClose={() => setModal({ show: false, type: "" })}
                 className="h-fit"
                 headingStyles="text-sm decoration-0"
-                heading={
-                  modal.type === "diary"
-                    ? "select teacher to change diary"
-                    : "select teacher to assign proxy"
-                }
+                heading="select teacher to change diaries"
               >
                 <div className="mt-8 mb-4 space-y-2">
                   <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
                     Students: {selectedStudents.length} students
                   </h1>
-                  {/* <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
-                    Teacher: {selectedStudent.teacher}
-                  </h1> */}
-                  {/* {selectedStudent.proxyTeacher && (
-                    <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
-                      proxy assigned to: {selectedStudent.proxyTeacher}
-                    </h1>
-                  )} */}
+                </div>
+                <CustomSelect
+                  options={customizedTeachers}
+                  isButton={true}
+                  handler={handleChangeMultipleDiaries}
+                />
+              </Modal>
+            )}
+            {modal.show && modal.type === "multiple-proxy" && (
+              <Modal
+                onClose={() => setModal({ show: false, type: "" })}
+                className="h-fit"
+                headingStyles="text-sm decoration-0"
+                heading="select teacher to assign proxies"
+              > 
+                <div className="mt-8 mb-4 space-y-2">
+                  <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
+                    Students: {selectedStudents.length} students
+                  </h1>
                 </div>
                 <CustomSelect
                   options={customizedTeachers}

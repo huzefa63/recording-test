@@ -2,6 +2,7 @@ import LogoutButton from "../_components/auth/LogoutButton";
 import ProtectRoutes from "../_components/auth/ProtectRoutes";
 import UploadImage from "../_components/profile/UploadImage";
 import UpdatePassword from "../_components/profile/UpdatePassword";
+import InfoFields from "../_components/profile/InfoFields";
 
 async function Page() {
 
@@ -18,33 +19,7 @@ async function Page() {
               <UploadImage />
 
               {/* Email */}
-              <div className="flex flex-col gap-2">
-                <label className="text-[#6f542d] font-medium">Email</label>
-
-                <input
-                  type="email"
-                  // defaultValue={session.user.email}
-                  readOnly
-                  disabled
-                  placeholder="Enter your email"
-                  className="bg-white/70 border border-[#d8c08e] text-[#4d3718] rounded-xl px-4 py-3 outline-none focus:border-[#8b6a36] focus:bg-white transition placeholder:text-[#9a8259]"
-                />
-              </div>
-
-              {/* Name */}
-              <div className="flex flex-col gap-2">
-                <label className="text-[#6f542d] font-medium">Name</label>
-
-                <input
-                  name="name"
-                  type="text"
-                  // defaultValue={session.user.name}
-                  readOnly
-                  disabled
-                  placeholder="Enter your name"
-                  className="bg-white/70 border border-[#d8c08e] text-[#4d3718] rounded-xl px-4 py-3 outline-none focus:border-[#8b6a36] focus:bg-white transition placeholder:text-[#9a8259]"
-                />
-              </div>
+             <InfoFields />
               <UpdatePassword />
             </div>
           </div>

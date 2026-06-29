@@ -5,7 +5,7 @@ import { updatePassword } from "@/actions/profile";
 function UpdatePassword() {
     return (
       <form action={updatePassword} className="flex flex-col gap-2">
-        <label className="text-[#6f542d] font-medium">update password</label>
+        <label className="text-[#6f542d] text-sm">update password</label>
         <input
         required
           name="password"

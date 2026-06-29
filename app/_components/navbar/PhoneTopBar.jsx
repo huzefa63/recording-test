@@ -7,6 +7,8 @@ import { FaHouse, FaMicrophoneLines } from "react-icons/fa6";
 import { LuAudioLines } from "react-icons/lu";
 import { useUser } from "../providers/UserProvider";
 import { IoCalendarOutline } from "react-icons/io5";
+import { CiEdit } from "react-icons/ci";
+import Image from "next/image";
 
 const font = Cinzel({
   subsets: ["latin"],
@@ -45,6 +47,10 @@ function PhoneTopBar() {
     heading = "Maqarat Sessions";
     if(user?.role === 'admin')subHeading = "Create & Manage Maqarat Sessions";
     if(user?.role !== 'admin')subHeading = "View Your Maqarat Sessions";
+  }
+  if (pathname.includes("profile")) {
+    heading = "Profile";
+    subHeading = "Manage Your Profile";
   }
   if (pathname.includes("auth")) return null;
   if(pathname.includes('students')) return (
@@ -89,6 +95,9 @@ function PhoneTopBar() {
           {pathname.includes("leave") && (
             <IoCalendarOutline className="text-xl text-(--primary)" />
           )}
+          {pathname.includes("profile") && (
+            <CiEdit className="text-xl text-(--primary)" />
+          )}
         </div>
         <div>
           <h1 className="font-bold">{heading}</h1>
@@ -97,9 +106,10 @@ function PhoneTopBar() {
       </div>
       <Link
         href={"/profile"}
-        className="p-3 rounded-full bg-(--bg-tertiary)/50"
+        className="relative overflow-hidden h-10 w-10 rounded-full bg-(--bg-tertiary)/50 flex items-center justify-center"
       >
-        <FaUser className="text-amber-900" />
+        <FaUser className="text-amber-900 " />
+        {user?.profileImage && <Image fill src={user.profileImage} alt="profile image"/>}
       </Link>
     </div>
   );

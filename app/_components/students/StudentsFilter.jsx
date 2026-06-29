@@ -4,7 +4,7 @@ import { CiSearch } from "react-icons/ci";
 import { IoFilterOutline } from "react-icons/io5"
 import { useUser } from "../providers/UserProvider";
 
-function StudentsFilter({ handleFilterStudents }) {
+function StudentsFilter({ handleFilterStudents,readOnly=false }) {
   const {user} = useUser();
       const router = useRouter();
       const searchParams = useSearchParams();
@@ -25,6 +25,7 @@ function StudentsFilter({ handleFilterStudents }) {
     <div className="w-full pb-5 lg:w-1/2 lg:mx-auto flex flex-col items-center  gap-5">
       <div className="w-full h-full relative">
         <input
+        readOnly={readOnly}
           onChange={(e) => handleFilterStudents(e.target.value)}
           type="text"
           placeholder="search students..."

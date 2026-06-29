@@ -22,7 +22,7 @@ function CustomContextMenu({options,className,onClose}) {
               <button
                 onClick={el?.handler}
                 key={el?.text}
-                className={`${el?.textColor} ${el?.bg} relative pr-10 flex items-center gap-3 text-sm text-left py-3 px-3 border-b border-(--border) hover:bg-(--card-hover) ${className}`}
+                className={`${el?.textColor} ${el?.bg} hover:cursor-pointer duration-300 ease-in-out transition-all relative pr-10 flex items-center gap-3 text-sm text-left py-3 px-3 border-b border-(--border) hover:bg-(--card-hover) ${className}`}
               >
                 {el?.icon} {el?.text}{" "}
                 {searchParams.has(el?.name,el?.value) &&

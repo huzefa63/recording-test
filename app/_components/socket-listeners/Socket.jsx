@@ -168,6 +168,8 @@ export function CallingFnProvider({ children }) {
     useEffect(() => {
         if(!socket) return;
         socket.on('incoming-call',async ({caller,offer}) => {
+          if(isInCall) return socket.emit('line-busy',{to:caller});
+          console.log(caller,offer)
           setIsIncoming(true);
           setCallerId(caller);
                   targetUserRef.current = caller;
@@ -205,6 +207,9 @@ export function CallingFnProvider({ children }) {
               peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
             }
             candidates.current = [];
+        })
+        socket.on('line-busy',() => {
+           toast.error('The person you are trying to reach is on another call');
         })
         socket.on('ice-candidate',async ({candidate}) => {
           if(!peerConnection.current) return;

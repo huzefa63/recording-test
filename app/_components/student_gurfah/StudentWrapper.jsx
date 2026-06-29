@@ -1,6 +1,6 @@
-'use client';
+"use client";
 import { Playfair_Display } from "next/font/google";
-import { FaRegClock, FaSpinner, FaUser, FaVideo } from "react-icons/fa"
+import { FaRegClock, FaSpinner, FaUser, FaVideo } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
 import { useCallingFn } from "../socket-listeners/Socket";
 import { useVideoCallContext } from "../providers/VideoCallProvider";
@@ -12,41 +12,60 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ImSpinner2 } from "react-icons/im";
 import { format, formatDistanceToNow } from "date-fns";
+import Image from "next/image";
 
 const font = Playfair_Display({
-    subsets:['latin'],
-    weight:['500','600','700']
-})
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
 function StudentWrapper() {
-    const {user} = useUser();
-    const params = useParams();
-    const id = params?.id;
-    const {startCall} = useCallingFn();
-    const {onlineClassBlob,onlineClassBlobUrl,onlineClassBlobUrlSize} = useVideoCallContext();
-    const {actions:{submitRecording},states:{isSubmitting}} = useAudioRecorder();
+  const { user } = useUser();
+  const params = useParams();
+  const id = params?.id;
+  const { startCall } = useCallingFn();
+  const { onlineClassBlob, onlineClassBlobUrl, onlineClassBlobUrlSize } =
+    useVideoCallContext();
+  const {
+    actions: { submitRecording },
+    states: { isSubmitting },
+  } = useAudioRecorder();
 
-    const {data,isFetching} = useQuery({
-      queryKey:['gurfahData'],
-      queryFn:handleGetQuery,
-      refetchOnWindowFocus:false,
-    })
+  const { data, isFetching } = useQuery({
+    queryKey: ["gurfahData"],
+    queryFn: handleGetQuery,
+    refetchOnWindowFocus: false,
+  });
 
-    async function handleGetQuery(){
-      try{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/gurfah/get/${id}`,{withCredentials:true});
-        console.log(res.data)
-        return res.data;
-      }catch(err){
-        console.log(err);
-        return {};
-      }
+  async function handleGetQuery() {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_URL}/gurfah/get/${id}`,
+        { withCredentials: true },
+      );
+      console.log(res.data);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return {};
     }
-    if(isFetching) return <div><ImSpinner2 className="animate-spin absolute top-1/2 left-1/2 -translate-1/2"/></div>
-    if(!onlineClassBlob) return (
+  }
+  if (isFetching)
+    return (
+      <div>
+        <ImSpinner2 className="animate-spin absolute top-1/2 left-1/2 -translate-1/2" />
+      </div>
+    );
+  if (!onlineClassBlob)
+    return (
       <div className="mt-5 w-full flex flex-col gap-5 items-center">
         <div className="flex flex-col items-center gap-">
-          <div className="p-4 rounded-full bg-(--bg-tertiary)/50">
-            <FaUser className="text-4xl" />
+          <div
+            className={` h-20 w-20 overflow-hidden flex justify-center items-center relative rounded-full bg-(--bg-tertiary)/50 ${data?.user?.profileImage && "shadow-(--shadow-2xl) border border-gray-300"}`}
+          >
+            {!data?.user?.profileImage && <FaUser className="text-2xl" />}
+            {data?.user?.profileImage && (
+              <Image fill src={data.user.profileImage} alt="profile photo" />
+            )}
           </div>
           <h1
             className={`${font.className} mt-1 text-2xl font-bold tracking-wide`}
@@ -59,14 +78,14 @@ function StudentWrapper() {
           </h1>
           <div className={` text-xs mt-1 flex items-center gap-1`}>
             <p
-              className={`h-2 w-2  rounded-full ${data.user.status === "online" ? 'bg-green-500':'bg-red-500'}`}
+              className={`h-2 w-2  rounded-full ${data?.user?.status === "online" ? "bg-green-500" : "bg-red-500"}`}
             ></p>{" "}
-            {data.user.status === "online" ? 'online':'offline'}
+            {data?.user?.status === "online" ? "online" : "offline"}
           </div>
         </div>
         <button
           onClick={() => startCall(id, user?._id)}
-          className="flex gap-3 items-center w-full justify-center bg-purple-500 shadow-(--shadow-lg) py-4 rounded-lg text-white/90"
+          className="flex gap-3 items-center w-full lg:w-1/3 justify-center bg-purple-500 hover:bg-purple-600 duration-300 ease-in-out transition-all hover:cursor-pointer shadow-(--shadow-lg) py-4 rounded-lg text-white/90"
         >
           <FaVideo /> Start video Call
         </button>
@@ -121,7 +140,16 @@ function StudentWrapper() {
         </div>
       </div>
     );
-    if(onlineClassBlob && user?.role !== 'student') return <SubmitRecording audioSize={onlineClassBlobUrlSize} clientAudioUrl={onlineClassBlobUrl} studentId={id} submitRecording={submitRecording} isSubmitting={isSubmitting}/>
+  if (onlineClassBlob && user?.role !== "student")
+    return (
+      <SubmitRecording
+        audioSize={onlineClassBlobUrlSize}
+        clientAudioUrl={onlineClassBlobUrl}
+        studentId={id}
+        submitRecording={submitRecording}
+        isSubmitting={isSubmitting}
+      />
+    );
 }
 
-export default StudentWrapper
+export default StudentWrapper;

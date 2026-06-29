@@ -21,7 +21,7 @@ function AuthForm() {
     try{
       const res = await axios.post(`${process.env.NEXT_PUBLIC_URL}/auth/emailSignin`,{email:e.email,password:e.password,role},{withCredentials:true})
       queryClient.invalidateQueries();
-      if(role === 'student') router.replace('/profile');
+      if(role === 'student') router.replace('/gurfah');
       else router.replace('/students');
     }catch(err){
       if(!err.response?.data?.ok && err.response?.data?.message) return toast.error(err.response.data.message);

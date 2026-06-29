@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DateRangePicker } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-function CustomDateRangePicker() {
+function CustomDateRangePicker({className}) {
   const [range, setRange] = useState([
     { startDate: new Date(), endDate: new Date(), key: "range1" },
   ]);
@@ -21,7 +21,7 @@ function CustomDateRangePicker() {
    }
   return (
     <DateRangePicker
-      className="w-3/4"
+      className={`w-3/4 ${className}`}
       editableDateInputs
       startDatePlaceholder="start date"
       endDatePlaceholder="end date"

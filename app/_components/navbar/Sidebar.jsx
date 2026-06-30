@@ -4,10 +4,11 @@ import { usePathname } from "next/navigation";
 import { BsCalendar2X } from "react-icons/bs";
 import { CiMicrophoneOn, CiUser } from "react-icons/ci"
 import { FaBookOpen, FaMoneyBillWave } from "react-icons/fa";
-import { IoReturnUpBackOutline } from "react-icons/io5";
+import { IoBookOutline, IoReturnUpBackOutline } from "react-icons/io5";
 import { MdMeetingRoom } from "react-icons/md";
 import LogoutButton from "../auth/LogoutButton";
 import { useUser } from "../providers/UserProvider";
+import { PiDoorOpenLight } from "react-icons/pi";
 
 function Sidebar() {
   const {user} = useUser();
@@ -21,8 +22,8 @@ function Sidebar() {
       if(pathname.includes('auth')) return null;
     return (
       <div className="fixed top-0 w-40 p-5 px-2 h-full bg-(--card) border border-(--border) lg:flex flex-col hidden">
-        <h1 className="font-bold text-center">Tahfeez Dohad</h1>
-        <div className="lg:flex flex-col justify-between mt-20 flex-1">
+        <img src="/logo.png" alt="" className="w-full mx-auto"/>
+        <div className="lg:flex flex-col justify-between mt-10 flex-1">
           <div className="space-y-2">
             {(user?.role === 'teacher' || user?.role === 'admin') && <Link href="/students" className={linkStyle("/students")}>
               <CiUser size={20} />
@@ -35,12 +36,12 @@ function Sidebar() {
             </Link>}
 
             <Link href="/gurfah" className={linkStyle("/gurfah")}>
-              <MdMeetingRoom size={20} />
+              <PiDoorOpenLight size={20} />
               <span>Gurfah</span>
             </Link>
 
             <Link href="/maqarat" className={linkStyle("/maqarat")}>
-              <FaBookOpen size={18} />
+              <IoBookOutline size={18} />
               <span>Maqarat</span>
             </Link>
 

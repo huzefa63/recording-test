@@ -110,7 +110,7 @@ function MaqaratFilter({ query }) {
         {showFilter && <CustomContextMenu onClose={()=>setShowFilter(false)} className="w-40" options={options} />}
         <button
           onClick={() => setShowFilter(!showFilter)}
-          className="bg-(--card) p-2 shadow rounded-md"
+          className="bg-(--card) hover:bg-(--card-hover) duration-300 ease-in-out transition-all hover:cursor-pointer p-2 shadow rounded-md"
         >
           <IoFilterOutline />
         </button>

@@ -38,13 +38,13 @@ function RecordingsTableController({totalRes}) {
       <p>{page} out of {Math.ceil(totalRes / 10)} pages</p>
 
       <div className="flex items-center gap-2">
-        <button onClick={previousPage} className=" p-1 rounded-md bg-orange-50">
+        <button onClick={previousPage} className=" p-1 rounded-md bg-orange-100 hover:bg-orange-200/70 duration-300 ease-in-out transition-all hover:cursor-pointer">
           <IoIosArrowBack  className="text-2xl text-amber-800" />
         </button>
     <span className="p-1  px-3 rounded-md bg-(--primary)/90 text-white/90">
       {page}
     </span>
-        <button onClick={nextPage} className=" p-1 rounded-md bg-orange-50">
+        <button onClick={nextPage} className=" p-1 rounded-md bg-orange-100 hover:bg-orange-200/70 duration-300 ease-in-out transition-all hover:cursor-pointer">
           <IoIosArrowForward className="text-2xl text-amber-800" />
         </button>
       </div>

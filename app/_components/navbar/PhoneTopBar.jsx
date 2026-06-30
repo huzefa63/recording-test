@@ -54,25 +54,24 @@ function PhoneTopBar() {
   }
   if (pathname.includes("auth")) return null;
   if(pathname.includes('students')) return (
-      <div
-        className={`lg:ml-40 flex justify-between items-center p-3 text-lg border-b border-gray-200`}
-      >
-        <div>
-          <h1 className={`text-xl ${font.className} font-semibold`}>
-            Tahfeez Dohad
-          </h1>
-          <p className="text-xs text-gray-500">
-            Learn. Memorize. Grow With Us.
-          </p>
-        </div>
-        <Link
+    <div
+      className={`lg:ml-40 flex justify-between items-center p-3 text-lg border-b border-gray-200`}
+    >
+      <div>
+        <h1 className={`text-xl ${font.className} font-semibold`}>
+          Tahfeez Dohad
+        </h1>
+        <p className="text-xs text-gray-500">Learn. Memorize. Grow With Us.</p>
+      </div>
+      <Link
           href={"/profile"}
-          className="p-3 rounded-full bg-(--bg-tertiary)/50"
+          className="p-3 rounded-full bg-(--bg-tertiary)/50 lg:block hidden"
         >
           <FaUser className="text-amber-900" />
         </Link>
-      </div>
-    );
+      <img src="/transparent-logo.png" alt="" className="w-11 h-11 lg:hidden" />
+    </div>
+  );
   return (
     <div className="lg:ml-40 flex items-center justify-between p-3 border-b border-(--border)">
       <div className="flex items-center gap-4">
@@ -106,11 +105,11 @@ function PhoneTopBar() {
       </div>
       <Link
         href={"/profile"}
-        className="relative overflow-hidden h-10 w-10 rounded-full bg-(--bg-tertiary)/50 flex items-center justify-center"
+        className="p-3 rounded-full bg-(--bg-tertiary)/50 lg:block hidden"
       >
-        <FaUser className="text-amber-900 " />
-        {user?.profileImage && <Image fill src={user.profileImage} alt="profile image"/>}
+        <FaUser className="text-amber-900" />
       </Link>
+      <img src="/transparent-logo.png" alt="" className="w-11 h-11 lg:hidden" />
     </div>
   );
 }

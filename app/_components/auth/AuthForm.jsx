@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { CiLock } from "react-icons/ci";
 
 function AuthForm() {
   const [role,setRole] = useState('student');
@@ -39,7 +40,7 @@ function AuthForm() {
             <button
             type="button"
               onClick={() => setRole("student")}
-              className={`py-5 flex items-center gap-1 pl-3 pr-4 border-r  border border-(--border) ${role === "student" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
+              className={`py-5 hover:cursor-pointer flex items-center gap-1 pl-3 pr-4 border-r  border border-(--border) ${role === "student" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
             >
               <div className="p-2 rounded-full bg-(--primary)/10">
                 <FaUser />
@@ -49,7 +50,7 @@ function AuthForm() {
             <button
             type="button"
               onClick={() => setRole("teacher")}
-              className={`py-5 flex items-center gap-1 pl-3 pr-4 border-r border-(--border) ${role === "teacher" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
+              className={`py-5 hover:cursor-pointer flex items-center gap-1 pl-3 pr-4 border-r border-(--border) ${role === "teacher" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
             >
               <div className="p-2 rounded-full bg-(--primary)/10">
                 <GiGraduateCap />
@@ -59,7 +60,7 @@ function AuthForm() {
             <button
             type="button"
               onClick={() => setRole("admin")}
-              className={`py-5 flex items-center gap-1  pl-3 pr-4 ${role === "admin" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
+              className={`py-5 hover:cursor-pointer flex items-center gap-1  pl-3 pr-4 ${role === "admin" && "bg-(image:--gradient-light) shadow-(--shadow-lg)"}`}
             >
               <div className="p-2 rounded-full bg-(--primary)/10">
                 <GoShieldCheck />
@@ -90,12 +91,12 @@ function AuthForm() {
               Password
             </label>
             <div className="relative">
-              <AiOutlineMail className="absolute text-(--text) left-3 top-1/2 -translate-y-1/2" />
+              <CiLock className="absolute text-(--text) left-3 top-1/2 -translate-y-1/2" />
               <input
                 {...register("password", { required: true })}
                 required
                 placeholder="Enter you password"
-                type="text"
+                type="password"
                 className="py-4 px-10 text-xs tracking-wider text-(--text) bg-(image:--gradient-light) focus:outline-none border border-(--border) rounded-md shadow-(--shadow-lg) w-full"
               />
             </div>

@@ -185,7 +185,7 @@ function StudentsContainer() {
       {!isSelecting && (
         <button
           onClick={() => setIsSelecting(true)}
-          className="mt-5 bg-(image:--gradient-primary) text-white/90 text-sm px-6 py-2 rounded-lg shadow-(--shadow-lg) ml-auto flex items-center gap-2"
+          className="mt-5 bg-(image:--gradient-primary) hover:cursor-pointer duration-300 ease-in-out transition-all hover:scale-105 text-white/90 text-sm px-6 py-2 rounded-lg shadow-(--shadow-lg) ml-auto flex items-center gap-2"
         >
           <IoIosCheckboxOutline className="" /> Select
         </button>
@@ -198,13 +198,13 @@ function StudentsContainer() {
           <div className="flex items-center gap-3">
             <button
               onClick={handleCancelSelection}
-              className="shadow-(--shadow-lg) border border-(--primary)/50 text-sm rounded-lg bg-(--bg-tertiary)/50 py-2 px-3"
+              className="shadow-(--shadow-lg) duration-300 ease-in-out transition-all hover:scale-105 hover:cursor-pointer border border-(--primary)/50 text-sm rounded-lg bg-(--bg-tertiary)/50 py-2 px-3"
             >
               cancel
             </button>
             <button
               onClick={handleSelectAll}
-              className=" bg-(image:--gradient-primary) text-white/90 text-sm px-6 py-2 rounded-lg shadow-(--shadow-lg) ml-auto flex items-center gap-2"
+              className=" bg-(image:--gradient-primary) duration-300 ease-in-out transition-all hover:scale-105 hover:cursor-pointer text-white/90 text-sm px-6 py-2 rounded-lg shadow-(--shadow-lg) ml-auto flex items-center gap-2"
             >
               Select All
             </button>

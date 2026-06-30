@@ -48,15 +48,15 @@ function RecordingsContainer({params}) {
           <div className="text-left">
             <CiClock2 />
           </div>
-          <div className="flex items-center gap-1 col-span-2 text-[0.50rem] text-left">
+          <div className="flex items-center gap-1 col-span-2 text-[0.50rem] lg:text-xs text-left">
             <CiUser className="text-sm" /> Student
           </div>
-          <div className="flex items-center gap-1 col-span-2 text-[0.50rem] text-left">
+          <div className="flex items-center gap-1 col-span-2 text-[0.50rem] lg:text-xs text-left">
             <PiStudent className="text-sm" /> Muhaffiz
           </div>
           <div className="text-[0.50rem] flex justify-center">Actions</div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-">
           {recordingsData?.recordings?.map((el, i) => (
             <RecordingEntry key={el._id} el={el} i={i} />
           ))}

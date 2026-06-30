@@ -14,7 +14,7 @@ const {user} = useUser();
   if(!user?.role || user?.role !== 'admin') return null;
     if(user?.role === 'admin')return (
       <div className="flex justify-end">
-        <button onClick={()=>setIsForm(true)} className="bg-(image:--gradient-primary) text-white p-3 rounded-md shadow-(--shadow-lg) text-xs">
+        <button onClick={()=>setIsForm(true)} className="bg-(image:--gradient-primary) hover:scale-103 hover:cursor-pointer duration-300 ease-in-out transition-all text-white p-3 rounded-md shadow-(--shadow-lg) text-xs">
           + Create Maqarat Session
         </button>
         {isForm && <Form onClose={() => setIsForm(false)}/>}

@@ -52,7 +52,7 @@ function StudentCard({
           data-studentname={name}
           data-teachername={teacherName}
           data-proxyteachername={proxyTeacherName}
-          className="menu-btn absolute right-2 top-2 w-8 flex justify-center py-1"
+          className="menu-btn duration-300 ease-in-out transition-all hover:bg-(--card-hover) hover:cursor-pointer absolute right-2 top-2 w-8 flex justify-center py-1"
         >
           <BiDotsVertical className=" text-lg" />
         </button>
@@ -77,9 +77,7 @@ function StudentCard({
             </div>
             <div className="truncate">
               <p className="text-(--text-muted) text-[0.70rem]">Teacher</p>
-              <p className="text-(--text) truncate">
-                {teacherName}
-              </p>
+              <p className="text-(--text) truncate">{teacherName}</p>
             </div>
           </div>
           <div className=" border-t border-(--border) py-2 mt-2 flex items-center gap-3">

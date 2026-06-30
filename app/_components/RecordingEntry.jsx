@@ -9,10 +9,10 @@ import "react-h5-audio-player/lib/styles.css";
 function RecordingEntry({el,i,isDummy=false}) {
     const [isExpand,setIsExpand] = useState(false);
     if(!isDummy)return (
-      <div className="w-full">
+      <div className="w-full hover:bg-(--card-hover) duration-300 ease-in-out transition-all hover:cursor-pointer" onClick={() => setIsExpand(!isExpand)}>
         <div className="w-full grid grid-cols-9 px-3 py-3 border-b border-(--border)">
           {/* <p>{(page - 1) * 10 + index + 1}</p> */}
-          <div className="flex gap-2 items-center text-[0.55rem]  lg:text-xs tracking-wider col-span-3">
+          <div className="flex gap-2 items-center text-[0.55rem] tracking-wider col-span-3">
             <span className="p-2 rounded-md bg-orange-100">
               <CiCalendar className="text-orange-600" />
             </span>{" "}
@@ -33,7 +33,7 @@ function RecordingEntry({el,i,isDummy=false}) {
             {el.teacherName}
           </p>
           <button
-            onClick={() => setIsExpand(!isExpand)}
+            // onClick={() => setIsExpand(!isExpand)}
             className="text-xs flex justify-center"
           >
             <IoIosArrowDown
@@ -45,12 +45,12 @@ function RecordingEntry({el,i,isDummy=false}) {
           <div className=" w-full flex justify-center py-2">
             <div className="w-3/4 rounded-md overflow-hidden shadow-(--shadow-lg)">
               <AudioPlayer
-              autoPlay={false}
-              customAdditionalControls={[]}
-              src={el.audio}
-              // onPlay={() => console.log("Playing")}
-              className="text-sm"
-            />
+                autoPlay={false}
+                customAdditionalControls={[]}
+                src={el.audio}
+                // onPlay={() => console.log("Playing")}
+                className="text-sm"
+              />
             </div>
           </div>
         )}

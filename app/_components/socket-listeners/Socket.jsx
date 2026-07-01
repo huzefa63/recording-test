@@ -7,6 +7,7 @@ import { useUser } from "../providers/UserProvider";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
+import axios from "axios";
 
 const Context = createContext(null);
 
@@ -44,7 +45,7 @@ export function CallingFnProvider({ children }) {
          );
        }
     }else{
-      window.location.reload();
+      // window.location.reload();
     }
     if(localMedia.current){
       localMedia.current.getTracks().forEach((track) => track.stop());
@@ -95,34 +96,41 @@ export function CallingFnProvider({ children }) {
     socket.on("connect", () => {
       console.log("connected");
     });
-
-    peerConnection.current = new RTCPeerConnection({
-      iceServers: [
-        {
-          urls: "stun:stun.l.google.com:19302",
-        },
-      ],
-    });
-
-    peerConnection.current.ontrack = (event) => {
-      const stream = event.streams[0];
-      setRemoteMedia(stream);
-      if (remoteVideoRef.current) {
-        remoteVideoRef.current.srcObject = stream;
-        remoteVideoRef.current.play().catch((err) => console.log(err));
-      }
-    };
-
-    peerConnection.current.onicecandidate = ({ candidate }) => {
-      if (candidate) {
-        socket.emit("ice-candidate", {
-          to: targetUserRef.current,
-          candidate,
-        });
-      }
-    };
+    
+  
 }, [socket]);
+async function turn() {
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
+    { withCredentials: true },
+  );
+  peerConnection.current = new RTCPeerConnection(res.data);
+  peerConnection.current.ontrack = (event) => {
+    const stream = event.streams[0];
+    setRemoteMedia(stream);
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = stream;
+      remoteVideoRef.current.play().catch((err) => console.log(err));
+    }
+  };
+
+  peerConnection.current.onicecandidate = ({ candidate }) => {
+    if (candidate) {
+      socket.emit("ice-candidate", {
+        to: targetUserRef.current,
+        candidate,
+      });
+    }
+  };
+}
     async function startCall(receiverId,callerId) {
+      // const res = await axios.get(
+      //   `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
+      //   { withCredentials: true },
+      // );
+      // console.log(res.data)
+      // peerConnection.current = new RTCPeerConnection(res.data);
+      await turn();
         setIsCalling(true);
         targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
@@ -154,6 +162,11 @@ export function CallingFnProvider({ children }) {
 
 
     async function acceptCall(receiverId,callerId) {
+      // const res = await axios.get(
+      //   `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
+      //   { withCredentials: true },
+      // );
+      // peerConnection.current = new RTCPeerConnection(res.data);
       setIsInCall(true);
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(remoteOffer),
@@ -186,7 +199,8 @@ export function CallingFnProvider({ children }) {
         if(!socket) return;
         socket.on('incoming-call',async ({caller,offer}) => {
           if(isInCall) return socket.emit('line-busy',{to:caller});
-          console.log(caller,offer)
+      await turn();
+          
           setIsIncoming(true);
           setCallerId(caller);
                   targetUserRef.current = caller;
@@ -215,7 +229,8 @@ export function CallingFnProvider({ children }) {
 
         })
         socket.on('call-accepted',async ({caller,answer}) => {
-            setIsInCall(true);
+          setIsInCall(true);
+         
             // localVideoRef.current.srcObject = localMedia.current;
             // localVideoRef.current.play();
             await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
@@ -304,7 +319,7 @@ export function CallingFnProvider({ children }) {
               }
 
           }else{
-                  window.location.reload();
+                  // window.location.reload();
 
           }
           localMedia.current.getTracks().forEach((track) => track.stop());

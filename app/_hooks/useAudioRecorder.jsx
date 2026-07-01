@@ -144,9 +144,10 @@ function useAudioRecorder() {
           id: toastId,
         });
         router.push("/students");
-          setTimeout(() => {
-            if (onlineClassBlob) window.location.reload();
-          }, 1000);
+        setOnlineClassBlob(null);
+            // setTimeout(() => {
+            //   if (onlineClassBlob) window.location.reload();
+            // }, 1000);
       }catch(err){
         console.log(err);
         toast.error("Upload failed!", {

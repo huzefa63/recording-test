@@ -94,7 +94,7 @@ function useAudioRecorder() {
      function finishRecording() {
       setConfirmFinishRecording(false);
        setIsRecording(false);
-       setTotalSeconds(0);
+       
        if (interval.current) clearInterval(interval.current);
        if (recorder.current) recorder.current.stop();
        if (recorder.current) recorder.current = null;
@@ -104,32 +104,86 @@ function useAudioRecorder() {
      }
 
      async function submitRecording(studentId) {
-       const formData = new FormData();
-       if(!onlineClassBlob) formData.append("recording", audio, "recording.webm");
-       if(onlineClassBlob) {
-        formData.append("recording", onlineClassBlob, "recording.webm");
-        formData.append("isOnline",true);
-       }
-       try {
-      setIsSubmitting(true);
-      setConfirmSubmit(false);
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_URL}/recording/upload/${studentId}`,
-        formData,{withCredentials:true}
-      );
-      toast.success("recording uploaded");
-      if(onlineClassBlob) window.location.reload();
-      setOnlineClassBlob(null);
-      setOnlineClassBlobUrl('')
-         if (isRedirect) return router.push("https://www.elearningquran.com");
-         else return router.push("/students");
-       } catch (err) {
-         toast.error("failed to upload recording");
-         console.log(err)
-       } finally {
-         setIsSubmitting(false);
-       }
+      setIsSubmitting(true);  
+      const toastId = 'uploading'
+      try{
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/recording/signedToken`,{withCredentials:true}
+        );
+        console.log(data.signedUrl)
+        let blob;
+        if (!onlineClassBlob) blob = audio;
+        if (onlineClassBlob) {
+          blob = onlineClassBlob;
+          // formData.append("isOnline",true);
+        }
+        await axios.put(data.signedUrl, blob, {
+          headers: {
+            "Content-Type": "audio/webm",
+          },
+          onUploadProgress: (progress) => {
+            const percent = Math.round(
+              (progress.loaded * 100) / progress.total,
+            );
+
+            toast.loading(`Uploading... ${percent}%`, {
+              id: toastId,
+            });
+
+          },
+        });
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_URL}/recording/create/${studentId}`,
+          {
+            isOnline: onlineClassBlob ? true : false,
+            url: data.url,
+            duration: totalSeconds / 60,
+          },{withCredentials:true}
+        );
+        toast.success("Upload complete!", {
+          id: toastId,
+        });
+        router.push("/students");
+          setTimeout(() => {
+            if (onlineClassBlob) window.location.reload();
+          }, 1000);
+      }catch(err){
+        console.log(err);
+        toast.error("Upload failed!", {
+          id: toastId,
+        });
+      }finally{
+        setIsSubmitting(false);
+        setTotalSeconds(0);
+      }
      }
+    //  async function submitRecording(studentId) {
+    //    const formData = new FormData();
+    //    if(!onlineClassBlob) formData.append("recording", audio, "recording.webm");
+    //    if(onlineClassBlob) {
+    //     formData.append("recording", onlineClassBlob, "recording.webm");
+    //     formData.append("isOnline",true);
+    //    }
+    //    try {
+    //   setIsSubmitting(true);
+    //   setConfirmSubmit(false);
+    //   await axios.post(
+    //     `${process.env.NEXT_PUBLIC_URL}/recording/upload/${studentId}`,
+    //     formData,{withCredentials:true}
+    //   );
+    //   toast.success("recording uploaded");
+    //   if(onlineClassBlob) window.location.reload();
+    //   setOnlineClassBlob(null);
+    //   setOnlineClassBlobUrl('')
+    //      if (isRedirect) return router.push("https://www.elearningquran.com");
+    //      else return router.push("/students");
+    //    } catch (err) {
+    //      toast.error("failed to upload recording");
+    //      console.log(err)
+    //    } finally {
+    //      setIsSubmitting(false);
+    //    }
+    //  }
 
     return {
       states: {

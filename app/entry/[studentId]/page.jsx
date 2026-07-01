@@ -5,14 +5,14 @@ async function Page({params,searchParams}) {
   const searchParam = await params;
   const queryParams = await searchParams;
     return (
-      <ProtectRoutes>
+      // <ProtectRoutes>
         <div className="h-full w-full p-4 pt-2  ">
           <RecordingWrapper
             studentName={queryParams.studentName}
             studentId={searchParam.studentId}
           />
         </div>
-      </ProtectRoutes>
+      // </ProtectRoutes>
     );
 }
 

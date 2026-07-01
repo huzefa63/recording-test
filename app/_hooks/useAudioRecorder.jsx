@@ -158,34 +158,6 @@ function useAudioRecorder() {
         setTotalSeconds(0);
       }
      }
-    //  async function submitRecording(studentId) {
-    //    const formData = new FormData();
-    //    if(!onlineClassBlob) formData.append("recording", audio, "recording.webm");
-    //    if(onlineClassBlob) {
-    //     formData.append("recording", onlineClassBlob, "recording.webm");
-    //     formData.append("isOnline",true);
-    //    }
-    //    try {
-    //   setIsSubmitting(true);
-    //   setConfirmSubmit(false);
-    //   await axios.post(
-    //     `${process.env.NEXT_PUBLIC_URL}/recording/upload/${studentId}`,
-    //     formData,{withCredentials:true}
-    //   );
-    //   toast.success("recording uploaded");
-    //   if(onlineClassBlob) window.location.reload();
-    //   setOnlineClassBlob(null);
-    //   setOnlineClassBlobUrl('')
-    //      if (isRedirect) return router.push("https://www.elearningquran.com");
-    //      else return router.push("/students");
-    //    } catch (err) {
-    //      toast.error("failed to upload recording");
-    //      console.log(err)
-    //    } finally {
-    //      setIsSubmitting(false);
-    //    }
-    //  }
-
     return {
       states: {
         isRecording,
@@ -199,7 +171,7 @@ function useAudioRecorder() {
         hours,
         minutes,
         seconds,
-        audioSize
+        audioSize,
       },
 
       actions: {
@@ -211,7 +183,8 @@ function useAudioRecorder() {
         setConfirmSubmit,
         setIsRedirect,
         handleConfirmFinishRecording,
-        setConfirmFinishRecording
+        setConfirmFinishRecording,
+        setIsRecorded,
       },
     };
 }

@@ -1,11 +1,22 @@
+'use client';
 import { FaCircleCheck } from "react-icons/fa6";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { IoInformationCircleOutline } from "react-icons/io5";
+import { IoInformationCircleOutline, IoTrash } from "react-icons/io5";
 import { PiStudentFill } from "react-icons/pi";
 import { IoIosCloudUpload, IoMdCloudUpload } from "react-icons/io";
 import { ImSpinner2 } from "react-icons/im";
-function SubmitRecording({studentId ,studentName,audioSize,clientAudioUrl,submitRecording, isSubmitting}) {
+function SubmitRecording({
+  studentId,
+  studentName,
+  audioSize,
+  clientAudioUrl,
+  submitRecording,
+  isSubmitting,
+  setOnlineClassBlobUrl,
+  setOnlineClassBlob,
+  setIsRecorded,
+}) {
   return (
     <div className="flex justify-center flex-col items-center gap-6 order py-3 px-5 border-(--border) h-full rounded-2xl hadow-2xl">
       <div className="flex flex-col items-center gap-3 bg-(--card) w-full py-4 rounded-2xl shadow-(--shadow-md) order border-(--border)">
@@ -48,11 +59,13 @@ function SubmitRecording({studentId ,studentName,audioSize,clientAudioUrl,submit
 
       <div className="w-full shadow-(--shadow-md)">
         <button
-            disabled={isSubmitting}
-            onClick={() => submitRecording(studentId)}
-          className="relative flex items-center gap-2 justify-center bg-(image:--gradient-primary) text-white shadow-lg py-4 rounded-md w-full"
+          disabled={isSubmitting}
+          onClick={() => submitRecording(studentId)}
+          className="relative flex items-center gap-2 justify-center hover:cursor-pointer hover:scale-102 ease-in-out duration-300 transition-all bg-(image:--gradient-primary) text-white shadow-lg py-4 rounded-md w-full"
         >
-          <p className={`${isSubmitting && "opacity-0"} flex items-center gap-1`}>
+          <p
+            className={`${isSubmitting && "opacity-0"} flex items-center gap-1`}
+          >
             <IoMdCloudUpload />
             Submit Recording
           </p>
@@ -61,6 +74,18 @@ function SubmitRecording({studentId ,studentName,audioSize,clientAudioUrl,submit
               <ImSpinner2 />
             </span>
           )}
+        </button>
+        <button
+          disabled={isSubmitting}
+          onClick={() => {
+            window.location.reload();
+          }}
+          className="relative flex items-center gap-2 justify-center bg-(image:--gradient-danger) mt-5 hover:cursor-pointer hover:scale-102 ease-in-out duration-300 transition-all text-white shadow-lg py-4 rounded-md w-full"
+        >
+          <p className={` flex items-center gap-1`}>
+            <IoTrash />
+            Discard
+          </p>
         </button>
       </div>
     </div>

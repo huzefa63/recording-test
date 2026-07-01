@@ -565,11 +565,11 @@ function PhoneLeaveCard({
           <span className="lg:hidden">
             {days} days - {reason.slice(0, 15)}
           </span>
-          <p className="hidden lg:block ">
+          <span className="hidden lg:block ">
             {days} days - {reason.slice(0, 60)}
-          </p>
-          <p className="lg:hidden">{reason.length > 15 && "..."}</p>
-          <p className="hidden lg:block">{reason.length > 60 && "..."}</p>
+          </span>
+          <span className="lg:hidden">{reason.length > 15 && "..."}</span>
+          <span className="hidden lg:block">{reason.length > 60 && "..."}</span>
         </p>
       </div>
       {/* <p className="absolute right-5 top-2 text-[0.60rem] p-1 px-2 text-white bg-green-500/70 rounded-md">Accepted</p> */}

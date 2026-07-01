@@ -8,14 +8,17 @@ import { useUser } from "./UserProvider";
 const Context = createContext();
 function SocketProvider({children}) {
     // const session = useSession();
-    const {user} = useUser();
+    const {user,isLoading} = useUser();
     const [socket,setSocket] = useState();
      useEffect(() => {
-       console.log(user?._id)
+
       if(!user?._id){
-        if(socket) socket?.disconnect();
+        if(socket) {
+          console.log('disconnecting socket cause no user id');
+        }
         return;
       }
+      console.log('connecting socket');
        const newSocket = io(`${process.env.NEXT_PUBLIC_URL}`, {
          withCredentials:true
        });
@@ -24,7 +27,7 @@ console.log('socket connected: ',newSocket.connected)
 
        return () => {
          newSocket.disconnect();
-         console.log("🔌 Socket disconnected");
+         console.log("🔌 Socket disconnected from cleanup");
        };
      }, [user?._id]);
     return (

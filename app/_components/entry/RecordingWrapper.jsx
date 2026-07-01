@@ -5,6 +5,7 @@ import StartRecording from "./StartRecording";
 import { useVideoCallContext } from "../providers/VideoCallProvider";
 import RecordingInProgress from "./RecordingInProgress";
 import SubmitRecording from "./SubmitRecording";
+import { useEffect } from "react";
 
 function RecordingWrapper({studentName,studentId}) {
     // const session = useSession();
@@ -20,7 +21,7 @@ function RecordingWrapper({studentName,studentId}) {
         hours,
         minutes,
         seconds,
-        audioSize
+        audioSize,
       },
 
       actions: {
@@ -33,11 +34,20 @@ function RecordingWrapper({studentName,studentId}) {
         setIsRedirect,
         handleConfirmFinishRecording,
         setConfirmFinishRecording,
+        setIsRecorded,
       },
     } = useAudioRecorder();
+     
+
     // const { startCall, dummyStartCall } = useCallingFn();
-    const { onlineClassBlob, onlineClassBlobUrl } = useVideoCallContext();
+    const {
+      onlineClassBlob,
+      onlineClassBlobUrl,
+      setOnlineClassBlobUrl,
+      setOnlineClassBlob,
+    } = useVideoCallContext();
     const queryClient = useQueryClient();
+    
     async function confirmSubmitHandler() {
       setConfirmSubmit(false);
       try {
@@ -47,6 +57,7 @@ function RecordingWrapper({studentName,studentId}) {
         console.log(err);
       }
     }
+    
     // return <StartRecording />
     // return <RecordingInProgress hours={hours} minutes={minutes} seconds={seconds} isPause={isPause} handlePause={handlePause} handleResume={handleResume}/>
     if (!isRecording && !isRecorded && !onlineClassBlobUrl){
@@ -69,7 +80,19 @@ function RecordingWrapper({studentName,studentId}) {
         );
     }
     if (isRecorded || onlineClassBlobUrl){
-      return <SubmitRecording studentId={studentId} isSubmitting={isSubmitting} submitRecording={submitRecording} studentName={studentName} audioSize={audioSize} clientAudioUrl={clientAudioUrl}/>
+      return (
+        <SubmitRecording
+          setOnlineClassBlob={setOnlineClassBlob}
+          setOnlineClassBlobUrl={setOnlineClassBlobUrl}
+          setIsRecorded={setIsRecorded}
+          studentId={studentId}
+          isSubmitting={isSubmitting}
+          submitRecording={submitRecording}
+          studentName={studentName}
+          audioSize={audioSize}
+          clientAudioUrl={clientAudioUrl}
+        />
+      );
     }
 }
 

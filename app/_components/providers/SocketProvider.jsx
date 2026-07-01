@@ -18,9 +18,10 @@ function SocketProvider({children}) {
         }
         return;
       }
-      console.log('connecting socket');
+      console.log('connecting socket'); 
        const newSocket = io(`${process.env.NEXT_PUBLIC_URL}`, {
-         withCredentials:true
+         withCredentials:true,
+         transports:['websocket']
        });
 console.log('socket connected: ',newSocket.connected)
        setSocket(newSocket);

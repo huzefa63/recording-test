@@ -171,18 +171,19 @@ export function CallingFnProvider({ children }) {
         setIsCalling(true);
         targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
-        video: {
+      video: {
         width: { ideal: 1920 },
         height: { ideal: 1080 },
         frameRate: { ideal: 60 },
-        },
-        audio: {
+        facingMode: { ideal: "user" },
+      },
+      audio: {
         sampleRate: 48000,
         channelCount: 2,
         echoCancellation: true,
         noiseSuppression: true,
-        autoGainControl: true, 
-        },
+        autoGainControl: true,
+      },
     });
     localVideoRef.current.srcObject = localMedia.current;
     
@@ -248,6 +249,7 @@ export function CallingFnProvider({ children }) {
               width: { ideal: 1920 },
               height: { ideal: 1080 },
               frameRate: { ideal: 60 },
+              facingMode:{ideal:'user'},
             },
             audio: {
               sampleRate: 48000,

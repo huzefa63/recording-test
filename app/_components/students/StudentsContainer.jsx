@@ -163,7 +163,9 @@ function StudentsContainer() {
     if(session?.status === 'loading') return;
     if(isFetching) return;
     if(user?.role === 'student') router.replace('/gurfah');
+    if(!user?._id) router.replace('/auth');
   },[user?._id,session?.status])
+
   if (!user?.role) return null;
   if(user?.role === 'student') return null;
   const customizedTeachers = teachers?.map((el) => ({

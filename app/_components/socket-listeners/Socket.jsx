@@ -94,26 +94,17 @@ export function CallingFnProvider({ children }) {
     if (!socket) return;
 
     socket.on("connect", () => {
-      console.log("connected");
-      console.log('socket id:', socket.id);
-    });
-    socket.on("disconnect", (reason) => {
-      console.log("socket disconnected");
-      console.log('reason: ',reason)
-    });
-    socket.onAny((event, ...args) => {
-      console.log("Event:", event, args);
-    });
-    socket.on("disconnect", (reason) => {
-      console.log("Socket disconnect:", reason);
+      console.log("CONNECT", socket.id);
     });
 
-    socket.io.engine.on("close", (reason) => {
-      console.log("Engine close:", reason);
+    socket.on("disconnect", (reason) => {
+      console.log("DISCONNECT", socket.id, reason);
     });
 
     socket.io.engine.on("packet", (packet) => {
-      console.log("Packet:", packet.type);
+      if (packet.type === "ping") {
+        console.log("PING", socket.id);
+      }
     });
   
 }, [socket]);

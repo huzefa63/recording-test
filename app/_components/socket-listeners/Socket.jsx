@@ -23,7 +23,32 @@ export function CallingFnProvider({ children }) {
   const targetUserRef = useRef(null);
   const router = useRouter();
   const pathname = usePathname();
-  function endCall(){
+
+  async function turn() {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
+      { withCredentials: true },
+    );
+    peerConnection.current = new RTCPeerConnection(res.data);
+    peerConnection.current.ontrack = (event) => {
+      const stream = event.streams[0];
+      setRemoteMedia(stream);
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = stream;
+        remoteVideoRef.current.play().catch((err) => console.log(err));
+      }
+    };
+
+    peerConnection.current.onicecandidate = ({ candidate }) => {
+      if (candidate) {
+        socket.emit("ice-candidate", {
+          to: targetUserRef.current,
+          candidate,
+        });
+      }
+    };
+  }
+  async function endCall(){
     setIsCalling(false);
     setIsIncoming(false);
     setIsInCall(false);
@@ -51,6 +76,7 @@ export function CallingFnProvider({ children }) {
       localMedia.current.getTracks().forEach((track) => track.stop());
     }
     socket.emit('end-call',{to:targetUserRef.current});
+    await turn();
   }
 
   useEffect(() => {
@@ -106,30 +132,7 @@ export function CallingFnProvider({ children }) {
         console.log("PING", socket.id);
       }
     });
-      async function turn() {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
-          { withCredentials: true },
-        );
-        peerConnection.current = new RTCPeerConnection(res.data);
-        peerConnection.current.ontrack = (event) => {
-          const stream = event.streams[0];
-          setRemoteMedia(stream);
-          if (remoteVideoRef.current) {
-            remoteVideoRef.current.srcObject = stream;
-            remoteVideoRef.current.play().catch((err) => console.log(err));
-          }
-        };
-
-        peerConnection.current.onicecandidate = ({ candidate }) => {
-          if (candidate) {
-            socket.emit("ice-candidate", {
-              to: targetUserRef.current,
-              candidate,
-            });
-          }
-        };
-      }
+      
       turn();
   
 }, [socket]);
@@ -331,7 +334,7 @@ export function CallingFnProvider({ children }) {
           }
         })
 
-        socket.on('end-call',() => {
+        socket.on('end-call',async () => {
           setIsCalling(false);
           setIsIncoming(false);
           setIsInCall(false);
@@ -357,6 +360,7 @@ export function CallingFnProvider({ children }) {
 
           }
           localMedia.current.getTracks().forEach((track) => track.stop());
+          await turn();
         })
     },[socket])
 

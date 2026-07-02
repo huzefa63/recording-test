@@ -50,7 +50,7 @@ export function CallingFnProvider({ children }) {
 
     peerConnection.current.onconnectionstatechange = async () => {
       if(!isCalling) return;
-      if(peerConnection.connectionstate === 'failed'){
+      if(peerConnection.current.connectionstate === 'failed'){
         peerConnection.current.restartIce();
         const offer = await peerConnection.current.createOffer({
           iceRestart: true,

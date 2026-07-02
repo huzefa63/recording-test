@@ -8,10 +8,10 @@ import { useUser } from "./UserProvider";
 const Context = createContext();
 function SocketProvider({children}) {
     // const session = useSession();
-    const {user,isLoading} = useUser();
+    const {user,isFetching} = useUser();
     const [socket,setSocket] = useState();
      useEffect(() => {
-
+      if(isFetching) return;
       if(!user?._id){
         if(socket) {
           console.log('disconnecting socket cause no user id');
@@ -26,10 +26,10 @@ function SocketProvider({children}) {
 console.log('socket connected: ',newSocket.connected)
        setSocket(newSocket);
 
-       return () => {
-         newSocket.disconnect();
-         console.log("🔌 Socket disconnected from cleanup");
-       };
+      //  return () => {
+      //    newSocket.disconnect();
+      //    console.log("🔌 Socket disconnected from cleanup");
+      //  };
      }, [user?._id]);
     return (
         <Context.Provider value={{socket}}>

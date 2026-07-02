@@ -104,6 +104,17 @@ export function CallingFnProvider({ children }) {
     socket.onAny((event, ...args) => {
       console.log("Event:", event, args);
     });
+    socket.on("disconnect", (reason) => {
+      console.log("Socket disconnect:", reason);
+    });
+
+    socket.io.engine.on("close", (reason) => {
+      console.log("Engine close:", reason);
+    });
+
+    socket.io.engine.on("packet", (packet) => {
+      console.log("Packet:", packet.type);
+    });
   
 }, [socket]);
 async function turn() {

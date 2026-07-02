@@ -21,7 +21,6 @@ function SocketProvider({children}) {
       console.log('connecting socket'); 
        const newSocket = io(`${process.env.NEXT_PUBLIC_URL}`, {
          withCredentials:true,
-         transports:['websocket']
        });
 console.log('socket connected: ',newSocket.connected)
        setSocket(newSocket);

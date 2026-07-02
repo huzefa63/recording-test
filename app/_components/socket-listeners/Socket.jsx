@@ -47,6 +47,20 @@ export function CallingFnProvider({ children }) {
         });
       }
     };
+
+    peerConnection.current.onconnectionstatechange = async () => {
+      if(!isCalling) return;
+      if(peerConnection.connectionstate === 'failed'){
+        peerConnection.current.restartIce();
+        const offer = await peerConnection.current.createOffer({
+          iceRestart: true,
+        });
+
+        await peerConnection.current.setLocalDescription(offer);
+
+        socket.emit("ice-restart-offer", {offer,to:callingTo});
+      }
+    }
   }
   async function endCall(){
     setIsCalling(false);
@@ -169,6 +183,7 @@ export function CallingFnProvider({ children }) {
       // peerConnection.current = new RTCPeerConnection(res.data);
       // await turn();
         setIsCalling(true);
+        setCallingTo(receiverId)
         targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
       video: {
@@ -215,6 +230,7 @@ export function CallingFnProvider({ children }) {
       if(candidates.current.length !== 0)for(const candidate of candidates.current){
         peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
       }
+      candidates.current = [];
       await new Promise((res) => setTimeout(() => {
         res();
       },600))
@@ -282,6 +298,32 @@ export function CallingFnProvider({ children }) {
         socket.on('line-busy',() => {
            toast.error('The person you are trying to reach is on another call');
         })
+        socket.on('ice-restart-offer',async ({offer}) => {
+           await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer),);
+           const answer = await peerConnection.current.createAnswer();
+           await peerConnection.current.setLocalDescription(answer);
+           if (candidates.current.length !== 0)
+             for (const candidate of candidates.current) {
+               peerConnection.current.addIceCandidate(
+                 new RTCIceCandidate(candidate),
+               );
+             }
+           candidates.current = [];
+      socket.emit('ice-restart-answer',{answer,to:callerId})
+        })
+
+        socket.on("ice-restart-answer", async ({ answer }) => {
+            await peerConnection.current.setRemoteDescription(
+              new RTCSessionDescription(answer),
+            );
+          if (candidates.current.length !== 0)
+            for (const candidate of candidates.current) {
+              peerConnection.current.addIceCandidate(
+                new RTCIceCandidate(candidate),
+              );
+            }
+          candidates.current = [];
+        });
         socket.on('ice-candidate',async ({candidate}) => {
           if(!peerConnection.current) return;
            if(peerConnection.current.remoteDescription){

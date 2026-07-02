@@ -93,7 +93,7 @@ export function CallingFnProvider({ children }) {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("connect", (socket) => {
+    socket.on("connect", () => {
       console.log("connected");
       console.log('socket id:', socket.id);
     });

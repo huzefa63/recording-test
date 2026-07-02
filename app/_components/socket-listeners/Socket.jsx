@@ -106,32 +106,57 @@ export function CallingFnProvider({ children }) {
         console.log("PING", socket.id);
       }
     });
+      async function turn() {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
+          { withCredentials: true },
+        );
+        peerConnection.current = new RTCPeerConnection(res.data);
+        peerConnection.current.ontrack = (event) => {
+          const stream = event.streams[0];
+          setRemoteMedia(stream);
+          if (remoteVideoRef.current) {
+            remoteVideoRef.current.srcObject = stream;
+            remoteVideoRef.current.play().catch((err) => console.log(err));
+          }
+        };
+
+        peerConnection.current.onicecandidate = ({ candidate }) => {
+          if (candidate) {
+            socket.emit("ice-candidate", {
+              to: targetUserRef.current,
+              candidate,
+            });
+          }
+        };
+      }
+      turn();
   
 }, [socket]);
-async function turn() {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
-    { withCredentials: true },
-  );
-  peerConnection.current = new RTCPeerConnection(res.data);
-  peerConnection.current.ontrack = (event) => {
-    const stream = event.streams[0];
-    setRemoteMedia(stream);
-    if (remoteVideoRef.current) {
-      remoteVideoRef.current.srcObject = stream;
-      remoteVideoRef.current.play().catch((err) => console.log(err));
-    }
-  };
+// async function turn() {
+//   const res = await axios.get(
+//     `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
+//     { withCredentials: true },
+//   );
+//   peerConnection.current = new RTCPeerConnection(res.data);
+//   peerConnection.current.ontrack = (event) => {
+//     const stream = event.streams[0];
+//     setRemoteMedia(stream);
+//     if (remoteVideoRef.current) {
+//       remoteVideoRef.current.srcObject = stream;
+//       remoteVideoRef.current.play().catch((err) => console.log(err));
+//     }
+//   };
 
-  peerConnection.current.onicecandidate = ({ candidate }) => {
-    if (candidate) {
-      socket.emit("ice-candidate", {
-        to: targetUserRef.current,
-        candidate,
-      });
-    }
-  };
-}
+//   peerConnection.current.onicecandidate = ({ candidate }) => {
+//     if (candidate) {
+//       socket.emit("ice-candidate", {
+//         to: targetUserRef.current,
+//         candidate,
+//       });
+//     }
+//   };
+// }
     async function startCall(receiverId,callerId) {
       // const res = await axios.get(
       //   `${process.env.NEXT_PUBLIC_URL}/turn-credentials`,
@@ -139,7 +164,7 @@ async function turn() {
       // );
       // console.log(res.data)
       // peerConnection.current = new RTCPeerConnection(res.data);
-      await turn();
+      // await turn();
         setIsCalling(true);
         targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
@@ -208,7 +233,7 @@ async function turn() {
         if(!socket) return;
         socket.on('incoming-call',async ({caller,offer}) => {
           if(isInCall) return socket.emit('line-busy',{to:caller});
-      await turn();
+      // await turn();
           
           setIsIncoming(true);
           setCallerId(caller);

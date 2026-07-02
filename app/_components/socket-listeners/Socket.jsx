@@ -93,8 +93,9 @@ export function CallingFnProvider({ children }) {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("connect", () => {
+    socket.on("connect", (socket) => {
       console.log("connected");
+      console.log('socket id:', socket.id);
     });
     socket.on("disconnect", (reason) => {
       console.log("socket disconnected");

@@ -96,6 +96,10 @@ export function CallingFnProvider({ children }) {
     socket.on("connect", () => {
       console.log("connected");
     });
+    socket.on("disconnect", (reason) => {
+      console.log("socket disconnected");
+      console.log('reason: ',reason)
+    });
     
   
 }, [socket]);

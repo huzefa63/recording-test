@@ -2,12 +2,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useUser } from "./UserProvider";
 
 const Context = createContext();
 function AppProvider({ children }) {
   const {user} = useUser();
+    const containerRef = useRef(null);
+  
     // const [teachers,setTeachers] = useState();
     // const [students,setStudents] = useState();
 
@@ -34,7 +36,7 @@ function AppProvider({ children }) {
 
 const teachers = data?.teachers;
 const students = data?.students;
-  return <Context.Provider value={{ teachers,students }}>{children}</Context.Provider>;
+  return <Context.Provider value={{ teachers,students,containerRef }}>{children}</Context.Provider>;
 }
 
 export default AppProvider;

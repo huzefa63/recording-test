@@ -1,19 +1,31 @@
 "use client";
 import { Playfair_Display } from "next/font/google";
-import { FaRegClock, FaSpinner, FaUser, FaVideo } from "react-icons/fa";
+import {
+  FaRegClock,
+  FaSpinner,
+  FaUser,
+  FaUserCircle,
+  FaVideo,
+} from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
 import { useCallingFn } from "../socket-listeners/Socket";
 import { useVideoCallContext } from "../providers/VideoCallProvider";
 import SubmitRecording from "../entry/SubmitRecording";
 import useAudioRecorder from "@/app/_hooks/useAudioRecorder";
 import { useUser } from "../providers/UserProvider";
-import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useParams, usePathname } from "next/navigation";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { ImSpinner2 } from "react-icons/im";
 import { format, formatDistanceToNow } from "date-fns";
 import Image from "next/image";
 import SubmitVideoCallRecording from "../video_call/SubmitVideoCallRecording";
+import Link from "next/link";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoSend } from "react-icons/io5";
+import { useEffect, useRef, useState } from "react";
+import { useSocketContext } from "../providers/SocketProvider";
+import { useAppProvider } from "../providers/AppProvider";
 
 const font = Playfair_Display({
   subsets: ["latin"],
@@ -21,11 +33,22 @@ const font = Playfair_Display({
 });
 function StudentWrapper() {
   const { user } = useUser();
+  const {socket} = useSocketContext();
+  const {containerRef} = useAppProvider();
+  const pathname = usePathname();
+  const queryClient = useQueryClient();
   const params = useParams();
   const id = params?.id;
   const { startCall } = useCallingFn();
-  const { onlineClassBlob,videoCallSeconds, onlineClassBlobUrl, onlineClassBlobUrlSize,setOnlineClassBlob,setOnlineClassBlobUrl, setVideoCallSeconds } =
-    useVideoCallContext();
+  const {
+    onlineClassBlob,
+    videoCallSeconds,
+    onlineClassBlobUrl,
+    onlineClassBlobUrlSize,
+    setOnlineClassBlob,
+    setOnlineClassBlobUrl,
+    setVideoCallSeconds,
+  } = useVideoCallContext();
   const {
     actions: { submitRecording },
     states: { isSubmitting },
@@ -50,6 +73,69 @@ function StudentWrapper() {
       return {};
     }
   }
+
+  const {data:messages} = useQuery({
+    queryKey:['messages'],
+    queryFn:getMessages,
+    initialData:[],
+    placeholderData:keepPreviousData,
+  })
+  const inputRef = useRef(null);
+  const [message,setMessage] = useState('');
+  useEffect(() => {
+    // console.log(containerRef.current)
+    if(containerRef.current) containerRef.current.scrollTop = containerRef.current?.scrollHeight;
+  },[containerRef.current])
+
+  useEffect(() => {
+    if(!socket) return;
+    console.log('socket attached')
+    socket.on("message", ({ message, from, to, createdAt }) => {
+      console.log('message recived');
+      if(from === id){
+        queryClient.setQueriesData({ queryKey: ["messages"] }, (old) => {
+          return [
+            ...old,
+            {
+              sender:from,
+              receiver: to,
+              message,
+              createdAt,
+              _id: Date.now(),
+            },
+          ];
+        });
+      }
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    });
+
+    return () => socket.off('message');
+  },[socket])
+
+  async function sendMessage(e){
+    e.preventDefault();
+    queryClient.setQueriesData({queryKey:['messages']},(old) => {
+      return [...old, { sender: user?._id, receiver: id, message,createdAt:new Date(),_id:Date.now() }];
+    })
+    setMessage('');
+    inputRef.current.focus();
+    try{
+      socket.emit('message',{message,to:id,from:user?._id,createdAt:new Date()});
+      const {data} = await axios.post(`${process.env.NEXT_PUBLIC_URL}/message/send`,{message,to:id},{withCredentials:true})
+    }catch(err){
+      console.log(err);
+    }
+  }
+  async function getMessages(e){
+    try{
+      const {data} = await axios.get(`${process.env.NEXT_PUBLIC_URL}/message/get?userId=${id}`,{withCredentials:true})
+      return data.messages;
+    }catch(err){
+      console.log('error')
+      console.log(err);
+      return [];
+    }
+  }
   if (isFetching)
     return (
       <div>
@@ -58,93 +144,87 @@ function StudentWrapper() {
     );
   if (!onlineClassBlob)
     return (
-      <div className="mt-5 w-full flex flex-col gap-5 items-center">
-        <div className="flex flex-col items-center gap-">
-          <div
-            className={` h-20 w-20 overflow-hidden flex justify-center items-center relative rounded-full bg-(--bg-tertiary)/50 ${data?.user?.profileImage && "shadow-(--shadow-2xl) border border-gray-300"}`}
-          >
-            {!data?.user?.profileImage && <FaUser className="text-2xl" />}
-            {data?.user?.profileImage && (
-              <Image fill src={data.user.profileImage} alt="profile photo" />
-            )}
+      <div className=" w-full flex flex-col gap-5 items-center  fixed top-0 left-0 h-[82.5%]">
+        <div className="min-h-17 w-full bg-(--card) flex items-center">
+          <div className="flex items-center gap-1 text-sm text-(--text)">
+            <button className="duration-300 ease-in-out hover:cursor-pointer transition-all bg-(--card) rounded-lg p-2">
+              <Link href={"/gurfah"} className="">
+                <IoMdArrowRoundBack className="text-lg" />
+              </Link>
+            </button>
           </div>
-          <h1
-            className={`${font.className} mt-1 text-2xl font-bold tracking-wide`}
-          >
-            {data?.user && !isFetching ? (
-              data?.user?.name
-            ) : (
-              <span className="text-2xl opacity-0">n</span>
-            )}
-          </h1>
-          <div className={` text-xs mt-1 flex items-center gap-1`}>
-            <p
-              className={`h-2 w-2  rounded-full ${data?.user?.status === "online" ? "bg-green-500" : "bg-red-500"}`}
-            ></p>{" "}
-            {data?.user?.status === "online" ? "online" : "offline"}
-          </div>
-        </div>
-        <button
-          onClick={() => startCall(id, user?._id)}
-          className="flex gap-3 items-center w-full lg:w-1/3 justify-center bg-purple-500 hover:bg-purple-600 duration-300 ease-in-out transition-all hover:cursor-pointer shadow-(--shadow-lg) py-4 rounded-lg text-white/90"
-        >
-          <FaVideo /> Start video Call
-        </button>
 
-        <div className="flex w-full gap-6 items-center bg-(--card) rounded-md shadow-(--shadow-sm) p-5">
-          <div className="p-3 rounded-full bg-yellow-100">
-            <FaRegClock className="text-2xl text-yellow-500" />
-          </div>
-          <div className="text-(--text-secondary) text-xs font-semibold">
-            <p>Last Session</p>
-            {data?.classes?.length > 0 && (
-              <>
-                <p className="text-lg text-(--text)">
-                  {formatDistanceToNow(data.classes[0].createdAt, {
-                    addSuffix: true,
-                  })}
-                </p>
-                <p>
-                  {format(data.classes[0].createdAt, "MMM dd, yyy")} ~{" "}
-                  {data.classes[0].duration} min
-                </p>
-              </>
-            )}
-            {data?.classes?.length < 1 && (
-              <p className="font-bold text-lg">No Last Session!</p>
-            )}
-          </div>
-        </div>
-        <div className="bg-(--card) rounded-md shadow-(--shadow-sm) p-5 w-full flex flex-col gap-3">
-          <p>Recent Sessions</p>
-          {data?.classes?.map((el) => {
-            return (
-              <div
-                key={el._id}
-                className="flex w-full gap-6 items-center border-b border-(--border) pb-3"
-              >
-                <div className="p-3 rounded-full bg-green-100">
-                  <SlCalender className="text-lg text-green-500" />
-                </div>
-                <div className="text-(--text-secondary) text-xs font-semibold flex justify-between w-full ">
-                  <p>{format(el.createdAt, "MMM dd, yyy")}</p>
-                  <p>{el.duration} min</p>
-                </div>
+          <div>
+            {data?.profileImage && (
+              <div className="relative h-10 w-10 rounded-full overflow-hidden">
+                <Image src={data?.profileImage} alt="user photo" fill />
               </div>
-            );
-          })}
-          {data?.classes?.length < 1 && (
-            <div className="text-center font-bold text-(--text-secondary) py-5">
-              No Recent Sessions!
-            </div>
-          )}
+            )}
+            {!data?.profileImage && (
+              <FaUserCircle className="text-4xl text-amber-950" />
+            )}
+          </div>
+
+          <div className="ml-3 font-bold">
+            <h1 className="text-sm">{data?.user?.name}</h1>
+            <p className="text-xs font-thin">{data?.user?.status}</p>
+          </div>
+
+          <div className="ml-auto mr-7 text-lg">
+            <button onClick={() => startCall(id,user?._id)} className="duration-300 ease-in-out hover:cursor-pointer transition-all p-3 hover:bg-(--bg-main)">
+              <FaVideo />
+            </button>
+          </div>
         </div>
+
+        <div ref={containerRef} className="overflow-auto w-full flex flex-col gap-2 min-h-full px-5 pb-10">
+
+           {messages?.map(el => {
+             return (
+              <div key={el._id} className={`${el.sender === user?._id ? 'ml-auto':''} relative max-w-3/4`}>
+              <p  className="relative bg-(--card) w-fit shadow-(--shadow-md)  px-3 pr-10 rounded-md pt-1 pb-7">
+                {el.message}
+                <span className="absolute right-1 bottom-1 text-xs text-gray-500">
+                  {format(el.createdAt, "hh:mm a")}
+                </span>
+              </p>
+          </div>
+            );
+           })}
+        </div>
+
+        <form onSubmit={sendMessage} className="fixed bottom-0 left-0 w-full border-t border-white/10 bg-(--card) px-4 py-3 backdrop-blur-md">
+          <div className="mx-auto flex max-w-4xl items-center gap-3">
+            <input
+            ref={inputRef}
+            value={message}
+            onChange={(e)=>setMessage(e.target.value)}
+              type="text"
+              placeholder="Type a message..."
+              className="flex-1 duration-300 ease-in-out rounded-full bg-(--background-main) px-5 py-3 text-sm text-black placeholder:text-gray-400 outline-none border border-gray-300 ring-1 ring-transparent transition-all focus:ring-gray-400"
+            />
+
+            <button className="flex duration-300 ease-in-out hover:cursor-pointer hover:bg-(--primary-dark) h-12 w-12 items-center justify-center rounded-full bg-(--primary) text-white transition-all active:scale-95">
+              <IoSend size={20} />
+            </button>
+          </div>
+        </form>
       </div>
     );
   if (onlineClassBlob && user?.role !== "student")
     return (
-  <SubmitVideoCallRecording videoCallSeconds={videoCallSeconds} onlineClassBlobUrl={onlineClassBlobUrl} setvideoCallSeconds={setVideoCallSeconds} onlineClassBlob={onlineClassBlob} onlineClassBlobUrlSize={onlineClassBlobUrlSize} studentId={id} setOnlineClassBlob={setOnlineClassBlob} setOnlineClassBlobUrl={setOnlineClassBlobUrl} setVideoCallSeconds={setVideoCallSeconds}/>
-      // <SubmitRecording 
+      <SubmitVideoCallRecording
+        videoCallSeconds={videoCallSeconds}
+        onlineClassBlobUrl={onlineClassBlobUrl}
+        setvideoCallSeconds={setVideoCallSeconds}
+        onlineClassBlob={onlineClassBlob}
+        onlineClassBlobUrlSize={onlineClassBlobUrlSize}
+        studentId={id}
+        setOnlineClassBlob={setOnlineClassBlob}
+        setOnlineClassBlobUrl={setOnlineClassBlobUrl}
+        setVideoCallSeconds={setVideoCallSeconds}
+      />
+      // <SubmitRecording
       // setVideoCallSeconds={setVideoCallSeconds}
       //   setOnlineClassBlob={setOnlineClassBlob}
       //   setOnlineClassBlobUrl={setOnlineClassBlobUrl}

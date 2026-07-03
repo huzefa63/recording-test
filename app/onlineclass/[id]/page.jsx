@@ -10,14 +10,14 @@ async function Page() {
     // if(session.currentUser.role === 'student') redirect('/auth');
     return (
       <div className="py-5 px-5 h-full">
-        <div className="flex items-center gap-1 text-sm text-(--text)">
+        {/* <div className="flex items-center gap-1 text-sm text-(--text)">
           <button className="shadow-(--shadow-md) bg-(--card) rounded-lg p-2">
             <Link href={"/gurfah"} className="">
               <IoMdArrowRoundBack />
             </Link>
           </button>
           Back
-        </div>
+        </div> */}
         <StudentWrapper />
       </div>
     );

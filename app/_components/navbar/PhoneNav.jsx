@@ -13,7 +13,7 @@ function PhoneNav() {
     const pathname = usePathname();
     const {user,isFetching} = useUser();
     const role = user?.role;
-    if(pathname.includes('auth') || pathname.includes('entry')) return null;
+    if(pathname.includes('auth') || pathname.includes('entry') || pathname.includes('onlineclass')) return null;
     if(isFetching) return null;
     if(!user.role) return null;
     return (

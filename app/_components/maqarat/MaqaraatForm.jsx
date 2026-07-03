@@ -5,7 +5,7 @@ import { useAppProvider } from "../providers/AppProvider";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "../providers/UserProvider";
 function MaqaraatForm() {
 const {user} = useUser();
@@ -25,58 +25,73 @@ const {user} = useUser();
 export default MaqaraatForm
 
 const maqaratJuz = [
-  { label: "juz 30 (1st nisf)", value: "juz 30 (1st nisf)" },
-  { label: "juz 30 (2st nisf)", value: "juz 30 (2st nisf)" },
-  { label: "juz 29 (1st nisf)", value: "juz 29 (1st nisf)" },
-  { label: "juz 29 (2st nisf)", value: "juz 29 (2st nisf)" },
-  { label: "juz 28 (1st nisf)", value: "juz 28 (1st nisf)" },
-  { label: "juz 28 (2st nisf)", value: "juz 28 (2st nisf)" },
-  { label: "juz 27 (1st nisf)", value: "juz 27 (1st nisf)" },
-  { label: "juz 27 (2st nisf)", value: "juz 27 (2st nisf)" },
-  { label: "juz 26 (1st nisf)", value: "juz 26 (1st nisf)" },
-  { label: "juz 26 (2st nisf)", value: "juz 26 (2st nisf)" },
-  { label: "juz 1", value: "juz 1" },
-  { label: "juz 2", value: "juz 2" },
-  { label: "juz 3", value: "juz 3" },
-  { label: "juz 4", value: "juz 4" },
-  { label: "juz 5", value: "juz 5" },
-  { label: "juz 6", value: "juz 6" },
-  { label: "juz 7", value: "juz 7" },
-  { label: "juz 8", value: "juz 8" },
-  { label: "juz 9", value: "juz 9" },
-  { label: "juz 10", value: "juz 10" },
-  { label: "juz 11", value: "juz 11" },
-  { label: "juz 12", value: "juz 12" },
-  { label: "juz 13", value: "juz 13" },
-  { label: "juz 14", value: "juz 14" },
-  { label: "juz 15", value: "juz 15" },
-  { label: "juz 16", value: "juz 16" },
-  { label: "juz 17", value: "juz 17" },
-  { label: "juz 18", value: "juz 18" },
-  { label: "juz 19", value: "juz 19" },
-  { label: "juz 20", value: "juz 20" },
-  { label: "juz 21", value: "juz 21" },
-  { label: "juz 22", value: "juz 22" },
-  { label: "juz 23", value: "juz 23" },
-  { label: "juz 24", value: "juz 24" },
-  { label: "juz 25", value: "juz 25" },
+  { label: "juz 30 (1st nisf)", value: "30 1" },
+  { label: "juz 30 (2st nisf)", value: "30 2" },
+  { label: "juz 29 (1st nisf)", value: "29 1" },
+  { label: "juz 29 (2st nisf)", value: "29 2" },
+  { label: "juz 28 (1st nisf)", value: "28 1" },
+  { label: "juz 28 (2st nisf)", value: "28 2" },
+  { label: "juz 27 (1st nisf)", value: "27 1" },
+  { label: "juz 27 (2st nisf)", value: "27 2" },
+  { label: "juz 26 (1st nisf)", value: "26 1" },
+  { label: "juz 26 (2st nisf)", value: "26 2" },
+  { label: "juz 1", value: "1" },
+  { label: "juz 2", value: "2" },
+  { label: "juz 3", value: "3" },
+  { label: "juz 4", value: "4" },
+  { label: "juz 5", value: "5" },
+  { label: "juz 6", value: "6" },
+  { label: "juz 7", value: "7" },
+  { label: "juz 8", value: "8" },
+  { label: "juz 9", value: "9" },
+  { label: "juz 10", value: "10" },
+  { label: "juz 11", value: "11" },
+  { label: "juz 12", value: "12" },
+  { label: "juz 13", value: "13" },
+  { label: "juz 14", value: "14" },
+  { label: "juz 15", value: "15" },
+  { label: "juz 16", value: "16" },
+  { label: "juz 17", value: "17" },
+  { label: "juz 18", value: "18" },
+  { label: "juz 19", value: "19" },
+  { label: "juz 20", value: "20" },
+  { label: "juz 21", value: "21" },
+  { label: "juz 22", value: "22" },
+  { label: "juz 23", value: "23" },
+  { label: "juz 24", value: "24" },
+  { label: "juz 25", value: "25" },
 ];
 
 function Form({onClose}){
   const {teachers,students:allStudents} = useAppProvider();
+  const [juz,setJuz] = useState({juz:29,nisf:1});
+  const [batch,setBatch] = useState('baneen');
+  const {data:studentsData} = useQuery({
+    queryKey:['maqaratStudents',juz,batch],
+    queryFn:handleGetMaqaratStudents,
+  })
   const queryClient = useQueryClient();
 
   const [teacher,setTeacher] = useState('');
   const [students,setStudents] = useState([]);
-  const [juz,setJuz] = useState('');
   const [date,setDate] = useState('');
-  const [batch,setBatch] = useState('');
   const teacherOptions = teachers?.map(el => {
     return { label: el.name, value: el._id };
   })
-  const studentOptions = allStudents?.map(el => {
+  const studentOptions = studentsData?.map(el => {
     return { label: el.name, value: el._id };
   })
+
+  async function handleGetMaqaratStudents(){
+    try{
+      const {data} = await axios.get(`${process.env.NEXT_PUBLIC_URL}/student/getMaqaratStudents?juz=${juz.juz}&nisf=${juz.nisf}&batch=${batch}`,{withCredentials:true})
+      console.log(data);
+      return data.students;
+    }catch(err){
+      console.log(err);
+      return [];
+    }
+  }
 
   async function handleSubmit(e){
     e.preventDefault();
@@ -150,7 +165,13 @@ function Form({onClose}){
               <Select
                 required
                 options={maqaratJuz}
-                onChange={(el) => setJuz(el.value)}
+                onChange={(el) => {
+                  const juz = el.value.split(' ')[0];
+                  let nisf;
+                  if(Number(juz) >=1 && Number(juz) <= 25)nisf='';
+                  else nisf = el.value.split(" ")[1]; 
+                  setJuz({juz,nisf});
+                }}
               />
             </div>
             <div>

@@ -13,7 +13,7 @@ const Context = createContext(null);
 
 export function CallingFnProvider({ children }) {
   const { socket } = useSocketContext();
-  const { isIncoming,setOnlineClassBlobUrlSize,setOnlineClassBlob,setOnlineClassBlobUrl,localMedia,remoteMedia,setRemoteMedia,remoteVideoRef,isCalling, callingTo,setCallingTo,localVideoRef,setIsCalling, setIsIncoming, isInCall,setIsInCall,setCallerId,callerId,remoteOffer, setRemoteOffer } = useVideoCallContext();
+  const { isIncoming,setShowCallControls,setVideoCallSeconds,setOnlineClassBlobUrlSize,setOnlineClassBlob,setOnlineClassBlobUrl,localMedia,remoteMedia,setRemoteMedia,remoteVideoRef,isCalling, callingTo,setCallingTo,localVideoRef,setIsCalling, setIsIncoming, isInCall,setIsInCall,setCallerId,callerId,remoteOffer, setRemoteOffer } = useVideoCallContext();
   const {user} = useUser();
   const querClient = useQueryClient();
   const {peerConnection} = useVideoCallContext();
@@ -64,10 +64,11 @@ export function CallingFnProvider({ children }) {
     }
   }
   async function endCall(){
+   
     setIsCalling(false);
     setIsIncoming(false);
     setIsInCall(false);
-  
+    if(user?.role === 'student') setVideoCallSeconds(0);
     if(user?.role !== 'student' && recorderRef.current){
        recorderRef.current.stop();
        if (pathname.includes("onlineclass")) {
@@ -125,7 +126,7 @@ export function CallingFnProvider({ children }) {
       setOnlineClassBlobUrlSize(Number((blob.size / 1024 /1024).toFixed(1)));
       const url =  URL.createObjectURL(blob);
       setOnlineClassBlobUrl(url);
-      console.log(url);
+      chunksRef.current = [];
     }
     recorderRef.current.start();
   },[isInCall,user?.role,localMedia,remoteMedia])
@@ -134,19 +135,19 @@ export function CallingFnProvider({ children }) {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("connect", () => {
-      console.log("CONNECT", socket.id);
-    });
+    // socket.on("connect", () => {
+    //   console.log("CONNECT", socket.id);
+    // });
 
-    socket.on("disconnect", (reason) => {
-      console.log("DISCONNECT", socket.id, reason);
-    });
+    // socket.on("disconnect", (reason) => {
+    //   console.log("DISCONNECT", socket.id, reason);
+    // });
 
-    socket.io.engine.on("packet", (packet) => {
-      if (packet.type === "ping") {
-        console.log("PING", socket.id);
-      }
-    });
+    // socket.io.engine.on("packet", (packet) => {
+    //   if (packet.type === "ping") {
+    //     console.log("PING", socket.id);
+    //   }
+    // });
       
       turn();
   
@@ -183,6 +184,7 @@ export function CallingFnProvider({ children }) {
       // console.log(res.data)
       // peerConnection.current = new RTCPeerConnection(res.data);
       // await turn();
+      
         setIsCalling(true);
         setCallingTo(receiverId)
         targetUserRef.current = receiverId;
@@ -206,6 +208,8 @@ export function CallingFnProvider({ children }) {
     localMedia.current.getTracks().forEach(track => peerConnection.current.addTrack(track,localMedia.current));
     const offer = await peerConnection.current.createOffer();
     await peerConnection.current.setLocalDescription(offer);
+    setShowCallControls(true);
+
     await new Promise((res) =>
       setTimeout(() => {
         res();
@@ -222,6 +226,8 @@ export function CallingFnProvider({ children }) {
       // );
       // peerConnection.current = new RTCPeerConnection(res.data);
       setIsInCall(true);
+      setOnlineClassBlob(null);
+      setOnlineClassBlobUrl('');
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(remoteOffer),
       );
@@ -253,37 +259,37 @@ export function CallingFnProvider({ children }) {
     useEffect(() => {
         if(!socket) return;
         socket.on('incoming-call',async ({caller,offer}) => {
-          if(isInCall) return socket.emit('line-busy',{to:caller});
-      // await turn();
+          if(isInCall || isIncoming || isCalling) return socket.emit('line-busy',{to:caller});
+          // await turn();
           
           setIsIncoming(true);
-          setCallerId(caller);
-                  targetUserRef.current = caller;
-
-          setRemoteOffer(offer);
-          localMedia.current = await navigator.mediaDevices.getUserMedia({
-            video: {
-              width: { ideal: 1920 },
-              height: { ideal: 1080 },
-              frameRate: { ideal: 60 },
-              facingMode:"user",
-            },
-            audio: {
-              sampleRate: 48000,
-              channelCount: 2,
-              echoCancellation: true,
-              noiseSuppression: true,
-              autoGainControl: true,
-            },
-          });
-          localMedia.current
-            .getTracks()
-            .forEach((track) =>
-              peerConnection.current.addTrack(track, localMedia.current),
-            );
-          localVideoRef.current.srcObject = localMedia.current; 
-
-        })
+      setCallerId(caller);
+      targetUserRef.current = caller;
+      
+      setRemoteOffer(offer);
+      localMedia.current = await navigator.mediaDevices.getUserMedia({
+        video: {
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+          frameRate: { ideal: 60 },
+          facingMode:"user",
+        },
+        audio: {
+          sampleRate: 48000,
+          channelCount: 2,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+      localMedia.current
+      .getTracks()
+      .forEach((track) =>
+        peerConnection.current.addTrack(track, localMedia.current),
+    );
+    localVideoRef.current.srcObject = localMedia.current; 
+    setShowCallControls(true);
+  })
         socket.on('call-accepted',async ({caller,answer}) => {
           setIsInCall(true);
          
@@ -382,6 +388,8 @@ export function CallingFnProvider({ children }) {
         })
 
         socket.on('end-call',async () => {
+    if (user?.role === "student") setVideoCallSeconds(0);
+
           setIsCalling(false);
           setIsIncoming(false);
           setIsInCall(false);

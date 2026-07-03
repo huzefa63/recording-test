@@ -18,11 +18,11 @@ function SocketProvider({children}) {
         }
         return;
       }
-      console.log('connecting socket'); 
+      // console.log('connecting socket'); 
        const newSocket = io(`${process.env.NEXT_PUBLIC_URL}`, {
          withCredentials:true,
        });
-console.log('socket connected: ',newSocket.connected)
+// console.log('socket connected: ',newSocket.connected)
        setSocket(newSocket);
 
       //  return () => {

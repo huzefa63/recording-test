@@ -19,16 +19,15 @@ import { useUser } from "../providers/UserProvider";
 function VideoCallUI() {
   const {user} = useUser();
   const videoRef = useRef(null);
-  const {localVideoRef,localMedia,isCalling,isIncoming,isInCall,callerId,remoteVideoRef} = useVideoCallContext();
+  const {localVideoRef,showCallControls,localMedia,isCalling,isIncoming,isInCall,callerId,remoteVideoRef,setVideoCallSeconds,videoCallSeconds} = useVideoCallContext();
   const {dummyAnsCall,acceptCall,endCall} = useCallingFn();
   const [isMute,setIsMute] = useState(false);
   const [isVideoOff,setIsVideoOff] = useState(false)
-  const [seconds, setSeconds] = useState(0);
   const dragRef = useRef(null);
   useEffect(() => {
     if(!isInCall) return;
     const interval = setInterval(() => {
-      setSeconds((prev) => prev + 1);
+      setVideoCallSeconds((prev) => prev + 1);
     }, 1000);
 
     return () => clearInterval(interval);
@@ -80,12 +79,12 @@ function VideoCallUI() {
   }, [isCalling]);
   return (
     <>
-      <div className="h-[10%] w-full fixed z-9999 bottom-0 left-0 bg-black/80 backdrop-blur-md border-t border-white/10 flex items-center justify-between px-6">
+      {showCallControls && <div className="h-[10%] w-full fixed z-9999 bottom-0 left-0 bg-black/80 backdrop-blur-md border-t border-white/10 flex items-center justify-between px-6">
         {/* Timer */}
         <div
           className={`${!isInCall && "opacity-0"} text-white text-lg font-semibold tracking-wide`}
         >
-          {formatTime(seconds)}
+          {formatTime(videoCallSeconds)}
         </div>
 
         {/* Controls */}
@@ -139,7 +138,7 @@ function VideoCallUI() {
 
         {/* Empty div for perfect center alignment */}
         <div className="w-[60px]" />
-      </div>
+      </div>}
       <div className="fixed h-[90%] w-full inset-0 z-10000">
         {(isCalling || isIncoming) && !isInCall && (
           <>

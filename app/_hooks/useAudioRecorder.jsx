@@ -16,7 +16,7 @@ function useAudioRecorder() {
     const [isRedirect, setIsRedirect] = useState(false);
     const [confirmSubmit, setConfirmSubmit] = useState(false);
     const [audioSize, setAudioSize] = useState(0);
-    const {onlineClassBlob,setOnlineClassBlobUrl,setOnlineClassBlob} = useVideoCallContext();
+    const {onlineClassBlob,setOnlineClassBlobUrl,setOnlineClassBlob,videoCallSeconds,setVideoCallSeconds} = useVideoCallContext();
     const router = useRouter();
 
     let audioChunks = [];
@@ -103,19 +103,19 @@ function useAudioRecorder() {
        setIsRecorded(true);
      }
 
+     
      async function submitRecording(studentId) {
       setIsSubmitting(true);  
       const toastId = 'uploading'
       try{
+        // console.log(data.signedUrl)
         const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_URL}/recording/signedToken`,{withCredentials:true}
         );
-        console.log(data.signedUrl)
         let blob;
         if (!onlineClassBlob) blob = audio;
         if (onlineClassBlob) {
           blob = onlineClassBlob;
-          // formData.append("isOnline",true);
         }
         await axios.put(data.signedUrl, blob, {
           headers: {
@@ -137,14 +137,16 @@ function useAudioRecorder() {
           {
             isOnline: onlineClassBlob ? true : false,
             url: data.url,
-            duration: totalSeconds / 60,
+            duration: onlineClassBlob ? videoCallSeconds / 60 : totalSeconds / 60,
           },{withCredentials:true}
         );
         toast.success("Upload complete!", {
           id: toastId,
         });
-        router.push("/students");
         setOnlineClassBlob(null);
+        setVideoCallSeconds(0);
+        setOnlineClassBlobUrl("");
+        router.replace('/students')
             // setTimeout(() => {
             //   if (onlineClassBlob) window.location.reload();
             // }, 1000);
@@ -155,7 +157,6 @@ function useAudioRecorder() {
         });
       }finally{
         setIsSubmitting(false);
-        setTotalSeconds(0);
       }
      }
     return {
@@ -185,6 +186,11 @@ function useAudioRecorder() {
         handleConfirmFinishRecording,
         setConfirmFinishRecording,
         setIsRecorded,
+        setAudio,
+        setClientAudioUrl,
+        setTotalSeconds,
+        setIsPause,
+        setIsRecording
       },
     };
 }

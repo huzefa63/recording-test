@@ -35,6 +35,11 @@ function RecordingWrapper({studentName,studentId}) {
         handleConfirmFinishRecording,
         setConfirmFinishRecording,
         setIsRecorded,
+        setAudio,
+        setClientAudioUrl,
+        setTotalSeconds,
+        setIsPause,
+        setIsRecording,
       },
     } = useAudioRecorder();
      
@@ -79,11 +84,14 @@ function RecordingWrapper({studentName,studentId}) {
           />
         );
     }
-    if (isRecorded || onlineClassBlobUrl){
+    if (isRecorded){
       return (
         <SubmitRecording
-          setOnlineClassBlob={setOnlineClassBlob}
-          setOnlineClassBlobUrl={setOnlineClassBlobUrl}
+        setIsPause={setIsPause}
+        setTotalSeconds={setTotalSeconds}
+        setIsRecording={setIsRecording}
+        setClientAudioUrl={setClientAudioUrl}
+          setAudio={setAudio}
           setIsRecorded={setIsRecorded}
           studentId={studentId}
           isSubmitting={isSubmitting}

@@ -6,6 +6,7 @@ const Context = createContext();
 function VideoCallProvider({children}) {
     const [isCalling,setIsCalling] = useState(false);
     const [isIncoming,setIsIncoming] = useState(false);
+    const [showCallControls,setShowCallControls] = useState(false);
     const [isInCall,setIsInCall] = useState(false);
     const [callerId,setCallerId] = useState(false);
     const [callingTo,setCallingTo] = useState(null);
@@ -17,6 +18,7 @@ function VideoCallProvider({children}) {
     const [onlineClassBlob,setOnlineClassBlob] = useState(null);
     const [onlineClassBlobUrl,setOnlineClassBlobUrl] = useState('');
     const [onlineClassBlobUrlSize,setOnlineClassBlobUrlSize] = useState(0);
+    const [videoCallSeconds,setVideoCallSeconds] = useState(0);    
     const peerConnection = useRef(null);
     return (
         <Context.Provider value={{
@@ -35,6 +37,8 @@ function VideoCallProvider({children}) {
             onlineClassBlob,
             onlineClassBlobUrl,
             onlineClassBlobUrlSize,
+            showCallControls,
+            videoCallSeconds,
             // setter functions
 
             setIsCalling,
@@ -47,6 +51,8 @@ function VideoCallProvider({children}) {
             setOnlineClassBlob,
             setOnlineClassBlobUrl,
             setOnlineClassBlobUrlSize,
+            setShowCallControls,
+            setVideoCallSeconds,
             }}>
             {children}
         </Context.Provider>

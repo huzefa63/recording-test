@@ -13,6 +13,7 @@ import axios from "axios";
 import { ImSpinner2 } from "react-icons/im";
 import { format, formatDistanceToNow } from "date-fns";
 import Image from "next/image";
+import SubmitVideoCallRecording from "../video_call/SubmitVideoCallRecording";
 
 const font = Playfair_Display({
   subsets: ["latin"],
@@ -23,7 +24,7 @@ function StudentWrapper() {
   const params = useParams();
   const id = params?.id;
   const { startCall } = useCallingFn();
-  const { onlineClassBlob, onlineClassBlobUrl, onlineClassBlobUrlSize } =
+  const { onlineClassBlob,videoCallSeconds, onlineClassBlobUrl, onlineClassBlobUrlSize,setOnlineClassBlob,setOnlineClassBlobUrl, setVideoCallSeconds } =
     useVideoCallContext();
   const {
     actions: { submitRecording },
@@ -142,13 +143,17 @@ function StudentWrapper() {
     );
   if (onlineClassBlob && user?.role !== "student")
     return (
-      <SubmitRecording
-        audioSize={onlineClassBlobUrlSize}
-        clientAudioUrl={onlineClassBlobUrl}
-        studentId={id}
-        submitRecording={submitRecording}
-        isSubmitting={isSubmitting}
-      />
+  <SubmitVideoCallRecording videoCallSeconds={videoCallSeconds} onlineClassBlobUrl={onlineClassBlobUrl} setvideoCallSeconds={setVideoCallSeconds} onlineClassBlob={onlineClassBlob} onlineClassBlobUrlSize={onlineClassBlobUrlSize} studentId={id} setOnlineClassBlob={setOnlineClassBlob} setOnlineClassBlobUrl={setOnlineClassBlobUrl} setVideoCallSeconds={setVideoCallSeconds}/>
+      // <SubmitRecording 
+      // setVideoCallSeconds={setVideoCallSeconds}
+      //   setOnlineClassBlob={setOnlineClassBlob}
+      //   setOnlineClassBlobUrl={setOnlineClassBlobUrl}
+      //   audioSize={onlineClassBlobUrlSize}
+      //   clientAudioUrl={onlineClassBlobUrl}
+      //   studentId={id}
+      //   submitRecording={submitRecording}
+      //   isSubmitting={isSubmitting}
+      // />
     );
 }
 

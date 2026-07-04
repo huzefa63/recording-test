@@ -317,10 +317,20 @@ export function CallingFnProvider({ children }) {
           peerConnection.current.addTrack(track, localMedia.current),
         );
       localVideoRef.current.srcObject = localMedia.current;
-      await localVideoRef.current.play();
+      // localVideoRef.current.srcObject = localMedia.current;
+
+      await new Promise((resolve) => {
+        const video = localVideoRef.current;
+
+        const handler = () => {
+          video.removeEventListener("playing", handler);
+          resolve();
+        };
+
+        video.addEventListener("playing", handler, { once: true });
+        video.play();
+      });
       setShowCallControls(true);
-      // localVideoRef.current.onplaying = () => {
-      // }
     });
     socket.on("call-accepted", async ({ caller, answer }) => {
       setIsInCall(true);

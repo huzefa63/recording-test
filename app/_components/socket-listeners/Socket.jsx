@@ -337,12 +337,13 @@ export function CallingFnProvider({ children }) {
       toast.error("The person you are trying to reach is on another call");
     });
     socket.on("ice-restart-offer", async ({ offer }) => {
+      console.log('ice restart offer: ',offer)
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(offer),
       );
       const answer = await peerConnection.current.createAnswer();
       await peerConnection.current.setLocalDescription(answer);
-      console.log(candidates.current);
+      console.log('ice restart offer candidates',candidates.current);
       if (candidates.current.length !== 0)
         for (const candidate of candidates.current) {
           peerConnection.current.addIceCandidate(
@@ -354,10 +355,11 @@ export function CallingFnProvider({ children }) {
     });
 
     socket.on("ice-restart-answer", async ({ answer }) => {
+      console.log('ice restart answer',answer);
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(answer),
       );
-      console.log(candidates.current);
+      console.log('ice restart answer candidates',candidates.current);
       if (candidates.current.length !== 0)
         for (const candidate of candidates.current) {
           peerConnection.current.addIceCandidate(

@@ -312,7 +312,7 @@ function StudentWrapper() {
                 placeholder="Type a message..."
                 className="pl-13 duration-300 w-full ease-in-out rounded-full bg-(--background-main) px-5 py-3 text-sm text-black placeholder:text-gray-400 outline-none border border-gray-300 ring-1 ring-transparent transition-all focus:ring-gray-400"
               />
-              <div className="text-lg absolute top-1/2 -translate-y-1/2 bg-gray-200 w-[10%] justify-center flex items-center h-full">
+              <div className="text-lg absolute top-1/2 -translate-y-1/2 bg-gray-200 w-[15%] lg:w-[10%] justify-center flex items-center h-full">
                 <BiSolidMessageSquareDetail className="text-(--primary-light) " />
               </div>
             </div>

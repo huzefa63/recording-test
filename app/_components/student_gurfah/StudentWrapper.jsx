@@ -96,7 +96,6 @@ function StudentWrapper() {
 
   useEffect(() => {
     if (!socket) return;
-    console.log("socket attached");
     socket.on("message", ({ message, from, to, createdAt }) => {
       console.log("message recived");
       if (from === id) {
@@ -113,11 +112,15 @@ function StudentWrapper() {
           ];
         });
       }
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
     });
 
     return () => socket.off("message");
   }, [socket]);
+
+  useEffect(() => {
+    if(!containerRef.current) return;
+    containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  },[messages])
 
   async function sendMessage(e) {
     e.preventDefault();

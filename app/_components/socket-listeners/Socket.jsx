@@ -90,6 +90,7 @@ export function CallingFnProvider({ children }) {
     setIsCalling(false);
     setIsIncoming(false);
     setIsInCall(false);
+    setShowCallControls(false);
     if (user?.role === "student") setVideoCallSeconds(0);
     if (user?.role !== "student" && recorderRef.current) {
       recorderRef.current.stop();
@@ -312,25 +313,11 @@ export function CallingFnProvider({ children }) {
         },
       });
       localMedia.current
-        .getTracks()
-        .forEach((track) =>
-          peerConnection.current.addTrack(track, localMedia.current),
-        );
-      localVideoRef.current.srcObject = localMedia.current;
-      // localVideoRef.current.srcObject = localMedia.current;
-
-      await new Promise((resolve) => {
-        const video = localVideoRef.current;
-
-        const handler = () => {
-          video.removeEventListener("playing", handler);
-          resolve();
-        };
-
-        video.addEventListener("playing", handler, { once: true });
-        video.play();
-      });
-      setShowCallControls(true);
+      .getTracks()
+      .forEach((track) =>
+        peerConnection.current.addTrack(track, localMedia.current),
+    );
+    localVideoRef.current.srcObject = localMedia.current;
     });
     socket.on("call-accepted", async ({ caller, answer }) => {
       setIsInCall(true);
@@ -438,8 +425,10 @@ export function CallingFnProvider({ children }) {
 
     socket.on("end-call", async () => {
       if (user?.role === "student") setVideoCallSeconds(0);
+      // if(localVideoRef?.current)localVideoRef.current 
       setIsCalling(false);
       setIsIncoming(false);
+      setShowCallControls(false)
       setIsInCall(false);
       candidates.current = [];
       if (user?.role !== "student" && recorderRef.current) {

@@ -42,7 +42,7 @@ function RecordingEntry({el,i,isDummy=false}) {
           </button>
         </div>
         {isExpand && (
-          <div className=" w-full flex justify-center py-2">
+          <div onClick={(e) => e.stopPropagation()} className=" w-full flex justify-center py-2">
             <div className="w-3/4 rounded-md overflow-hidden shadow-(--shadow-lg)">
               <AudioPlayer
                 autoPlay={false}

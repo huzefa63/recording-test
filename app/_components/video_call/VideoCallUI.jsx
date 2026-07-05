@@ -19,7 +19,7 @@ import { useUser } from "../providers/UserProvider";
 function VideoCallUI() {
   const {user} = useUser();
   const videoRef = useRef(null);
-  const {localVideoRef,showCallControls,localMedia,isCalling,isIncoming,isInCall,callerId,remoteVideoRef,setVideoCallSeconds,videoCallSeconds} = useVideoCallContext();
+  const {localVideoRef,setShowCallControls,showCallControls,localMedia,isCalling,isIncoming,isInCall,callerId,remoteVideoRef,setVideoCallSeconds,videoCallSeconds} = useVideoCallContext();
   const {dummyAnsCall,acceptCall,endCall} = useCallingFn();
   const [isMute,setIsMute] = useState(false);
   const [isVideoOff,setIsVideoOff] = useState(false)
@@ -144,6 +144,7 @@ function VideoCallUI() {
           <>
             {isCalling && !isIncoming && (
               <video
+              // onPlay={()=>setShowCallControls(true)}
                 ref={localVideoRef}
                 autoPlay
                 muted
@@ -152,6 +153,7 @@ function VideoCallUI() {
             )}
             {!isCalling && isIncoming && (
               <video
+              onPlay={()=>setShowCallControls(true)}
                 muted
                 ref={localVideoRef}
                 autoPlay

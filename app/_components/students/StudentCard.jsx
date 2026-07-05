@@ -28,6 +28,14 @@ function StudentCard({
       setSelectedStudents(arr => [...arr,studentId]);
     }
   }
+
+  let formattedName;
+  const nameArr = name.split(' ');
+  
+    const firstName = nameArr[0];
+    const lastName = nameArr[nameArr.length - 1];
+    formattedName = firstName.concat(` ${lastName}`);
+  
   return (
     <div className="py relative rounded-md w-full lg:w-[15%]  border-amber-900 bg-(--card) shadow-(--shadow-xl) ">
       {isSelecting && (
@@ -46,7 +54,7 @@ function StudentCard({
           </p>
         </div>
       )}
-      {!isProxy && (
+      
         <button
           data-studentid={studentId}
           data-studentname={name}
@@ -56,7 +64,7 @@ function StudentCard({
         >
           <BiDotsVertical className=" text-lg" />
         </button>
-      )}
+      
       <div
         // href={`/entry/${studentId}`}
         className={` flex flex-col items-center justify-center ${!isProxy && "h-full"} w-full px-4 py-5 rounded-md  gap-2`}
@@ -68,7 +76,7 @@ function StudentCard({
         )}
         {!image && <FaUserCircle className="text-5xl text-amber-950" />}
         <p className="font-semibold text-stone-800 tracking-wider text-xs text-center">
-          {name}
+          {formattedName}
         </p>
         <div className="w-full border-t border-(--border) py-2 text-[0.55rem]">
           <div className=" flex items-center gap-3 w-full ">

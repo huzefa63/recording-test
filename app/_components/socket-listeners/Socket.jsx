@@ -319,6 +319,7 @@ export function CallingFnProvider({ children }) {
     );
     localVideoRef.current.srcObject = localMedia.current;
     });
+
     socket.on("call-accepted", async ({ caller, answer }) => {
       setIsInCall(true);
 
@@ -333,9 +334,16 @@ export function CallingFnProvider({ children }) {
       }
       candidates.current = [];
     });
+
     socket.on("line-busy", () => {
       toast.error("The person you are trying to reach is on another call");
     });
+
+    socket.on("not-online", () => {
+      endCall();
+      toast.error("The person you are trying to reach is offline");
+    });
+
     socket.on("ice-restart-offer", async ({ offer }) => {
       console.log('ice restart offer: ',offer)
       await peerConnection.current.setRemoteDescription(

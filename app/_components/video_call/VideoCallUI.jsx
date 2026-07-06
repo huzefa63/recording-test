@@ -93,10 +93,9 @@ function VideoCallUI() {
           <button
             onClick={() => {
               setIsMute(!isMute);
-              const currentState = !isMute;
               localMedia.current
                 .getAudioTracks()
-                .forEach((track) => (track.enabled = currentState));
+                .forEach((track) => (track.enabled = !track.enabled));
             }}
             className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 flex items-center justify-center text-white shadow-lg active:scale-95"
           >

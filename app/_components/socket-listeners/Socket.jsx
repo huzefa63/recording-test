@@ -216,8 +216,8 @@ export function CallingFnProvider({ children }) {
   height: { ideal: 720 },
   // width: { ideal: 1920 },
   // height: { ideal: 1080 },
-  frameRate: { ideal: 60 },
-  facingMode:'user',
+  frameRate: { ideal: 30 },
+  // facingMode:'user',
 },
       audio: {
         sampleRate: 48000,
@@ -304,8 +304,8 @@ export function CallingFnProvider({ children }) {
   height: { ideal: 720 },
   // width: { ideal: 1920 },
   // height: { ideal: 1080 },
-  frameRate: { ideal: 60 },
-  facingMode:'user'
+  frameRate: { ideal: 30 },
+  // facingMode:'user'
 },
         audio: {
           sampleRate: 48000,

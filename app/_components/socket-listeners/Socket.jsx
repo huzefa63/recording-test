@@ -212,11 +212,10 @@ export function CallingFnProvider({ children }) {
     targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
       video: {
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-        frameRate: { ideal: 30 },
-        facingMode: "user",
-      },
+  width: { ideal: 1920 },
+  height: { ideal: 1080 },
+  frameRate: { ideal: 60 },
+},
       audio: {
         sampleRate: 48000,
         channelCount: 2,
@@ -298,11 +297,10 @@ export function CallingFnProvider({ children }) {
       setRemoteOffer(offer);
       localMedia.current = await navigator.mediaDevices.getUserMedia({
         video: {
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          frameRate: { ideal: 30 },
-          facingMode: "user",
-        },
+  width: { ideal: 1920 },
+  height: { ideal: 1080 },
+  frameRate: { ideal: 60 },
+},
         audio: {
           sampleRate: 48000,
           channelCount: 2,

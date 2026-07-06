@@ -212,8 +212,8 @@ export function CallingFnProvider({ children }) {
     targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
       video: {
-        width: { ideal: 640 },
-        height: { ideal: 480 },
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
         frameRate: { ideal: 30 },
         facingMode: "user",
       },
@@ -225,7 +225,6 @@ export function CallingFnProvider({ children }) {
         autoGainControl: true,
       },
     });
-    console.log('calling after getting media')
     localVideoRef.current.srcObject = localMedia.current;
 
     localMedia.current
@@ -299,11 +298,11 @@ export function CallingFnProvider({ children }) {
       setRemoteOffer(offer);
       localMedia.current = await navigator.mediaDevices.getUserMedia({
         video: {
-  width: { ideal: 640 },
-  height: { ideal: 480 },
-  frameRate: { ideal: 30 },
-  facingMode: "user",
-},
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          frameRate: { ideal: 30 },
+          facingMode: "user",
+        },
         audio: {
           sampleRate: 48000,
           channelCount: 2,
@@ -313,11 +312,11 @@ export function CallingFnProvider({ children }) {
         },
       });
       localMedia.current
-      .getTracks()
-      .forEach((track) =>
-        peerConnection.current.addTrack(track, localMedia.current),
-    );
-    localVideoRef.current.srcObject = localMedia.current;
+        .getTracks()
+        .forEach((track) =>
+          peerConnection.current.addTrack(track, localMedia.current),
+        );
+      localVideoRef.current.srcObject = localMedia.current;
     });
 
     socket.on("call-accepted", async ({ caller, answer }) => {
@@ -345,13 +344,13 @@ export function CallingFnProvider({ children }) {
     });
 
     socket.on("ice-restart-offer", async ({ offer }) => {
-      console.log('ice restart offer: ',offer)
+      console.log("ice restart offer: ", offer);
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(offer),
       );
       const answer = await peerConnection.current.createAnswer();
       await peerConnection.current.setLocalDescription(answer);
-      console.log('ice restart offer candidates',candidates.current);
+      console.log("ice restart offer candidates", candidates.current);
       if (candidates.current.length !== 0)
         for (const candidate of candidates.current) {
           peerConnection.current.addIceCandidate(
@@ -363,11 +362,11 @@ export function CallingFnProvider({ children }) {
     });
 
     socket.on("ice-restart-answer", async ({ answer }) => {
-      console.log('ice restart answer',answer);
+      console.log("ice restart answer", answer);
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(answer),
       );
-      console.log('ice restart answer candidates',candidates.current);
+      console.log("ice restart answer candidates", candidates.current);
       if (candidates.current.length !== 0)
         for (const candidate of candidates.current) {
           peerConnection.current.addIceCandidate(
@@ -412,14 +411,14 @@ export function CallingFnProvider({ children }) {
           return updatedData;
         });
 
-        querClient.setQueriesData({queryKey:['gurfahData']},(data) => {
-        console.log("runnning");
+        querClient.setQueriesData({ queryKey: ["gurfahData"] }, (data) => {
+          console.log("runnning");
 
-          if(data?.user?._id === id) {
-            console.log('running inside')
+          if (data?.user?._id === id) {
+            console.log("running inside");
             return { user: { ...data?.user, status: "online" } };
           }
-        })
+        });
       }
     });
     socket.on("offline", async ({ name, role, id }) => {
@@ -443,19 +442,18 @@ export function CallingFnProvider({ children }) {
         });
       }
       querClient.setQueriesData({ queryKey: ["gurfahData"] }, (data) => {
-        console.log('runnning')
-        if (data?.user?._id === id)
-        console.log("runnning inside");
-          return { user: { ...data?.user, status: "offline" } };
+        console.log("runnning");
+        if (data?.user?._id === id) console.log("runnning inside");
+        return { user: { ...data?.user, status: "offline" } };
       });
     });
 
     socket.on("end-call", async () => {
       if (user?.role === "student") setVideoCallSeconds(0);
-      // if(localVideoRef?.current)localVideoRef.current 
+      // if(localVideoRef?.current)localVideoRef.current
       setIsCalling(false);
       setIsIncoming(false);
-      setShowCallControls(false)
+      setShowCallControls(false);
       setIsInCall(false);
       candidates.current = [];
       if (user?.role !== "student" && recorderRef.current) {
@@ -480,8 +478,6 @@ export function CallingFnProvider({ children }) {
       localMedia.current.getTracks().forEach((track) => track.stop());
       await turn();
     });
-
-    
   }, [socket]);
 
   return (

@@ -147,7 +147,7 @@ function VideoCallUI() {
                 ref={localVideoRef}
                 autoPlay
                 muted
-                className="h-full w-full object-cover z-99999"
+                className="h-full w-full object-cover lg:object-contain bg-black z-99999"
               />
             )}
             {!isCalling && isIncoming && (
@@ -156,7 +156,7 @@ function VideoCallUI() {
                 muted
                 ref={localVideoRef}
                 autoPlay
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover lg:object-contain bg-black"
               ></video>
             )}
           </>
@@ -167,7 +167,7 @@ function VideoCallUI() {
               <div className="absolute h-full w-full">
                 <video
                 playsInline
-                  className="h-full  w-full object-cover z-99999"
+                  className="h-full  w-full object-cover lg:object-contain bg-black z-99999"
                   ref={remoteVideoRef}
                 ></video>
               </div>
@@ -178,7 +178,7 @@ function VideoCallUI() {
                     ref={localVideoRef}
                     muted
                     autoPlay
-                    className="h-full w-full object-cover z-99999"
+                    className="h-full w-full object-cover lg:object-contain bg-black z-99999"
                     ></video>
                 
               </div>

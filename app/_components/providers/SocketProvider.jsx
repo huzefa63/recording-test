@@ -14,7 +14,8 @@ function SocketProvider({children}) {
       if(isFetching) return;
       if(!user?._id){
         if(socket) {
-          console.log('disconnecting socket cause no user id');
+          // console.log('disconnecting socket cause no user id');
+          socket.disconnect();
         }
         return;
       }

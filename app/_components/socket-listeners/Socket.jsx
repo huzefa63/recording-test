@@ -163,9 +163,9 @@ export function CallingFnProvider({ children }) {
     //   console.log("CONNECT", socket.id);
     // });
 
-    // socket.on("disconnect", (reason) => {
-    //   console.log("DISCONNECT", socket.id, reason);
-    // });
+    socket.on("disconnect", (reason) => {
+      console.log("DISCONNECT", socket.id, reason);
+    });
 
     // socket.io.engine.on("packet", (packet) => {
     //   if (packet.type === "ping") {
@@ -212,9 +212,9 @@ export function CallingFnProvider({ children }) {
     targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
       video: {
-        width: { ideal: 1920 },
-        height: { ideal: 1080 },
-        frameRate: { ideal: 60 },
+        width: { ideal: 640 },
+        height: { ideal: 480 },
+        frameRate: { ideal: 30 },
         facingMode: "user",
       },
       audio: {
@@ -299,11 +299,11 @@ export function CallingFnProvider({ children }) {
       setRemoteOffer(offer);
       localMedia.current = await navigator.mediaDevices.getUserMedia({
         video: {
-          width: { ideal: 1920 },
-          height: { ideal: 1080 },
-          frameRate: { ideal: 60 },
-          facingMode: "user",
-        },
+  width: { ideal: 640 },
+  height: { ideal: 480 },
+  frameRate: { ideal: 30 },
+  facingMode: "user",
+},
         audio: {
           sampleRate: 48000,
           channelCount: 2,
@@ -393,6 +393,10 @@ export function CallingFnProvider({ children }) {
             else return { ...el, status: "online" };
           });
         });
+        querClient.setQueriesData({ queryKey: ["gurfahData"] }, (data) => {
+          if (data?.user?._id === id)
+            return { user: { ...data?.user, status: "online" } };
+        });
       }
 
       if (role === "student") {
@@ -407,6 +411,15 @@ export function CallingFnProvider({ children }) {
           console.log(updatedData);
           return updatedData;
         });
+
+        querClient.setQueriesData({queryKey:['gurfahData']},(data) => {
+        console.log("runnning");
+
+          if(data?.user?._id === id) {
+            console.log('running inside')
+            return { user: { ...data?.user, status: "online" } };
+          }
+        })
       }
     });
     socket.on("offline", async ({ name, role, id }) => {
@@ -429,6 +442,12 @@ export function CallingFnProvider({ children }) {
           return updatedData;
         });
       }
+      querClient.setQueriesData({ queryKey: ["gurfahData"] }, (data) => {
+        console.log('runnning')
+        if (data?.user?._id === id)
+        console.log("runnning inside");
+          return { user: { ...data?.user, status: "offline" } };
+      });
     });
 
     socket.on("end-call", async () => {

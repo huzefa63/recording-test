@@ -72,7 +72,7 @@ function StudentWrapper() {
         `${process.env.NEXT_PUBLIC_URL}/gurfah/get/${id}`,
         { withCredentials: true },
       );
-      console.log(res.data);
+      console.log(res.data)
       return res.data;
     } catch (err) {
       console.log(err);
@@ -80,10 +80,10 @@ function StudentWrapper() {
     }
   }
 
-  const { data: messages } = useQuery({
+  const { data: messages,isFetching:isMessageFetching } = useQuery({
     queryKey: ["messages"],
     queryFn: getMessages,
-    initialData: [],
+    // initialData: [],
     placeholderData: keepPreviousData,
   });
   const inputRef = useRef(null);
@@ -91,8 +91,16 @@ function StudentWrapper() {
   useEffect(() => {
     // console.log(containerRef.current)
     if (containerRef.current)
-      containerRef.current.scrollTop = containerRef.current?.scrollHeight;
-  }, [containerRef.current]);
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  }, [containerRef.current,messages]);
+
+  // useEffect(() => {
+  //   // console.log(containerRef.current)
+  //   if (containerRef.current)
+  //       setTimeout(() => {
+  //         containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  //       }, 1000);
+  // }, [containerRef.current]);
 
   useEffect(() => {
     if (!socket) return;
@@ -117,11 +125,15 @@ function StudentWrapper() {
     return () => socket.off("message");
   }, [socket]);
 
-  useEffect(() => {
-    if(!containerRef.current) return;
-    containerRef.current.scrollTop = containerRef.current.scrollHeight;
-  },[messages])
+  // useEffect(() => {
+  //   if(!containerRef.current) return;
+  //   containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  // },[messages.length,containerRef.current])
 
+  // useEffect(() => {
+  //   if(!containerRef.current) return;
+  //   containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  // },[containerRef])
   async function sendMessage(e) {
     e.preventDefault();
     if (message.length < 1) return;
@@ -222,22 +234,24 @@ function StudentWrapper() {
         >
           {messages?.map((el, i, arr) => {
             const date = new Date(el.createdAt);
-            if (i === 0)
-              console.log(differenceInDays(new Date(), date));
+            // if (i === 0)
+              // console.log(differenceInDays(new Date(), date));
             let prevDate;
             if (i !== 0) {
               prevDate = new Date(arr[i - 1].createdAt);
               // console.log(prevDate.getMonth())
             }
+            
             return (
               <div key={el._id} className="flex flex-col gap-3">
+                
                 {i === 0 && (
                   <p
                     // key={el._id}
                     className="bg-(image:--gradient-primary) text-white/90 text-sm w-fit px-4 py-1 rounded-md mx-auto"
                   >
-                    {differenceInDays(date, new Date()) > 1 &&
-                    differenceInDays(date, new Date()) <= 7
+                    {differenceInDays(new Date(), date) > 1 &&
+                    differenceInDays(new Date(), date) <= 7
                       ? [
                           "sunday",
                           "monday",
@@ -247,11 +261,10 @@ function StudentWrapper() {
                           "friday",
                           "saturday",
                         ][date.getDay()]
-                      : date.getDate() ===
-                          new Date().getDate()
+                      : date.getDate() === new Date().getDate()
                         ? "Today"
-                        : date.getDate() ===
-                            new Date().getDate() - 1 && "Yesterday"}
+                        : date.getDate() === new Date().getDate() - 1 &&
+                          "Yesterday"}
                   </p>
                 )}
                 {i > 0 &&
@@ -262,9 +275,8 @@ function StudentWrapper() {
                       // key={el._id}
                       className="bg-(image:--gradient-primary) text-white/90 text-sm w-fit px-4 py-1 rounded-md mx-auto"
                     >
-                      {differenceInDays(date, new Date()) >
-                        1 &&
-                      differenceInDays(date, new Date()) <= 7
+                      {differenceInDays(new Date(), date) > 1 &&
+                      differenceInDays(new Date(), date) <= 7
                         ? [
                             "sunday",
                             "monday",
@@ -274,11 +286,10 @@ function StudentWrapper() {
                             "friday",
                             "saturday",
                           ][date.getDay()]
-                        : date.getDate() ===
-                            new Date().getDate()
+                        : date.getDate() === new Date().getDate()
                           ? "Today"
-                          : date.getDate() ===
-                              new Date().getDate() - 1 && "Yesterday"}
+                          : date.getDate() === new Date().getDate() - 1 &&
+                            "Yesterday"}
                     </p>
                   )}
 

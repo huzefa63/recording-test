@@ -91,6 +91,7 @@ export function CallingFnProvider({ children }) {
     setIsIncoming(false);
     setIsInCall(false);
     setShowCallControls(false);
+    setRemoteMedia(null);
     if (user?.role === "student") setVideoCallSeconds(0);
     if (user?.role !== "student" && recorderRef.current) {
       recorderRef.current.stop();
@@ -455,6 +456,7 @@ export function CallingFnProvider({ children }) {
       setIsIncoming(false);
       setShowCallControls(false);
       setIsInCall(false);
+      setRemoteMedia(null);
       candidates.current = [];
       if (user?.role !== "student" && recorderRef.current) {
         recorderRef.current.stop();

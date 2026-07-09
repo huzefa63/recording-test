@@ -7,6 +7,7 @@ import { IoFilterOutline } from "react-icons/io5";
 import { useState } from "react";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { useUser } from "../providers/UserProvider";
+import { FaRegCalendarTimes } from "react-icons/fa";
 
 function MaqaratFilter({ query }) {
   const {user} = useUser();
@@ -85,7 +86,7 @@ function MaqaratFilter({ query }) {
       text: "ended",
       name:'status',
       value:'ended',
-      icon: <CiUser />,
+      icon: <FaRegCalendarTimes />,
       handler: () => handleChangeParam("ended","status"),
     },
     {

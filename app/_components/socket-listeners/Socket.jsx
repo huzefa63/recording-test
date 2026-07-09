@@ -208,16 +208,15 @@ export function CallingFnProvider({ children }) {
     // console.log(res.data)
     // peerConnection.current = new RTCPeerConnection(res.data);
     // await turn();
-    setIsCalling(true);
     setCallingTo(receiverId);
     targetUserRef.current = receiverId;
     localMedia.current = await navigator.mediaDevices.getUserMedia({
       video: {
-  width: { ideal: 1920 },
-  height: { ideal: 1080 },
-  frameRate: { ideal: 60 },
-  facingMode:'user',
-},
+        width: { ideal: 1920 },
+        height: { ideal: 1080 },
+        frameRate: { ideal: 60 },
+        facingMode:'user',
+      },
       audio: {
         sampleRate: 48000,
         channelCount: 2,
@@ -226,15 +225,16 @@ export function CallingFnProvider({ children }) {
         autoGainControl: true,
       },
     });
-    localVideoRef.current.srcObject = localMedia.current;
-
+    
     localMedia.current
-      .getTracks()
-      .forEach((track) =>
-        peerConnection.current.addTrack(track, localMedia.current),
-      );
-    const offer = await peerConnection.current.createOffer();
-    await peerConnection.current.setLocalDescription(offer);
+    .getTracks()
+    .forEach((track) =>
+      peerConnection.current.addTrack(track, localMedia.current),
+  );
+  const offer = await peerConnection.current.createOffer();
+  // localVideoRef.current.srcObject = localMedia.current;
+  await peerConnection.current.setLocalDescription(offer);
+  setIsCalling(true);
     setShowCallControls(true);
 
     await new Promise((res) =>
@@ -244,6 +244,12 @@ export function CallingFnProvider({ children }) {
     );
     socket.emit("incoming-call", { to: receiverId, from: callerId, offer });
   }
+
+  useEffect(() => {
+    if(isCalling){
+    localVideoRef.current.srcObject = localMedia.current;
+    }
+  },[isCalling])
 
   async function acceptCall(receiverId, callerId) {
     // const res = await axios.get(

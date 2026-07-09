@@ -89,12 +89,17 @@ function StudentContainer() {
     return (
       <div className="flex flex-col min-w-full  max-h-full ">
         {user?.role === "teacher" && (
-          <h1 className="text-white/90 text-center w-3/4 lg:w-1/4 mx-auto borde rounded-tl-full rounded-br-full bg-(image:--gradient-primary) justify-center py-2 mb-5 font-bold text-2xl flex items-center gap-2 justify-cente border-amber-100 shadow-(--shadow-sm)">
-            <p className="">
-              <FaGraduationCap />
-            </p>{" "}
-            Your Students
-          </h1>
+          <div className="mb-5 bg-(image:--gradient-primary) rounded-xl p-5 flex items-center gap-5 w-full ">
+            <div className="p-3 text-white bg-(--primary-light) rounded-lg">
+              <FaGraduationCap className="text-2xl lg:4xl" />
+            </div>
+            <div>
+              <p className="text-white">Your Students</p>
+              <p className="text-white/80 text-xs">
+                Contact any of your student from here
+              </p>
+            </div>
+          </div>
         )}
         {user?.role !== "student" && (
           <StudentsFilter handleFilterStudents={handleFilterStudents} />
@@ -107,12 +112,17 @@ function StudentContainer() {
             <p className="text-xl font-bold"> Proxy Teacher</p>
           </div> */}
           {user?.role === "student" && (
-            <h1 className="text-white/90 text-center w-3/4 lg:w-1/4 mx-auto border rounded-tl-full rounded-br-full bg-(image:--gradient-primary) justify-center py-2 mb-5 font-bold text-2xl flex items-center gap-2 justify-cente border-amber-100 shadow-(--shadow-sm)">
-              <p className="">
-                <FaGraduationCap />
-              </p>{" "}
-              Your Muhaffiz
-            </h1>
+            <div className="mb-5 bg-(image:--gradient-primary) rounded-xl p-5 flex items-center gap-5 w-full ">
+              <div className="p-3 text-white bg-(--primary-light) rounded-lg">
+                <FaGraduationCap className="text-2xl lg:4xl" />
+              </div>
+              <div>
+                <p className="text-white">Your Muhaffiz</p>
+                <p className="text-white/80 text-xs">
+                  Contact your assigned Muhaffiz from here
+                </p>
+              </div>
+            </div>
           )}
           <div className=" flex flex-col lg:grid grid-cols-2 gap-3 w-full ">
             {/* <div className="bg-(--card) flex-1 mt-5 rounded-lg shadow-(--shadow-lg)"> */}
@@ -139,7 +149,7 @@ function StudentContainer() {
                   status={el.status}
                 />
               ))}
-            {(students?.length < 1 && user?.role === 'teacher') && (
+            {students?.length < 1 && user?.role === "teacher" && (
               <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
                 you don&apos;t have any students tagged yet!
               </h1>

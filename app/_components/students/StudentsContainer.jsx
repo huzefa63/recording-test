@@ -191,7 +191,7 @@ function StudentsContainer() {
     <div className="">
       <div className="mb-10 bg-(image:--gradient-primary) mt-2 rounded-xl p-5 flex items-center gap-5 w-full ">
         <div className="p-3 text-white bg-(--primary-light) rounded-lg">
-          <FaBook className="text-4xl " />
+          <FaBook className="text-2xl lg:4xl" />
         </div>
         <div>
           <p className="text-white">{user.name}&apos;s diary</p>

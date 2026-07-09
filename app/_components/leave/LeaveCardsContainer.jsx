@@ -9,7 +9,7 @@ import axios from "axios";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CiCalendar, CiChat1, CiUser } from "react-icons/ci";
 import { format, formatDistanceToNow } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Link from "next/link";
 import { IoArrowBackOutline, IoChatboxEllipsesOutline } from "react-icons/io5";
@@ -39,6 +39,16 @@ function LeaveCardsContainer({ setShow, show }) {
     queryFn: handleGetLeaves,
     placeholderData: keepPreviousData,
   });
+
+  useEffect(() => {
+    if(show) {
+      const url = new URLSearchParams(searchParams);
+      if(url.has('status')){
+        url.delete('status');
+        router.replace(`${pathname}?${url}`,{scroll:false});
+      }
+    }
+  },[show])
 
   async function handleUpdate(status) {
     try {
@@ -231,25 +241,25 @@ function LeaveCardsContainer({ setShow, show }) {
           <div className="grid grid-cols-4 text-center text-sm">
             <button
               onClick={() => handleChangeSearchParams("all")}
-              className={`pb-3 border-b transition-colors duration-300 ease-in-out  ${searchParams.has("status", "all") ? "border-b-2 border-b-blue-500 text-blue-600" : "border-b-gray-200"}`}
+              className={`py-2 hover:cursor-pointer hover:bg-(--card-hover) border-b transition-colors duration-300 ease-in-out  ${searchParams.has("status", "all") ? "border-b-2 border-b-blue-500 text-blue-600" : "border-b-gray-200"}`}
             >
               All
             </button>
             <button
               onClick={() => handleChangeSearchParams("pending")}
-              className={`pb-3 border-b transition-colors duration-300 ease-in-out ${searchParams.has("status", "pending") ? "border-b-2 border-b-blue-500 text-blue-600" : "border-b-gray-200"}`}
+              className={`py-2 hover:cursor-pointer hover:bg-(--card-hover) border-b transition-colors duration-300 ease-in-out ${searchParams.has("status", "pending") ? "border-b-2 border-b-blue-500 text-blue-600" : "border-b-gray-200"}`}
             >
               Pending
             </button>
             <button
               onClick={() => handleChangeSearchParams("accepted")}
-              className={`pb-3 border-b transition-colors duration-300 ease-in-out  ${searchParams.has("status", "accepted") ? "border-b-2 border-b-blue-500 text-blue-600" : "border-b-gray-200"}`}
+              className={`py-2 hover:cursor-pointer hover:bg-(--card-hover) border-b transition-colors duration-300 ease-in-out  ${searchParams.has("status", "accepted") ? "border-b-2 border-b-blue-500 text-blue-600" : "border-b-gray-200"}`}
             >
               Accepted
             </button>
             <button
               onClick={() => handleChangeSearchParams("rejected")}
-              className={`pb-3 border-b transition-colors duration-300 ease-in-out  ${searchParams.has("status", "rejected") ? "border-b-2 border-b-blue-500 text-blue-600" : "border-b-gray-200"}`}
+              className={`py-2 hover:cursor-pointer hover:bg-(--card-hover) border-b transition-colors duration-300 ease-in-out  ${searchParams.has("status", "rejected") ? "border-b-2 border-b-blue-500 text-blue-600" : "border-b-gray-200"}`}
             >
               Rejected
             </button>
@@ -288,7 +298,7 @@ function LeaveCardsContainer({ setShow, show }) {
                 handleChangeSearchParams("");
               }
             }}
-            className="flex items-center  gap-5 p-2 rounded-md hover:bg-gray-200 mb-5"
+            className="flex items-center hover:cursor-pointer gap-5 p-2 rounded-md hover:bg-gray-200 mb-5"
           >
             <IoArrowBackOutline />
             Leave Request Details

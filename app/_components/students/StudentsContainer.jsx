@@ -18,6 +18,7 @@ import { useUser } from "../providers/UserProvider";
 import CustomContextMenu from "../CustomContextMenu";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 function StudentsContainer() {
   const { user,isFetching } = useUser();
@@ -181,7 +182,14 @@ function StudentsContainer() {
     }
   },[user?.role,session?.status])
 
-  if (!user?.role) return null;
+  if (!user?.role) {
+    return(
+      <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full flex-col gap-3 flex items-center justify-center ">
+        <h1>You are not authorized, please login</h1>
+        <Link href={'/auth'} className="bg-(image:--gradient-primary) text-white rounded-md p-1 px-4">Login</Link>
+      </div>
+    )
+  };
   if(user?.role === 'student') return null;
   const customizedTeachers = teachers?.map((el) => ({
     label: el.name,

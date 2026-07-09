@@ -22,7 +22,7 @@ function Sidebar() {
       if(pathname.includes('auth')) return null;
     return (
       <div className="fixed top-0 w-40 p-5 px-2 h-full bg-(--card) border border-(--border) lg:flex flex-col hidden">
-        <img src="/logo.png" alt="" className="w-full mx-auto"/>
+        <img src="/Dohad.png" alt="" className="w-full mx-auto"/>
         <div className="lg:flex flex-col justify-between mt-10 flex-1">
           <div className="space-y-2">
             {(user?.role === 'teacher' || user?.role === 'admin') && <Link href="/students" className={linkStyle("/students")}>

@@ -36,10 +36,10 @@ function PhoneNav() {
           <IoCalendarOutline />
           <p className={`text-[0.60rem] ${!pathname.includes('leave') && 'text-gray-500'}`}>leaves</p>
         </Link>
-        <Link href={'/maqarat'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("maqarat") && " bg-(--card-hover) shadow-(--shadow-sm) rounded-md font-bold text-(--primary)"}`}>
+        {(role === 'admin' || (user.batch.includes('baneen') || user.batch.includes('banaat'))) && <Link href={'/maqarat'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("maqarat") && " bg-(--card-hover) shadow-(--shadow-sm) rounded-md font-bold text-(--primary)"}`}>
           <IoBookOutline />
           <p className={`text-[0.60rem] ${!pathname.includes('maqaraat') && 'text-gray-500'}`}>Maqaarat</p>
-        </Link>
+        </Link>}
         <Link href={'/profile'} className={`p-2 flex flex-col items-center gap-1 ${pathname.includes("profile") && " bg-(--card-hover) shadow-(--shadow-sm) rounded-md font-bold text-(--primary)"}`}>
           <CiUser />
           <p className={`text-[0.60rem] ${!pathname.includes('profile') && 'text-gray-500'}`}>Profile</p>

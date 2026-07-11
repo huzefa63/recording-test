@@ -12,6 +12,7 @@ import { PiDoorOpenLight } from "react-icons/pi";
 
 function Sidebar() {
   const {user} = useUser();
+  const role = user?.role;
     const pathname = usePathname();
     const linkStyle = (href) =>
       `flex items-center gap-3 rounded-xl px-3 py-3 transition ${
@@ -20,6 +21,7 @@ function Sidebar() {
         : "hover:bg-(--bg-main)/50"
       }`;
       if(pathname.includes('auth')) return null;
+      if(!user?._id) return null;
     return (
       <div className="fixed top-0 w-40 p-5 px-2 h-full bg-(--card) border border-(--border) lg:flex flex-col hidden">
         <img src="/Dohad.png" alt="" className="w-full mx-auto"/>
@@ -40,10 +42,10 @@ function Sidebar() {
               <span>Gurfah</span>
             </Link>
 
-            <Link href="/maqarat" className={linkStyle("/maqarat")}>
+            {(role === 'admin' || (user.batch.includes('baneen') || user.batch.includes('banaat'))) && <Link href="/maqarat" className={linkStyle("/maqarat")}>
               <IoBookOutline size={18} />
               <span>Maqarat</span>
-            </Link>
+            </Link>}
 
             {/* <Link href="/fees" className={linkStyle("/fees")}>
             <FaMoneyBillWave size={18} />

@@ -21,11 +21,10 @@ function Sidebar() {
         : "hover:bg-(--bg-main)/50"
       }`;
       if(pathname.includes('auth')) return null;
-      if(!user?._id) return null;
     return (
       <div className="fixed top-0 w-40 p-5 px-2 h-full bg-(--card) border border-(--border) lg:flex flex-col hidden">
         <img src="/Dohad.png" alt="" className="w-full mx-auto"/>
-        <div className="lg:flex flex-col justify-between mt-10 flex-1">
+       {user?._id && <div className="lg:flex flex-col justify-between mt-10 flex-1">
           <div className="space-y-2">
             {(user?.role === 'teacher' || user?.role === 'admin') && <Link href="/students" className={linkStyle("/students")}>
               <CiUser size={20} />
@@ -58,7 +57,7 @@ function Sidebar() {
             </Link>
           </div>
           <LogoutButton />
-        </div>
+        </div>}
       </div>
     );
 }

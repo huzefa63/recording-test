@@ -13,7 +13,7 @@ import { useVideoCallContext } from "../providers/VideoCallProvider";
 import SubmitRecording from "../entry/SubmitRecording";
 import useAudioRecorder from "@/app/_hooks/useAudioRecorder";
 import { useUser } from "../providers/UserProvider";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import {
   keepPreviousData,
   useQuery,
@@ -32,7 +32,6 @@ import { useSocketContext } from "../providers/SocketProvider";
 import { useAppProvider } from "../providers/AppProvider";
 import { LuMessageCircle } from "react-icons/lu";
 import { BiSolidMessageSquareDetail } from "react-icons/bi";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
 const font = Playfair_Display({

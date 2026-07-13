@@ -161,7 +161,7 @@ function StudentContainer() {
                 />
               ))}
             {students?.length < 1 && user?.role === "teacher" && (
-              <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-bold text-xl tracking-wider text-center w-3/4">
+              <h1 className="absolute top-1/2 left-1/2 -translate-1/2 font-semibold text-sm tracking-wider text-center w-3/4">
                 you don&apos;t have any students tagged yet!
               </h1>
             )}
@@ -176,7 +176,7 @@ function StudentCard({name,id,status,profileImage}){
   let formattedName;
   const nameArr = name.split(" ");
 
-  const firstName = nameArr[0];
+  const firstName = nameArr[1];
   const lastName = nameArr[nameArr.length - 1];
   formattedName = firstName.concat(` ${lastName}`);
     return (
@@ -186,9 +186,9 @@ function StudentCard({name,id,status,profileImage}){
             {!profileImage && <FaUser className="text-2xl" />}
             {profileImage && <Image fill src={profileImage} alt="profile photo"/>}
           </div>
-          <div className="font-bold text-(--text) tracking-wider">{formattedName} <p className={`text-[0.60rem] ${status==='offline'?'text-red-500/70':'text-green-500/70'}`}>{status}</p></div>
+          <div className="font-semibold text-xs text-(--text) tracking-wider">{name.split(' ').slice(1,name.split(' ').length).join(' ')} <p className={`text-[0.60rem] ${status==='offline'?'text-red-500/70':'text-green-500/70'}`}>{status}</p></div>
         </div>
-        <div className="p-1 rounded-full bg-(--bg-tertiary)/50"><RiArrowDropRightLine className="text-2xl" /></div>
+        <div className="p-1 ml-12 rounded-full bg-(--bg-tertiary)/50"><RiArrowDropRightLine className="text-2xl" /></div>
       </Link>
     );
 }

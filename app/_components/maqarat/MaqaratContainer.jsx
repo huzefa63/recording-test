@@ -38,9 +38,7 @@ function MaqaratContainer({}) {
         placeholderData:keepPreviousData
     })
     async function handleGetMaqarat(){
-      console.log('get')
-      console.log(query.get('status'));
-      console.log(query.get('upcoming'));
+
         try{
             const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/maqarat/get?batch=${query.get('batch') || ''}&status=${query.get('status') || ''}`,{withCredentials:true});
             console.log('sucess')

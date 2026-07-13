@@ -25,8 +25,8 @@ function RecordingInProgress({ studentName, hours, minutes, seconds, isPause, ha
           <header className="font-bold text-xl text-(--text)">
             Recording Class of
           </header>
-          <h1 className="font-bold text-(--text-secondary) text-lg">
-            {studentName}
+          <h1 className="font-bold text-center text-(--text-secondary) text-lg">
+            {studentName.split(' ').slice(1,studentName.split(' ').length).join(' ')}
           </h1>
         </div>
       </div>

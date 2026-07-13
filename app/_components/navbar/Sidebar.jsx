@@ -41,10 +41,10 @@ function Sidebar() {
               <span>Gurfah</span>
             </Link>
 
-            {(role === 'admin' || (user.batch.includes('baneen') || user.batch.includes('banaat'))) && <Link href="/maqarat" className={linkStyle("/maqarat")}>
+            <Link href="/maqarat" className={linkStyle("/maqarat")}>
               <IoBookOutline size={18} />
               <span>Maqarat</span>
-            </Link>}
+            </Link>
 
             {/* <Link href="/fees" className={linkStyle("/fees")}>
             <FaMoneyBillWave size={18} />

@@ -32,7 +32,7 @@ function StudentCard({
   let formattedName;
   const nameArr = name.split(' ');
   
-    const firstName = nameArr[0];
+    const firstName = nameArr[1];
     const lastName = nameArr[nameArr.length - 1];
     formattedName = firstName.concat(` ${lastName}`);
   
@@ -75,9 +75,10 @@ function StudentCard({
           </div>
         )}
         {!image && <FaUserCircle className="text-5xl text-amber-950" />}
-        <p className="font-semibold text-stone-800 tracking-wider text-xs text-center">
-          {formattedName}
-        </p>
+        <div className="font-semibold wrap-break-word text-stone-800 tracking-wider text-xs text-center">
+          {name.split(' ')[0]}
+          <p className="wrap-break-word font-normal text-[0.65rem] mt-1">{name.split(' ').splice(1,name.split(' ').length - 1).join(' ')}</p>
+        </div>
         <div className="w-full border-t border-(--border) py-2 text-[0.55rem]">
           <div className=" flex items-center gap-3 w-full ">
             <div>
@@ -85,7 +86,7 @@ function StudentCard({
             </div>
             <div className="truncate">
               <p className="text-(--text-muted) text-[0.70rem]">Teacher</p>
-              <p className="text-(--text) truncate">{teacherName}</p>
+              <p className="text-(--text) truncate">{teacherName || 'no teacher assigned'}</p>
             </div>
           </div>
           <div className=" border-t border-(--border) py-2 mt-2 flex items-center gap-3">

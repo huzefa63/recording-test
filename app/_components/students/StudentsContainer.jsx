@@ -128,17 +128,34 @@ function StudentsContainer() {
     if (value.length < 3) return setFilteredStudents(students);
     setFilteredStudents(students);
     setFilteredStudents(el => {
+      const isNumber = Number(value);
+      if(isNumber){
+        return el.filter((el) => {
+          return el.name.includes(value);
+        });
+      }else{
+        return el.filter(el => {
+          const nameArr = el.name.split(" ");
+          const firstName = nameArr[1];
+          const lastName = nameArr[nameArr.length - 1];
+          const queryArr = value.split(' ');
+          if(queryArr.length > 1){
+            return ((firstName.includes(queryArr[0]) && lastName.includes(queryArr[1])) || (firstName.includes(queryArr[1] && lastName.includes(queryArr[0]))));
+          }
+          return firstName.includes(value) || lastName.includes(value);
+        })
+      }
       
-      return el.filter(el => {
-        const nameArr = el.name.split(" ");
-        const firstName = nameArr[0];
-        const lastName = nameArr[nameArr.length - 1];
-        const queryArr = value.split(' ');
-        if(queryArr.length > 1){
-          return ((firstName.includes(queryArr[0]) && lastName.includes(queryArr[1])) || (firstName.includes(queryArr[1] && lastName.includes(queryArr[0]))));
-        }
-        return firstName.includes(value) || lastName.includes(value);
-      })
+      // return el.filter(el => {
+      //   const nameArr = el.name.split(" ");
+      //   const firstName = nameArr[0];
+      //   const lastName = nameArr[nameArr.length - 1];
+      //   const queryArr = value.split(' ');
+      //   if(queryArr.length > 1){
+      //     return ((firstName.includes(queryArr[0]) && lastName.includes(queryArr[1])) || (firstName.includes(queryArr[1] && lastName.includes(queryArr[0]))));
+      //   }
+      //   return firstName.includes(value) || lastName.includes(value);
+      // })
     })
     // setFilteredStudents((student) =>
     //   student.filter((el) => el.name.toLowerCase().includes(value.toLowerCase())),
@@ -191,7 +208,7 @@ function StudentsContainer() {
   //     </div>
   //   )
   // };
-  if(user?.role === 'student') return null;
+  if(!user?._id || user?.role === 'student') return null;
   const customizedTeachers = teachers?.map((el) => ({
     label: el.name,
     value: el._id,
@@ -203,13 +220,13 @@ function StudentsContainer() {
           <FaBook className="text-2xl lg:4xl" />
         </div>
         <div>
-          <p className="text-white">{user.name}&apos;s diary</p>
+          <p className="text-white">{user.name.split(' ').slice(2,user.name.split(' ').length).join(' ')}&apos;s diary</p>
           <p className="text-white/80 text-xs">record and manage students</p>
         </div>
       </div>
       <StudentsFilter handleFilterStudents={handleFilterStudents} />
       <RecordWithNumberCard />
-      {!isSelecting && (
+      {!isSelecting && students?.length > 0 && (
         <button
           onClick={() => setIsSelecting(true)}
           className="mt-5 bg-(image:--gradient-primary) hover:cursor-pointer duration-300 ease-in-out transition-all hover:scale-105 text-white/90 text-sm px-6 py-2 rounded-lg shadow-(--shadow-lg) ml-auto flex items-center gap-2"
@@ -392,9 +409,9 @@ function RecordWithNumberCard() {
   const {students} = useAppProvider();
   const router = useRouter();
   const formatedStudents = students?.map(el => {
-    const name = el.name.split(' ').filter((el,i) => i !== 1 ? true : false).join(' ');
+    // const name = el.name.split(' ').filter((el,i) => i !== 1 ? true : false).join(' ');
     // const name = el.name.split(' ').filter(el => el.toLowerCase() !== 'bhai').join(' ');
-    return { label: name, value: el._id };
+    return { label: el.name, value: el._id };
   });
   function handleSelect({value:id,label:studentName}){
     router.replace(`/entry/${id}?studentName=${studentName}`);
@@ -415,14 +432,14 @@ function RecordWithNumberCard() {
           </h3>
 
           <p className="text-xs text-amber-800/80">
-            student is not in your diary ? just select student from list.
+            student not in your diary ? just select student from here.
           </p>
         </div>
       </div>
 
       <button onClick={()=>setShowSelector(true)} className="flex items-center text-xs rounded-md border border-red-400 bg-white p-2 py-2 gap-1 font-semibold text-red-800 transition hover:bg-red-50">
         {/* <MdOutlinePersonSearch  /> */}
-        Select Student
+        Select
       </button>
       {showSelector && <Modal onClose={()=>setShowSelector(false)} heading={'Select Student'} className="w-[90%]">
         <CustomSelect options={formatedStudents} handler={handleSelect} handleOnChange/>

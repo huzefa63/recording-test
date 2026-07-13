@@ -222,8 +222,10 @@ function StudentWrapper() {
             )}
           </div>
 
-          <div className="ml-3 font-bold">
-            <h1 className="text-sm">{data?.user?.name}</h1>
+          <div className="ml-3 font-semibold mr-2">
+            <h1 className="text-xs">
+              {data?.user?.name.split(" ").slice(1, data?.user?.name.split(" ").length).join(" ")}
+            </h1>
             <p
               className={`text-xs font-thin ${data?.user?.status === "offline" ? "text-red-600" : "text-green-600"}`}
             >
@@ -248,18 +250,16 @@ function StudentWrapper() {
           {messages?.map((el, i, arr) => {
             const date = new Date(el.createdAt);
             // if (i === 0)
-              // console.log(differenceInDays(new Date(), date));
+            // console.log(differenceInDays(new Date(), date));
             let prevDate;
             if (i !== 0) {
               prevDate = new Date(arr[i - 1].createdAt);
               // console.log(prevDate.getMonth())
             }
-            
+
             return (
               <div key={el._id} className="flex flex-col gap-3">
-                
-                {(i === 0 && 
-                    differenceInDays(new Date(), date) < 7) && (
+                {i === 0 && differenceInDays(new Date(), date) < 7 && (
                   <p
                     // key={el._id}
                     className="bg-(image:--gradient-primary) text-white/90 text-sm w-fit px-4 py-1 rounded-md mx-auto"
@@ -281,16 +281,16 @@ function StudentWrapper() {
                           "Yesterday"}
                   </p>
                 )}
-                {(i === 0 && 
-                    differenceInDays(new Date(), date) >= 7) && (
+                {i === 0 && differenceInDays(new Date(), date) >= 7 && (
                   <p
                     // key={el._id}
                     className="bg-(image:--gradient-primary) text-white/90 text-sm w-fit px-4 py-1 rounded-md mx-auto"
                   >
-                    {format(date,"do MMMM yyyy")}
+                    {format(date, "do MMMM yyyy")}
                   </p>
                 )}
-                {(i > 0 && differenceInDays(new Date(), date) < 7) && 
+                {i > 0 &&
+                  differenceInDays(new Date(), date) < 7 &&
                   (date.getDate() !== prevDate.getDate() ||
                     date.getMonth() !== prevDate.getMonth() ||
                     date.getFullYear() !== prevDate.getFullYear()) && (
@@ -315,7 +315,8 @@ function StudentWrapper() {
                             "Yesterday"}
                     </p>
                   )}
-                {(i > 0 && differenceInDays(new Date(), date) >= 7) && 
+                {i > 0 &&
+                  differenceInDays(new Date(), date) >= 7 &&
                   (date.getDate() !== prevDate.getDate() ||
                     date.getMonth() !== prevDate.getMonth() ||
                     date.getFullYear() !== prevDate.getFullYear()) && (
@@ -323,7 +324,7 @@ function StudentWrapper() {
                       // key={el._id}
                       className="bg-(image:--gradient-primary) text-white/90 text-sm w-fit px-4 py-1 rounded-md mx-auto"
                     >
-                      {format(date,"do MMMM yyyy")}
+                      {format(date, "do MMMM yyyy")}
                     </p>
                   )}
 

@@ -21,11 +21,14 @@ function AuthForm() {
   const queryClient = useQueryClient();
   async function handleSignin(e){
     try{
+      setIsSubmitting(true);
       const res = await axios.post(`${process.env.NEXT_PUBLIC_URL}/auth/emailSignin`,{email:e.email,password:e.password,role},{withCredentials:true})
       queryClient.invalidateQueries();
+      setIsSubmitting(false);
       if(role === 'student') router.replace('/gurfah');
       else router.replace('/students');
     }catch(err){
+      setIsSubmitting(false);
       if(!err.response?.data?.ok && err.response?.data?.message) return toast.error(err.response.data.message);
       else return toast.error('failed to sign in');
     }
@@ -103,9 +106,9 @@ function AuthForm() {
             </div>
           </div>
 
-          <button disabled={isSubmitting} className="w-full rounded-md shadow-(--shadow-md) disabled:bg-(image:--gradient-soft) bg-(image:--gradient-primary) py-3 text-white">
+          <button disabled={isSubmitting} className="relative w-full rounded-md shadow-(--shadow-md) disabled:bg-(image:--gradient-soft) bg-(image:--gradient-primary) py-3 text-white">
             <p className={`${isSubmitting && 'opacity-0'}`}>Login</p>
-            <p className={`${!isSubmitting && 'opacity-0'}`}>Logging...</p>
+            <p className={`absolute top-1/2 left-1/2 -translate-1/2 ${!isSubmitting && 'opacity-0'}`}>Logging...</p>
           </button>
         </div>
       </form>

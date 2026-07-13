@@ -25,7 +25,6 @@ function MaqaratContainer({}) {
         useEffect(() => {
             if(session.status === "loading") return;
             if(isFetching) return;
-            if(user?.role === 'student') router.replace('/gurfah');
             if(!user?._id) {
               router.replace("/auth");
             }

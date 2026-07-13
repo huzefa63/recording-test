@@ -19,7 +19,7 @@ function RecordingWrapper({studentName,studentId}) {
         useEffect(() => {
             if(session.status === "loading") return;
             if(isFetching) return;
-            if(user?.role === 'student') router.replace('/gurfah');
+            if(user?.role && user?.role === 'student') router.replace('/gurfah');
             if(!user?._id) {
               router.replace("/auth");
             }

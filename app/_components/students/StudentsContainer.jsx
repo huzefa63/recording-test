@@ -25,6 +25,7 @@ import {
   FaChalkboardTeacher,
   FaShieldAlt,
 } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
 function StudentsContainer() {
   const { user,isFetching } = useUser();
   const { teachers } = useAppProvider();

@@ -182,7 +182,7 @@ function StudentCard({name,id,status,profileImage}){
     return (
       <Link
         href={`/onlineclass/${id}`}
-        className="bg-(--card) shadow-(--shadow-sm) border-l-6 border-l-(--primary) flex items-center justify-between px-5 py-3 border rounded-tl-lg rounded-bl-lg rounded-tr-xl rounded-br-xl border-(--border) duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)"
+        className="bg-(--card) shadow-(--shadow-sm) flex items-center justify-between px-5 py-3 border rounded-tl-lg rounded-bl-lg rounded-tr-xl rounded-br-xl border-gray-300 duration-300 ease-in-out transition-all hover:cursor-pointer hover:bg-(--card-hover)"
       >
         <div className="flex items-center gap-6">
           <div className="min-h-13 min-w-13 overflow-hidden flex justify-center items-center relative rounded-full bg-(--bg-tertiary)/50">

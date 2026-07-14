@@ -19,7 +19,12 @@ import CustomContextMenu from "../CustomContextMenu";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-
+import {
+  FaUser,
+  FaUserCheck,
+  FaChalkboardTeacher,
+  FaShieldAlt,
+} from "react-icons/fa";
 function StudentsContainer() {
   const { user,isFetching } = useUser();
   const { teachers } = useAppProvider();
@@ -342,39 +347,109 @@ function StudentsContainer() {
             you don&apos;t have any students tagged yet!
           </h1>
         )} */}
-        {modal.show && (modal.type === 'diary' || modal.type === 'proxy') &&
-          <Modal
-            onClose={() => setModal({ show: false, type: "" })}
-            className="h-fit"
-            headingStyles="text-sm decoration-0"
-            heading={
-              modal.type === "diary"
-                ? "select teacher to change diary"
-                : "select teacher to assign proxy"
-            }
-          >
-            <div className="mt-8 mb-4 space-y-2">
-              <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
-                Student: {selectedStudent.name}
-              </h1>
-              <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
-                Teacher: {selectedStudent.teacher}
-              </h1>
-              {selectedStudent.proxyTeacher && (
-                <h1 className="ml-1 tracking-wider font-semibold text-xs text-(--text-secondary)">
-                  proxy assigned to: {selectedStudent.proxyTeacher}
-                </h1>
-              )}
+        {modal.show && (modal.type === "diary" || modal.type === "proxy") && (
+  <Modal
+    onClose={() => setModal({ show: false, type: "" })}
+    className="max-w-md h-fit rounded-3xl"
+    headingStyles="text-xl font-bold text-center"
+    heading={
+      modal.type === "diary"
+        ? "Select teacher to change diary"
+        : "Select teacher to assign proxy"
+    }
+  >
+    <div className="space-y-6 mt-6">
+
+      {/* Student & Teacher Card */}
+      <div className="rounded-2xl border border-neutral-200 bg-white shadow-sm overflow-hidden">
+
+        {/* Student */}
+        <div className="flex gap-3 p-4">
+          <div className="h-11 w-11 rounded-full bg-amber-100 flex items-center justify-center">
+            <FaUser className="text-amber-700 text-lg" />
+          </div>
+
+          <div>
+            <p className="text-xs text-gray-500 font-medium uppercase">
+              Student
+            </p>
+            <p className="text-sm font-semibold text-gray-800">
+              {selectedStudent.name}
+            </p>
+          </div>
+        </div>
+
+        <div className="border-t border-neutral-200" />
+
+        {/* Current Teacher */}
+        <div className="flex gap-3 p-4">
+          <div className="h-11 w-11 rounded-full bg-amber-100 flex items-center justify-center">
+            <FaChalkboardTeacher className="text-amber-700 text-lg" />
+          </div>
+
+          <div>
+            <p className="text-xs text-gray-500 font-medium uppercase">
+              Current Teacher
+            </p>
+            <p className="text-sm font-semibold text-gray-800">
+              {selectedStudent.teacher}
+            </p>
+          </div>
+        </div>
+
+        {selectedStudent.proxyTeacher && (
+          <>
+            <div className="border-t border-neutral-200" />
+
+            <div className="flex gap-3 p-4">
+              <div className="h-11 w-11 rounded-full bg-green-100 flex items-center justify-center">
+                <FaUserCheck className="text-green-700 text-lg" />
+              </div>
+
+              <div>
+                <p className="text-xs text-gray-500 font-medium uppercase">
+                  Current Proxy
+                </p>
+                <p className="text-sm font-semibold text-gray-800">
+                  {selectedStudent.proxyTeacher}
+                </p>
+              </div>
             </div>
-            <CustomSelect
-              options={customizedTeachers}
-              isButton={true}
-              handler={
-                modal.type === "diary" ? handleChangeDiary : handleAssignProxy
-              }
-            />
-          </Modal>
-        }
+          </>
+        )}
+      </div>
+
+      {/* Select */}
+      <div>
+        <label className="block mb-2 text-sm font-semibold text-gray-700">
+          {modal.type === "diary"
+            ? "Select new teacher"
+            : "Select proxy teacher"}
+        </label>
+
+        <CustomSelect
+          options={customizedTeachers}
+          isButton
+          handler={
+            modal.type === "diary"
+              ? handleChangeDiary
+              : handleAssignProxy
+          }
+        />
+      </div>
+
+      {/* Footer Note */}
+      <div className="flex items-center gap-2 text-xs text-gray-500">
+        <FaShieldAlt className="text-green-600" />
+        <span>
+          {modal.type === "diary"
+            ? "This will update the diary teacher."
+            : "This will assign a proxy teacher."}
+        </span>
+      </div>
+    </div>
+  </Modal>
+)}
         <ContextMenu>
           {user.role === "admin" && (
             <Item onClick={() => setModal({ show: true, type: "diary" })}>

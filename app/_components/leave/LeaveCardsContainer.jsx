@@ -85,7 +85,7 @@ function LeaveCardsContainer({ setShow, show }) {
   }
   // if(leaves?.length < 1) return <div className="text-center mt-15 font-bold">Apply For Leave</div>
   return (
-    <div className="bg-(--card) relative py-5 px-2 rounded-xl h-full">
+    <div className="bg-(--card) border border-gray-200 relative py-5 px-2 rounded-xl h-full">
       {show && !showLeaveDetails.show && (
         <>
           <div className="flex justify-between items-center">
@@ -105,6 +105,13 @@ function LeaveCardsContainer({ setShow, show }) {
                 View All
               </button> */}
           </div>
+          {leaves?.length < 1 && (
+            <div className="flex py-10">
+              <p className="mt-5 mx-auto font-bold ">
+                No recent requests!
+              </p>
+            </div>
+          )}
           <div className="lg:pb-15  hidden lg:grid lg:grid-cols-2 lg:gap-5">
             {leaves?.slice(0, 10).map((el) => (
               <PhoneLeaveCard

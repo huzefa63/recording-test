@@ -28,7 +28,7 @@ export default function Modal({ children, onClose,className,heading, headingStyl
             e.stopPropagation();
             onClose();
           }}
-          className="absolute right-2 top-2"
+          className="absolute hover:cursor-pointer p-2 rounded-md hover:bg-(--card-hover) duration-300 ease-in-out transition-all  right-2 top-2"
         >
           <RxCross2 />
         </button>

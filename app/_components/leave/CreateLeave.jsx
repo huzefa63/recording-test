@@ -156,7 +156,7 @@ function LeaveForm({onClose}){
             <p className="font-bold text-sm">No of days</p>
             <div className="relative">
               <input
-              defaultValue={differenceInDays(date[0].endDate,date[0].startDate) + 1}
+              value={differenceInDays(date[0].endDate,date[0].startDate) + 1}
                 required
                 {...register("days", { required: true })}
                 type="Number"
@@ -170,7 +170,7 @@ function LeaveForm({onClose}){
 
           <button
             disabled={isSubmitting}
-            className="relative flex items-center gap-2 text-white bg-(image:--gradient-primary) py-3 justify-center rounded-md shadow-(--shadow-md)"
+            className="relative hover:cursor-pointer duration-300 ease-in-out transition-all hover:scale-102 flex items-center gap-2 text-white bg-(image:--gradient-primary) py-3 justify-center rounded-md shadow-(--shadow-md)"
           >
             <span
               className={`${isSubmitting && "opacity-0"} flex items-center gap-2`}

@@ -135,6 +135,12 @@ function StudentContainer() {
               </div>
             </div>
           )}
+
+          {user?.role === "student" && teachers?.length < 1 && (
+            <div className="absolute font-semibold top-1/2 left-1/2 -translate-1/2 text-center">
+              No teacher is assigned to you.
+            </div>
+          )}
           <div className=" flex flex-col lg:grid grid-cols-2 gap-3 w-full ">
             {/* <div className="bg-(--card) flex-1 mt-5 rounded-lg shadow-(--shadow-lg)"> */}
             {(user?.role === "teacher" || user?.role === "admin") &&

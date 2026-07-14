@@ -286,7 +286,7 @@ function StudentsContainer() {
             {modal.show && modal.type === "multiple-diary" && (
   <Modal
     onClose={() => setModal({ show: false, type: "" })}
-    className="max-w-md h-fit rounded-3xl"
+    className="w-[90%] h-fit rounded-3xl"
     headingStyles="text-xl font-bold text-center"
     heading="Select teacher to change diaries"
   >
@@ -334,7 +334,7 @@ function StudentsContainer() {
 {modal.show && modal.type === "multiple-proxy" && (
   <Modal
     onClose={() => setModal({ show: false, type: "" })}
-    className="max-w-md h-fit rounded-3xl"
+    className="w-[90%] h-fit rounded-3xl"
     headingStyles="text-xl font-bold text-center"
     heading="Select teacher to assign proxies"
   >

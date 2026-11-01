@@ -163,7 +163,6 @@ export function CallingFnProvider({ children }) {
         if(isInCall && user?.role === 'student') socket.emit('restart-call-signal',{to:targetUserRef.current});
       }, 1000);
     }
-    socket.on('restart-call-signal',async () => restartIce());
 
     async function handleOffline(){
       if(isInCallRef.current) toast.error('internet connection lost');
@@ -517,6 +516,7 @@ async function setVideoBitrate(sender, bitrate) {
   },[])
   useEffect(() => {
     if (!socket) return;
+    socket.on("restart-call-signal", async () => restartIce());
 
     // socket.on('offer',async ({offer}) => {
     //   await peerConnection.current.setRemoteDescription(offer);

@@ -161,6 +161,7 @@ export function CallingFnProvider({ children }) {
         toast.success('online');
         console.log('online');
         if(isInCall && user?.role === 'student') socket.emit('restart-call-signal',{to:targetUserRef.current});
+        if(isInCall && user?.role !== 'student') await restartIce();
       }, 1000);
     }
 

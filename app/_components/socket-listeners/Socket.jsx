@@ -70,9 +70,10 @@ export function CallingFnProvider({ children }) {
  
      async function restartIce() {
     // const peerConnection.current = peerConnection.current;
-      toast.loading('reconnecting call...',{id:'reconnecting-call'});
-      toast.success('sending restart offer');
-    if (!peerConnection.current || isRestarting.current && user?.role !== 'student') return;
+    if (!peerConnection.current || isRestarting.current) return;
+    if(user?.role !== 'teacher' || user?.role !== 'admin') return;
+    toast.loading('reconnecting call...',{id:'reconnecting-call'});
+    toast.success('sending restart offer');
 
     isRestarting.current = true;
 

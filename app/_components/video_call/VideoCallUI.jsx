@@ -190,8 +190,6 @@ function VideoCallUI() {
   useEffect(() => {
     let timeout;
     function handleHover(){
-      console.log(timeout);
-      console.log('hover')
       clearTimeout(timeout);
       setIsShowElements(true);
       timeout = setTimeout(() => {

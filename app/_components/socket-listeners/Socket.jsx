@@ -69,8 +69,8 @@ export function CallingFnProvider({ children }) {
  
      async function restartIce() {
     // const peerConnection.current = peerConnection.current;
-      toast.loading('reconnecting call...');
-    if (!peerConnection.current || isRestarting.current) return;
+      toast.loading('reconnecting call...',{id:'reconnecting-call'});
+    if (!peerConnection.current || isRestarting.current && user?.role !== 'student') return;
 
     isRestarting.current = true;
 
@@ -81,7 +81,7 @@ export function CallingFnProvider({ children }) {
 
       await peerConnection.current.setLocalDescription(offer);
 
-      socket.emit("offer", {
+      socket.emit("ice-restart-offer", {
         offer: peerConnection.current.localDescription,
         to: callingTo,
       });
@@ -133,6 +133,9 @@ export function CallingFnProvider({ children }) {
         console.log("ice connection state: ", peerConnection.current.iceConnectionState);
       }
       // if (!isCalling) return;
+      if(peerConnection.current.connectionState === 'connected'){
+        toast.success('call connected',{id:'reconnecting-call'});
+      }
       if (peerConnection.current.connectionState === "failed") {
         // peerConnection.current.restartIce();
         if(notificationRef.current){
@@ -510,6 +513,10 @@ async function setVideoBitrate(sender, bitrate) {
   },[])
   useEffect(() => {
     if (!socket) return;
+
+    // socket.on('offer',async ({offer}) => {
+    //   await peerConnection.current.setRemoteDescription(offer);
+    // })
     socket.on("message", ({ message, from, to, createdAt, senderName, profileImage }) => {
       toast.dismiss();
       let id = pathname.includes("onlineclass") ? pathname.slice(pathname.lastIndexOf("/") + 1) : '';
@@ -864,40 +871,40 @@ async function setVideoBitrate(sender, bitrate) {
       });
       if (id === targetUserRef.current) {
         toast.error("The other person has gone offline.");
-        if (audioRef.current) {
-          audioRef.current.loop = false;
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
-        }
-        // if(localVideoRef?.current)localVideoRef.current
-        setIsCalling(false);
-        setIsIncoming(false);
-        setShowCallControls(false);
-        setIsInCall(false);
-        setVideoCallSeconds(0);
-        setRemoteMedia(null);
-        candidates.current = [];
-        if (user?.role !== "student" && recorderRef.current) {
-          recorderRef.current.stop();
-          if (pathname.includes("onlineclass")) {
-            const lastIndex = pathname.lastIndexOf("/");
-            const refactoredPathname = pathname.slice(0, lastIndex);
-            router.replace(`${refactoredPathname}/${targetUserRef.current}`, {
-              scroll: false,
-            });
-          } else {
-            const firstIndex = pathname.indexOf("/");
-            const refactoredPathname = pathname.slice(0, firstIndex);
-            router.replace(
-              `${refactoredPathname}/onlineclass/${targetUserRef.current}`,
-              { scroll: false },
-            );
-          }
-        } else {
-          // window.location.reload();
-        }
-        localMedia.current.getTracks().forEach((track) => track.stop());
-        await turn();
+        // if (audioRef.current) {
+        //   audioRef.current.loop = false;
+        //   audioRef.current.pause();
+        //   audioRef.current.currentTime = 0;
+        // }
+        // // if(localVideoRef?.current)localVideoRef.current
+        // setIsCalling(false);
+        // setIsIncoming(false);
+        // setShowCallControls(false);
+        // setIsInCall(false);
+        // setVideoCallSeconds(0);
+        // setRemoteMedia(null);
+        // candidates.current = [];
+        // if (user?.role !== "student" && recorderRef.current) {
+        //   recorderRef.current.stop();
+        //   if (pathname.includes("onlineclass")) {
+        //     const lastIndex = pathname.lastIndexOf("/");
+        //     const refactoredPathname = pathname.slice(0, lastIndex);
+        //     router.replace(`${refactoredPathname}/${targetUserRef.current}`, {
+        //       scroll: false,
+        //     });
+        //   } else {
+        //     const firstIndex = pathname.indexOf("/");
+        //     const refactoredPathname = pathname.slice(0, firstIndex);
+        //     router.replace(
+        //       `${refactoredPathname}/onlineclass/${targetUserRef.current}`,
+        //       { scroll: false },
+        //     );
+        //   }
+        // } else {
+        //   // window.location.reload();
+        // }
+        // localMedia.current.getTracks().forEach((track) => track.stop());
+        // await turn();
       }
     });
 

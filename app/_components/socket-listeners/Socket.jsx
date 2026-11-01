@@ -136,6 +136,9 @@ export function CallingFnProvider({ children }) {
       if(peerConnection.current.connectionState === 'connected'){
         toast.success('call connected',{id:'reconnecting-call'});
       }
+      if(peerConnection.current.connectionState === 'disconnected'){
+        toast.success('call disconnected',{id:'reconnecting-call'});
+      }
       if (peerConnection.current.connectionState === "failed") {
         // peerConnection.current.restartIce();
         if(notificationRef.current){
@@ -157,9 +160,10 @@ export function CallingFnProvider({ children }) {
       setTimeout(async () => {
         toast.success('online');
         console.log('online');
-        if(isInCall) await restartIce();
+        if(isInCall && user?.role === 'student') socket.emit('restart-call-signal',{to:targetUserRef.current});
       }, 1000);
     }
+    socket.on('restart-call-signal',async () => restartIce());
 
     async function handleOffline(){
       if(isInCallRef.current) toast.error('internet connection lost');

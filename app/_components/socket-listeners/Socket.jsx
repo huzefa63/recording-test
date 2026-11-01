@@ -719,6 +719,7 @@ async function setVideoBitrate(sender, bitrate) {
 
     socket.on("ice-restart-offer", async ({ offer }) => {
       console.log("ice restart offer: ", offer);
+      toast.success('restart offer received');
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(offer),
       );
@@ -735,6 +736,8 @@ async function setVideoBitrate(sender, bitrate) {
     });
 
     socket.on("ice-restart-answer", async ({ answer }) => {
+      toast.success("restart answer received");
+
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(answer),
       );

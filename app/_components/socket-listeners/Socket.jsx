@@ -137,7 +137,7 @@ export function CallingFnProvider({ children }) {
         toast.success('call connected',{id:'reconnecting-call'});
       }
       if(peerConnection.current.connectionState === 'disconnected'){
-        toast.success('call disconnected',{id:'reconnecting-call'});
+        toast.loading('reconnecting call',{id:'reconnecting-call'});
       }
       if (peerConnection.current.connectionState === "failed") {
         // peerConnection.current.restartIce();
@@ -147,7 +147,7 @@ export function CallingFnProvider({ children }) {
           notificationRef.current.play();
         }
         console.log('failed')
-        toast.error('one of the person on call has lost internet connection, please end call and try again',{duration:8000});
+        
         // navigator.vibrate([1000]);
         await restartIce();
         // toast.dismiss("call");
@@ -170,7 +170,11 @@ export function CallingFnProvider({ children }) {
 
     window.addEventListener('online',handleOnline);
     window.addEventListener('offline',handleOffline);
-    return () => window.removeEventListener('online',handleOnline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+
+    }
   },[isInCall,restartIce])
 
   useEffect(() => {

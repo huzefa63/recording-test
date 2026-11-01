@@ -41,6 +41,7 @@ function RecordingWrapper({studentName,studentId}) {
         audioSize,
         audioChunks,
         classType,
+        stream,
       },
 
       actions: {
@@ -118,6 +119,7 @@ function RecordingWrapper({studentName,studentId}) {
     if (isRecording){
         return (
           <RecordingInProgress
+          stream={stream}
             studentName={studentName}
             hours={hours}
             minutes={minutes}

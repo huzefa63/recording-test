@@ -42,8 +42,6 @@ export default function CreateAccountForm() {
       value: el._id,
     })) || [];
 
-  
-
   async function onSubmit(data) {
     console.log('submitting');
     // reset();
@@ -63,6 +61,9 @@ export default function CreateAccountForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="w-full my-auto max-w-5xl rounded-3xl bg-(--card) p-5 shadow-(--shadow-lg) md:p-8"
     >
+      <div id="mic" className="border">
+
+      </div>
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-100">

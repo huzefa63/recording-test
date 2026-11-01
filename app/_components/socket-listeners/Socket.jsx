@@ -73,7 +73,7 @@ export function CallingFnProvider({ children }) {
     if (!peerConnection.current || isRestarting.current) return;
     if(user?.role === 'student') return;
     toast.loading('reconnecting call...',{id:'reconnecting-call'});
-    toast.success('sending restart offer');
+    // toast.success('sending restart offer');
 
     isRestarting.current = true;
 
@@ -144,13 +144,13 @@ export function CallingFnProvider({ children }) {
       }
       if (peerConnection.current.connectionState === "failed") {
         // peerConnection.current.restartIce();
-        if(notificationRef.current){
-          notificationRef.current.pause();
-          notificationRef.current.currentTime = 0;
-          notificationRef.current.play();
-        }
+        // if(notificationRef.current){
+        //   notificationRef.current.pause();
+        //   notificationRef.current.currentTime = 0;
+        //   notificationRef.current.play();
+        // }
         console.log('failed')
-        toast.error('turn internet on');
+        // toast.error('turn internet on');
         // navigator.vibrate([1000]);
         if(navigator.onLine) await restartIce();
         // toast.dismiss("call");
@@ -726,7 +726,7 @@ async function setVideoBitrate(sender, bitrate) {
 
     socket.on("ice-restart-offer", async ({ offer }) => {
       console.log("ice restart offer: ", offer);
-      toast.success('restart offer received');
+      // toast.success('restart offer received');
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(offer),
       );
@@ -888,43 +888,43 @@ async function setVideoBitrate(sender, bitrate) {
           return { user: { ...data?.user, status: "offline" } };
         else return data;
       });
-      if (id === targetUserRef.current) {
-        toast.error("The other person has gone offline.");
-        // if (audioRef.current) {
-        //   audioRef.current.loop = false;
-        //   audioRef.current.pause();
-        //   audioRef.current.currentTime = 0;
-        // }
-        // // if(localVideoRef?.current)localVideoRef.current
-        // setIsCalling(false);
-        // setIsIncoming(false);
-        // setShowCallControls(false);
-        // setIsInCall(false);
-        // setVideoCallSeconds(0);
-        // setRemoteMedia(null);
-        // candidates.current = [];
-        // if (user?.role !== "student" && recorderRef.current) {
-        //   recorderRef.current.stop();
-        //   if (pathname.includes("onlineclass")) {
-        //     const lastIndex = pathname.lastIndexOf("/");
-        //     const refactoredPathname = pathname.slice(0, lastIndex);
-        //     router.replace(`${refactoredPathname}/${targetUserRef.current}`, {
-        //       scroll: false,
-        //     });
-        //   } else {
-        //     const firstIndex = pathname.indexOf("/");
-        //     const refactoredPathname = pathname.slice(0, firstIndex);
-        //     router.replace(
-        //       `${refactoredPathname}/onlineclass/${targetUserRef.current}`,
-        //       { scroll: false },
-        //     );
-        //   }
-        // } else {
-        //   // window.location.reload();
-        // }
-        // localMedia.current.getTracks().forEach((track) => track.stop());
-        // await turn();
-      }
+      // if (id === targetUserRef.current) {
+      //   toast.error("The other person has gone offline. ");
+      //   // if (audioRef.current) {
+      //   //   audioRef.current.loop = false;
+      //   //   audioRef.current.pause();
+      //   //   audioRef.current.currentTime = 0;
+      //   // }
+      //   // // if(localVideoRef?.current)localVideoRef.current
+      //   // setIsCalling(false);
+      //   // setIsIncoming(false);
+      //   // setShowCallControls(false);
+      //   // setIsInCall(false);
+      //   // setVideoCallSeconds(0);
+      //   // setRemoteMedia(null);
+      //   // candidates.current = [];
+      //   // if (user?.role !== "student" && recorderRef.current) {
+      //   //   recorderRef.current.stop();
+      //   //   if (pathname.includes("onlineclass")) {
+      //   //     const lastIndex = pathname.lastIndexOf("/");
+      //   //     const refactoredPathname = pathname.slice(0, lastIndex);
+      //   //     router.replace(`${refactoredPathname}/${targetUserRef.current}`, {
+      //   //       scroll: false,
+      //   //     });
+      //   //   } else {
+      //   //     const firstIndex = pathname.indexOf("/");
+      //   //     const refactoredPathname = pathname.slice(0, firstIndex);
+      //   //     router.replace(
+      //   //       `${refactoredPathname}/onlineclass/${targetUserRef.current}`,
+      //   //       { scroll: false },
+      //   //     );
+      //   //   }
+      //   // } else {
+      //   //   // window.location.reload();
+      //   // }
+      //   // localMedia.current.getTracks().forEach((track) => track.stop());
+      //   // await turn();
+      // }
     });
 
     socket.on("broadcast", ({ message }) => {

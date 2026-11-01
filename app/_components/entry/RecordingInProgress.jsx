@@ -5,9 +5,60 @@ import { PiRecordFill } from "react-icons/pi";
 import { TbPlayerRecordFilled } from "react-icons/tb";
 import ConfirmationMenu from "../ConfirmSubmit";
 import { formatName } from "@/helpers";
+import { useEffect } from "react";
+import WaveSurfer from "wavesurfer.js";
+import RecordPlugin from "wavesurfer.js/dist/plugins/record.js";
 
-function RecordingInProgress({ studentName, hours, minutes, seconds, isPause, handlePause, handleResume, finishRecording, confirmFinishRecording, setConfirmFinishRecording }) {
+let wavesurfer;
+let visualizer;
+
+function RecordingInProgress({stream, studentName, hours, minutes, seconds, isPause, handlePause, handleResume, finishRecording, confirmFinishRecording, setConfirmFinishRecording }) {
   const formattedName = formatName(studentName);
+    useEffect(() => {
+      
+      if(!stream?.current) return;
+      wavesurfer = WaveSurfer.create({
+        container: "#visualizer",
+        waveColor: "#A77F60",
+        progressColor: "#DCC3AA",
+        height:60
+      });
+      visualizer = wavesurfer.registerPlugin(
+        RecordPlugin.create({
+          renderRecordedAudio: false,
+          scrollingWaveform: true,
+          continuousWaveform: true,
+          continuousWaveformDuration: 5, // optional
+        }),
+      );
+      const audioContext = new AudioContext();
+
+      // 2. Create a source from your WebRTC MediaStream
+      const source = audioContext.createMediaStreamSource(stream?.current);
+
+      // 3. Create a Gain Node (our amplifier)
+      const gainNode = audioContext.createGain();
+
+      // 4. Boost the gain value (1 is default, 2 is double height, 3 is triple, etc.)
+      gainNode.gain.value = 100;
+
+      // 5. Create a destination stream specifically for WaveSurfer
+      const destination = audioContext.createMediaStreamDestination();
+
+      // 6. Route the audio: Source -> Amplifier -> Destination Stream
+      source.connect(gainNode);
+      gainNode.connect(destination);
+
+      // 7. Pass the amplified stream into the visualizer
+      visualizer.renderMicStream(destination.stream);
+      
+      
+      return () => {
+        visualizer.destroy();
+        gainNode.disconnect();
+        audioContext.close();
+      }
+    },[stream?.current])
   return (
     <div className="bg-(--card) my-aut flex flex-col items-center justify-between gap-6 lg:w-1/2 lg:mx-auto order py-8 px-5 min-h-full rounded-2xl shadow-(--shadow-2xl)">
       <div className="flex flex-col items-center gap-5 text-sm">
@@ -33,10 +84,14 @@ function RecordingInProgress({ studentName, hours, minutes, seconds, isPause, ha
         </div>
       </div>
 
-      <div className="borde border-(--border) shadow-2xl rounded-full p-4 bg-(--layer)">
+      {/* <div className="borde border-(--border) shadow-2xl rounded-full p-4 bg-(--layer)">
         <div className="border border-(--border) bg-(--background)/50 shadow-l rounded-full p-8">
           <BsSoundwave className="text-5xl text-(--primary-light)" />
         </div>
+      </div> */}
+
+      <div className=" w-full h-40 overflow-hidden rounded-md" id="visualizer">
+
       </div>
 
       <div className="mt-1 flex flex-col gap-1 items-center">

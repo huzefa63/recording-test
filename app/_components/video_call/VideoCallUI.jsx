@@ -31,6 +31,10 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { formatName } from "@/helpers";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { api } from "@/lib/axios";
+import WaveSurfer from "wavesurfer.js";
+import RecordPlugin from "wavesurfer.js/dist/plugins/record.js";
+let wavesurfer;
+let visualizer;
 function VideoCallUI() {
   const { user } = useUser();
   const videoRef = useRef(null);
@@ -47,6 +51,7 @@ function VideoCallUI() {
     setVideoCallSeconds,
     videoCallSeconds,
     peerConnection,
+    remoteMedia,
   } = useVideoCallContext();
   const { dummyAnsCall, acceptCall, endCall } = useCallingFn();
   const [isMute, setIsMute] = useState(false);
@@ -59,6 +64,34 @@ function VideoCallUI() {
   const [isShowElements,setIsShowElements] = useState(true);
   const controllerRef = useRef(null);
   const controllerIntervalRef = useRef(null);
+
+  
+  useEffect(() => {
+    if(!remoteMedia) return;
+    wavesurfer = WaveSurfer.create({
+      container: "#visualizer",
+      waveColor: "#F1F1F1",
+      progressColor: "#DCC3AA",
+      height:50,
+      
+    });
+    visualizer = wavesurfer.registerPlugin(
+      RecordPlugin.create({
+        renderRecordedAudio: false,
+        scrollingWaveform: true,
+        continuousWaveform: true,
+        continuousWaveformDuration: 7, // optional
+      }),
+    );
+    const audio = remoteMedia.getAudioTracks();
+    const mediaStream = new MediaStream(audio);
+
+    visualizer.renderMicStream(mediaStream);
+    return () => {
+      visualizer.destroy();
+    }
+  },[remoteMedia])
+  
   useEffect(() => {
     if (!isInCall) return;
     const interval = setInterval(() => {
@@ -231,10 +264,14 @@ function VideoCallUI() {
       <div
         className={`${
           !isInCall && "opacity-0"
-        } text-white z-999999999 absolute left-1/2 -translate-x-1/2 top-5 text-sm font-semibold tracking-wide`}
+        } text-white z-99999999 flex flex-col items-center absolute left-1/2 -translate-x-1/2 top-5 text-sm font-semibold tracking-wide`}
       >
         {formatTime(videoCallSeconds)}
       </div>
+      {/* <div
+        id="visualizer"
+        className="fixed top-2 left-1 z-99999 bg-black/60 w-30 h-12 rounded-md"
+      ></div> */}
       {showCallControls && (
         <div
           ref={controllerRef}
@@ -253,7 +290,6 @@ border border-white/10 shadow-2xl h-[12%] w-[90%] lg:w-1/2 fixed z-99999 bottom-
               <div onClick={toggleFullScreen} className="hover:cursor-pointer">
                 <MdFullscreen className="text-2xl" />
               </div>
-             
             </div>
           </div>
 
@@ -398,19 +434,23 @@ border border-white/10 shadow-2xl h-[12%] w-[90%] lg:w-1/2 fixed z-99999 bottom-
                   ref={remoteVideoRef}
                 ></video>
               </div>
-              <Draggable nodeRef={dragRef}>
+              {/* <Draggable nodeRef={dragRef}> */}
                 <div
                   ref={dragRef}
-                  className="absolute top-3 right-3 rounded-lg bg-black border border-black/20 overflow-auto shadow-2xl w-30 h-40 lg:h-auto lg:w-70 z-999999"
+                  className="absolute top-3 right-3 rounded-lg bg-black border border-black/20 overflow-hidden shadow-2xl w-30 h-55 lg:h-auto lg:w-70 z-999999"
                 >
                   <video
                     ref={localVideoRef}
                     muted
                     autoPlay
-                    className="h-full w-full object-cover lg:object-contain z-99999"
+                    className="h-40 w-full object-cover lg:object-contain z-99999"
                   ></video>
+                <div
+                  id="visualizer"
+                  className="mt-1  z-99999 bg-black/60 w-30 h-12 rounded-md"
+                ></div>
                 </div>
-              </Draggable>
+              {/* </Draggable> */}
             </div>
           </>
         )}

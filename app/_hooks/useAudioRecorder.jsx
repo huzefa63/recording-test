@@ -29,6 +29,7 @@ function useAudioRecorder() {
   const audioType = useRef('');
   const wakeLockRef = useRef(null);
   const queryClient = useQueryClient();
+ 
   const {
     onlineClassBlob,
     setOnlineClassBlobUrl,
@@ -559,7 +560,8 @@ function useAudioRecorder() {
       seconds,
       audioSize,
       audioChunks,
-      classType
+      classType,
+      stream,
     },
 
     actions: {

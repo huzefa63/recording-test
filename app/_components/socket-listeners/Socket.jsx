@@ -60,6 +60,7 @@ export function CallingFnProvider({ children }) {
   const toastInputRef = useRef(null);
   const notificationRef = useRef(null);
   const isRestarting = useRef(false);
+  
   useEffect(() => {
     isInCallRef.current = isInCall;
     isCallingRef.current = isCalling;
@@ -70,6 +71,7 @@ export function CallingFnProvider({ children }) {
      async function restartIce() {
     // const peerConnection.current = peerConnection.current;
       toast.loading('reconnecting call...',{id:'reconnecting-call'});
+      toast.success('sending restart offer');
     if (!peerConnection.current || isRestarting.current && user?.role !== 'student') return;
 
     isRestarting.current = true;
@@ -149,7 +151,7 @@ export function CallingFnProvider({ children }) {
         console.log('failed')
         toast.error('turn internet on');
         // navigator.vibrate([1000]);
-        await restartIce();
+        if(navigator.onLine) await restartIce();
         // toast.dismiss("call");
       }
     };
@@ -160,7 +162,11 @@ export function CallingFnProvider({ children }) {
       setTimeout(async () => {
         toast.success('online');
         console.log('online');
-        if(isInCall && user?.role === 'student') socket.emit('restart-call-signal',{to:targetUserRef.current});
+        if(isInCall && user?.role === 'student') {
+          socket.emit("restart-call-signal", { to: targetUserRef.current });
+          toast.success('targeted user: ',targetUserRef.current);
+          toast.success('sending signal to restart call');
+        }
         if(isInCall && user?.role !== 'student') await restartIce();
       }, 1000);
     }

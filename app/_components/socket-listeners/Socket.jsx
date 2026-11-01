@@ -147,7 +147,7 @@ export function CallingFnProvider({ children }) {
           notificationRef.current.play();
         }
         console.log('failed')
-        
+        toast.error('turn internet on');
         // navigator.vibrate([1000]);
         await restartIce();
         // toast.dismiss("call");

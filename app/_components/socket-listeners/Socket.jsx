@@ -882,7 +882,7 @@ async function setVideoBitrate(sender, bitrate) {
             else return el;
           });
         });
-      }
+      } 
       querClient.setQueriesData({ queryKey: ["gurfahData"] }, (data) => {
         if (data?.user?._id === id)
           return { user: { ...data?.user, status: "offline" } };
